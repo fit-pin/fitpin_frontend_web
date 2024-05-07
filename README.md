@@ -1,1 +1,0 @@
-# fitpin_frontend_web
