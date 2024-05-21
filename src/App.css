@@ -1,38 +1,56 @@
-.App {
-  text-align: center;
+body {
+    margin: 0;             /* 기본 마진 제거 */
+    overflow-y: hidden;     /* 스크롤 막음 */
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.outer {
+    height: 100vh;      /* 스크롤 작동 */
+    overflow-y: auto;   /* 스크롤 제어 */
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.outer::-webkit-scrollbar {
+    display: none;      /* 스크롤바 숨김 */
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.inner {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 100px;
 }
 
-.App-link {
-  color: #61dafb;
+.divider {
+    width: 100%;
+    height: 5px;
+    background-color: gray;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.menuBar {
+    width: 1920px;  /* 100vh 10vw */
+    height: 110px;
+}
+
+.menubarleft {
+    margin: px;
+    text-align: left;
+}
+
+.menubarright {
+    margin: 8px;
+    text-align: right;
+}
+
+.background {
+    width: 1920px;
+    height: 815px;
+    background-image: url(./image/bg1.png);
+}
+
+.bg-white {
+    background-color: #ffffff;
+}
+
+.bg-black {
+    background-color: #000000;
 }
