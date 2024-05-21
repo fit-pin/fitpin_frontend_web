@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Italiano');
+
 body {
     margin: 0;             /* 기본 마진 제거 */
     overflow-y: hidden;     /* 스크롤 막음 */
@@ -29,17 +31,25 @@ body {
 .menuBar {
     width: 1920px;  /* 100vh 10vw */
     height: 110px;
+    position: absolute;
+    top: 10px;
+    right: 10px;
 }
 
 .menubarleft {
-    margin: px;
+    margin: 8px;
     text-align: left;
 }
 
 .menubarright {
     margin: 8px;
     text-align: right;
+    
 }
+
+.italianno {
+    font-family: 'Italiano', cursive; /* 'Italiano'에는 선택한 폰트명이 들어갑니다 */
+  }
 
 .background {
     width: 1920px;

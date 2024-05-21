@@ -2,17 +2,6 @@ import { useEffect, useRef, useState } from "react";
 import { Link } from 'react-router-dom';
 import "./App.css";
 
-function menuBar() {
-  return (
-      <div classname="menuBar">
-        <Link classname="menubarleft" to={'/'}>Fitfin</Link>
-        <Link classname="menubarright" to={'/'}>핏 코멘트</Link>
-        <Link classname="menubarright" to={'/'}>고객센터</Link>
-        <Link classname="menubarright" to={'/'}>수선 업체 로그인</Link>
-      </div>
-  )
-}
-
 function App() {
   const DIVIDER_HEIGHT = 5;
   const outerDivRef = useRef();
@@ -34,7 +23,9 @@ function App() {
             behavior: "smooth",
           });
           setCurrentPage(2);
-        } else if (scrollTop >= pageHeight && scrollTop < pageHeight * 2) {
+        } 
+        
+        else if (scrollTop >= pageHeight && scrollTop < pageHeight * 2) {
           // 2페이지
           outerDivRef.current.scrollTo({
             top: pageHeight * 2 + DIVIDER_HEIGHT * 2,
@@ -42,7 +33,9 @@ function App() {
             behavior: "smooth",
           });
           setCurrentPage(3);
-        } else if (scrollTop >= pageHeight && scrollTop < pageHeight * 3) {
+        } 
+        
+        else if (scrollTop >= pageHeight && scrollTop < pageHeight * 3) {
           // 3페이지
           outerDivRef.current.scrollTo({
             top: pageHeight * 3 + DIVIDER_HEIGHT * 3,
@@ -50,7 +43,9 @@ function App() {
             behavior: "smooth",
           });
           setCurrentPage(4);
-        } else if (scrollTop >= pageHeight && scrollTop < pageHeight * 4) {
+        } 
+        
+        else if (scrollTop >= pageHeight && scrollTop < pageHeight * 4) {
           // 4페이지
           outerDivRef.current.scrollTo({
             top: pageHeight * 4 + DIVIDER_HEIGHT * 4,
@@ -58,7 +53,9 @@ function App() {
             behavior: "smooth",
           });
           setCurrentPage(5);
-        } else if (scrollTop >= pageHeight && scrollTop < pageHeight * 5) {
+        } 
+        
+        else if (scrollTop >= pageHeight && scrollTop < pageHeight * 5) {
           // 5페이지
           outerDivRef.current.scrollTo({
             top: pageHeight * 5 + DIVIDER_HEIGHT * 5,
@@ -66,7 +63,9 @@ function App() {
             behavior: "smooth",
           });
           setCurrentPage(6);
-        } else if (scrollTop >= pageHeight && scrollTop < pageHeight * 6) {
+        } 
+        
+        else if (scrollTop >= pageHeight && scrollTop < pageHeight * 6) {
           // 6페이지
           outerDivRef.current.scrollTo({
             top: pageHeight * 6 + DIVIDER_HEIGHT * 6,
@@ -74,7 +73,9 @@ function App() {
             behavior: "smooth",
           });
           setCurrentPage(7);
-        } else if (scrollTop >= pageHeight && scrollTop < pageHeight * 7) {
+        } 
+        
+        else if (scrollTop >= pageHeight && scrollTop < pageHeight * 7) {
           // 7페이지
           outerDivRef.current.scrollTo({
             top: pageHeight * 7 + DIVIDER_HEIGHT * 7,
@@ -82,7 +83,9 @@ function App() {
             behavior: "smooth",
           });
           setCurrentPage(8);
-        } else if (scrollTop >= pageHeight && scrollTop < pageHeight * 8) {
+        } 
+        
+        else if (scrollTop >= pageHeight && scrollTop < pageHeight * 8) {
           // 8페이지
           outerDivRef.current.scrollTo({
             top: pageHeight * 8 + DIVIDER_HEIGHT * 8,
@@ -90,7 +93,9 @@ function App() {
             behavior: "smooth",
           });
           setCurrentPage(9);
-        } else {
+        } 
+        
+        else {
           // 9페이지
           outerDivRef.current.scrollTo({
             top: pageHeight * 9 + DIVIDER_HEIGHT * 9,
@@ -107,7 +112,9 @@ function App() {
             left: 0,
             behavior: "smooth",
           });
-        } else if (scrollTop >= pageHeight && scrollTop < pageHeight * 2) {
+        } 
+        
+        else if (scrollTop >= pageHeight && scrollTop < pageHeight * 2) {
           // 2페이지
           outerDivRef.current.scrollTo({
             top: 0,
@@ -115,7 +122,9 @@ function App() {
             behavior: "smooth",
           });
           setCurrentPage(1);
-        } else if (scrollTop >= pageHeight && scrollTop < pageHeight * 3) {
+        } 
+        
+        else if (scrollTop >= pageHeight && scrollTop < pageHeight * 3) {
           // 3페이지
           outerDivRef.current.scrollTo({
             top: 0,
@@ -123,7 +132,9 @@ function App() {
             behavior: "smooth",
           });
           setCurrentPage(2);
-        } else if (scrollTop >= pageHeight && scrollTop < pageHeight * 4) {
+        } 
+        
+        else if (scrollTop >= pageHeight && scrollTop < pageHeight * 4) {
           // 4페이지
           outerDivRef.current.scrollTo({
             top: 0,
@@ -131,7 +142,9 @@ function App() {
             behavior: "smooth",
           });
           setCurrentPage(3);
-        } else if (scrollTop >= pageHeight && scrollTop < pageHeight * 5) {
+        } 
+        
+        else if (scrollTop >= pageHeight && scrollTop < pageHeight * 5) {
           // 5페이지
           outerDivRef.current.scrollTo({
             top: 0,
@@ -139,7 +152,9 @@ function App() {
             behavior: "smooth",
           });
           setCurrentPage(4);
-        } else if (scrollTop >= pageHeight && scrollTop < pageHeight * 6) {
+        } 
+        
+        else if (scrollTop >= pageHeight && scrollTop < pageHeight * 6) {
           // 6페이지
           outerDivRef.current.scrollTo({
             top: 0,
@@ -147,7 +162,8 @@ function App() {
             behavior: "smooth",
           });
           setCurrentPage(5);
-        } else if (scrollTop >= pageHeight && scrollTop < pageHeight * 7) {
+        } 
+        else if (scrollTop >= pageHeight && scrollTop < pageHeight * 7) {
           // 7페이지
           outerDivRef.current.scrollTo({
             top: 0,
@@ -183,42 +199,55 @@ function App() {
 
   return (
     <div ref={outerDivRef} className="outer">
+      <div className="inner">
+        <div className="menubar">
 
-      <div className="menuBar">
-        <menuBar>Fitfin 핏 코멘트 고객센터 수선 업체 로그인</menuBar>
-      </div>
-      <div className="background">
-        <h1>내가 원하는 옷을</h1>
-        <h1>나만을 위한 수선과 함께</h1>
-        <span>Find Your</span>
-        <span>Fit fin</span>
+          <div className="menubarleft">
+          <p><span class="italianno">Fit</span>fin</p>
+          </div>
+
+          <div className="menubarRight">
+            <p>핏 코멘트</p>
+            <p>고객 센터</p>
+            <p>수선 업체 로그인</p>
+          </div>
+
+        </div>
+        <div className="background">
+          <h1>내가 원하는 옷을</h1>
+          <h1>나만을 위한 수선과 함께</h1>
+          <span>Find Your</span>
+          <span>Fit fin</span>
+        </div>
+
       </div>
       <div className="divider"></div>
 
       <div className="inner bg-black">
+        2
         <img src="./image/finger1.png"></img>
       </div>
-      <div className="divider"></div>Q  
-
-      <div className="inner bg-white"></div>
       <div className="divider"></div>
 
-      <div classname="inner bg-black"></div>
+      <div className="inner bg-white">3</div>
       <div className="divider"></div>
 
-      <div classname="inner bg-black"></div>
+      <div className="inner bg-black">4</div>
       <div className="divider"></div>
 
-      <div classname="inner bg-black"></div>
+      <div className="inner bg-white">5</div>
       <div className="divider"></div>
 
-      <div classname="inner bg-black"></div>
+      <div className="inner bg-black">6</div>
       <div className="divider"></div>
 
-      <div classname="inner bg-black"></div>
+      <div className="inner bg-white">7</div>
       <div className="divider"></div>
 
-      <div classname="inner bg-black"></div>
+      <div className="inner bg-black">8</div>
+      <div className="divider"></div>
+
+      <div className="inner bg-white">9</div>
     </div>
   );
 }
