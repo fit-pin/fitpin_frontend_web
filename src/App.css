@@ -19,7 +19,6 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 100px;
 }
 
 .divider {
@@ -28,34 +27,31 @@ body {
     background-color: gray;
 }
 
-.menuBar {
-    width: 1920px;  /* 100vh 10vw */
-    height: 110px;
-    position: absolute;
-    top: 10px;
-    right: 10px;
-}
 
-.menubarleft {
-    margin: 8px;
-    text-align: left;
-}
 
-.menubarright {
-    margin: 8px;
-    text-align: right;
-    
-}
 
-.italianno {
-    font-family: 'Italiano', cursive; /* 'Italiano'에는 선택한 폰트명이 들어갑니다 */
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  
+  .product-image {
+    width: 448px;
+    height: 448px;
+  }
+  
+  .right-section {
+    width: 80px;
+    text-align: center;
+    right: 0;
+  }
+  
+  .text {
+    transform: translateX(50%);
   }
 
-.background {
-    width: 1920px;
-    height: 815px;
-    background-image: url(./image/bg1.png);
-}
 
 .bg-white {
     background-color: #ffffff;
@@ -63,4 +59,12 @@ body {
 
 .bg-black {
     background-color: #000000;
+}
+
+.white {
+  color: white;
+}
+
+.leftimage {
+  margin:auto;
 }
