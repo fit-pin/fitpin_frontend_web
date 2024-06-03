@@ -1,0 +1,150 @@
+body {
+    font-family: 'SpoqaHanSansNeo-Regular', sans-serif;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1vh 3vw;
+    background-color: #ffffff;
+    height: 8vh;
+    font-size: 2vh;
+}
+
+.logo {
+    width: 6vw;
+    height: auto;
+}
+
+.right {
+    display: flex;
+    gap: 2vw;
+    font-family: 'SpoqaHanSansNeo-Regular', sans-serif;
+}
+
+.right span {
+    cursor: pointer;
+}
+
+.bold {
+    font-weight: bold;
+    text-decoration: none;
+    color: inherit;
+}
+
+.content {
+    padding: 2vh 4vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.leftContent {
+    width: 100%;
+    margin-left: 3.7vw;
+    margin-top: 5.3vh;
+    text-align: left;
+}
+
+.title {
+    font-family: 'GmarketSansTTFMedium';
+    font-size: 3.2vh;
+    margin-bottom: 1vh;
+}
+
+.description {
+    margin-bottom: 1vh;
+    color: #919191;
+    font-size: 2.2vh;
+}
+
+.searchContainer {
+    display: flex;
+    border-bottom: 0.1vh solid #dcdcdc;
+    margin: 0;
+    margin-left: auto;
+    margin-right: 0;
+    margin-top: -2.5vh;
+    width: 20vw;
+    justify-content: flex-end;
+}
+
+.searchInput {
+    border: none;
+    outline: none;
+    padding: 1vh 1vw;
+    font-size: 1.8vh;
+    color: #919191;
+    font-family: 'SpoqaHanSansNeo-Regular', sans-serif;
+    width: 20vw;
+}
+
+.searchButton {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 1vh 1vw;
+}
+
+.searchIcon {
+    width: 1.2vw;
+    height: 2vh;
+}
+
+.productGrid {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 2vh;
+    margin-top: 2vh;
+}
+
+.productBox {
+    background-color: #ffffff;
+    padding: 1.7vh;
+    width: 17vw;
+}
+
+.imageContainer {
+    width: 18vw;
+    height: 40vh;
+    display: flex;
+    background-color: #F7F7F7;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    margin-top: 2vh;
+}
+
+.productImage {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: cover;
+}
+
+.productInfo {
+    margin-top: 1.5vh;
+    font-size: 1.8vh;
+}
+
+.brandName {
+    margin: 0.5vh 0;
+    font-size: 1.8vh;
+}
+
+.productDetails {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0.5vh 0;
+}
+
+.productName {
+    font-weight: bold;
+}
+
+.sizeInfo {
+    font-size: 1.5vh;
+    color: #777;
+}

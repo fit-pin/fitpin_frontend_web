@@ -1,0 +1,135 @@
+body {
+    font-family: 'SpoqaHanSansNeo-Regular', sans-serif;
+  }
+  
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1vh 3vw;
+    background-color: #ffffff;
+    height: 8vh;
+    font-size: 2vh;
+  }
+  
+  .logo {
+    width: 6vw;
+    height: auto;
+  }
+  
+  .right {
+    display: flex;
+    gap: 2vw;
+    font-family: 'SpoqaHanSansNeo-Regular', sans-serif;
+  }
+  
+  .right span {
+    cursor: pointer;
+  }
+  
+  .bold {
+    font-weight: bold;
+    text-decoration: none;
+    color: inherit;
+  }
+  
+  .content {
+    display: flex;
+    padding: 1vh 4vw;
+  }
+  
+  .leftContent {
+    width: 30%;
+    margin-left: 2vw;
+    margin-top: 6vh;
+    font-family: 'SpoqaHanSansNeo-Regular', sans-serif;
+  }
+  
+  .title {
+    font-family: 'GmarketSansTTFMedium';
+    font-size: 3.2vh;
+    margin-bottom: 1vh;
+  }
+  
+  .description {
+    margin-bottom: 3.5vh;
+    color: #919191;
+    font-size: 2.2vh;
+  }
+  
+  .inquiryButton {
+    background-color: black;
+    color: white;
+    padding: 1vh 2vw;
+    border: none;
+    cursor: pointer;
+    border-radius: 1vh;
+    font-size: 2vh;
+    font-family: 'SpoqaHanSansNeo-Regular', sans-serif;
+    text-decoration: none;
+  }
+  
+  .links {
+    list-style: none;
+    padding: 0;
+    font-size: 2vh;
+  }
+  
+  .links li {
+    margin-top: 4vh;
+    margin-bottom: -1vh;
+    cursor: pointer;
+  }
+  
+  .links li a {
+    text-decoration: none;
+    color: inherit;
+  }
+  
+  .rightContent {
+    width: 70%;
+    margin-right: 2vw;
+    margin-top: 4vh;
+  }
+  
+  .inquiryBox {
+    border-bottom: 0.1vh solid #ddd;
+    padding: 4vh 0;
+  }
+  
+  .inquiryDate {
+    font-family: 'SpoqaHanSansNeo-Regular', sans-serif;
+    font-size: 2vh;
+  }
+  
+  .inquiryText {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 2.1vh;
+  }
+  
+  .inquiryAuthor {
+    white-space: nowrap;
+    font-size: 1.8vh;
+  }
+  
+  .pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 1.5vh;
+    margin-left: 45vh;
+    font-family: 'SpoqaHanSansNeo-Regular', sans-serif;
+    font-size: 2vh;
+  }
+  
+  .pageItem {
+    margin: 0 1vw;
+    cursor: pointer;
+  }
+  
+  .pageItem.active {
+    font-weight: bold;
+  }
+  

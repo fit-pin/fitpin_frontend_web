@@ -1,0 +1,169 @@
+body {
+    font-family: 'SpoqaHanSansNeo-Regular', sans-serif;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1vh 3vw;
+    background-color: #ffffff;
+    height: 8vh;
+    font-size: 2vh;
+}
+
+.logo {
+    width: 6vw;
+    height: auto;
+}
+
+.right {
+    display: flex;
+    gap: 2vw;
+    font-family: 'SpoqaHanSansNeo-Regular', sans-serif;
+}
+
+.bold {
+    font-weight: bold;
+    text-decoration: none;
+    color: inherit;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1vh 4vw;
+}
+
+.topSection {
+    text-align: center;
+}
+
+.title {
+    font-family: 'GmarketSansTTFMedium';
+    font-size: 3.2vh;
+    margin-top: 1vh;
+    margin-bottom: 5vh;
+}
+
+.brandInfo {
+    text-align: left;
+    margin-top: 1vh;
+    font-size: 3.2vh;
+    font-weight: bold;
+    margin-bottom: 3vh;
+}
+
+.imageContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1vh;
+}
+
+.productImage {
+    width: 12vw;
+    height: auto;
+}
+
+.arrow {
+    font-size: 2.5vh;
+    margin: 0 1vw;
+}
+
+.infoSection {
+    width: 64%;
+    margin-top: 2vh;
+}
+
+.basicInfo {
+    display: flex;
+    flex-direction: column;
+}
+
+.row {
+    display: flex;
+    align-items: center;
+}
+
+.row2 {
+    display: flex;
+    align-items: center;
+}
+
+.common,
+.common2,
+.common3 {
+    font-size: 2.1vh;
+    color: #2F2F2F;
+}
+
+.common {
+    margin-right: 5vh;
+}
+
+.common2 {
+    margin-right: 6vh;
+}
+
+.common3 {
+    margin-right: 4vh;
+}
+
+.common4 {
+    margin-left: 1.5vh;
+    margin-right: 5vh;
+    color: #575757;
+    font-size: 2vh;
+}
+
+.common5 {
+    margin-right: 4.5vh;
+    color: #575757;
+    font-size: 2vh;
+}
+
+.common6 {
+    margin-right: 5vh;
+    color: #575757;
+    font-size: 2vh;
+}
+
+.optionInfo,
+.review {
+    margin-bottom: 3vh;
+}
+
+h3 {
+    font-size: 2.5vh;
+    margin-bottom: 1vh;
+}
+
+p {
+    font-size: 2vh;
+    margin: 0.5vh 0;
+}
+
+.optionBox {
+    background-color: #F7F7FB;
+    padding: 1vh;
+    border-radius: 0.5vh;
+    width: 9vw;
+}
+
+.option {
+    color: #2F2F2F;
+    margin-bottom: 0.7vh;
+    font-size: 2.1vh;
+}
+
+.option2 {
+    color: #575757;
+    font-size: 2vh;
+}
+
+.review2{
+    color: #575757;
+    font-size: 2vh;
+}
