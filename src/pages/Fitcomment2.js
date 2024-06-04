@@ -13,7 +13,9 @@ function FitComment2() {
         <div className={styles.App}>
             <header className={styles.header}>
                 <div className={styles.left}>
-                    <img src={logo} className={styles.logo} alt="logo" />
+                    <Link to="/">
+                        <img src={logo} className={styles.logo} alt="logo" />
+                    </Link>
                 </div>
                 <div className={styles.right}>
                     <Link to="/Fitcomment" className={styles.bold}>핏코멘트</Link>

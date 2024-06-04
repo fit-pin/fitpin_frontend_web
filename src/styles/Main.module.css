@@ -1,0 +1,250 @@
+.App {
+    font-family: 'SpoqaHanSansNeo-Regular', sans-serif;
+    color: #000;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1vh 3vw;
+    background-color: rgba(255, 255, 255, 0.8);
+    height: 8vh;
+    font-size: 2vh;
+    z-index: 1;
+}
+
+.logo {
+    width: 6vw;
+    height: auto;
+    margin-top: 2vh;   
+}
+
+.right {
+    display: flex;
+    gap: 2vw;
+    font-family: 'SpoqaHanSansNeo-Regular', sans-serif;
+}
+
+.right span {
+    cursor: pointer;
+}
+
+.bold {
+    font-weight: bold;
+    text-decoration: none;
+    color: inherit;
+}
+
+.mainScreen {
+    background-size: cover;
+    background-position: center;
+    height: 90vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 2vh 4vw;
+    height: 90vh;
+}
+
+.textContainer h1 {
+    font-size: 7vh;
+    font-weight: bold;
+    margin: 0.9vh 0;
+    margin-bottom: 1vh;
+}
+
+.logo2 {
+    width: 100%;
+    max-width: 20vw;
+    margin-top: 3vh;
+    margin-bottom: 3vh;
+}
+
+.box {
+    width: 100%;
+    height: 18vh;
+    margin-top: 9vh;
+    background-color: #F3F3F3;
+    color: #000;
+    font-size: 3vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 2vh 4vw;
+}
+
+.buttonsContainer {
+    display: flex;
+    gap: 2vw;
+    margin-top: 2vh;
+}
+
+.button {
+    display: flex;
+    align-items: center;
+    background-color: #333333;
+    padding: 1vh 2vw;
+    border-radius: 10px;
+    width: 7.8vw;
+    height: 4vh;
+}
+
+.buttonImage {
+    width: 2vw;
+    height: auto;
+    margin-right: 1.5vw;
+    margin-bottom: 0.5vh;
+}
+
+.buttonImage2 {
+    width: 2vw;
+    height: auto;
+    margin-right: 1vw;
+}
+
+.button span {
+    font-size: 1.6vh;
+    color: #fff;
+}
+
+.section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-size: cover;
+    background-position: center;
+}
+
+.step {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%; /* Adjusted width */
+    max-width: 130vh;
+    text-align: center;
+    height: 80vh;
+}
+
+.stepImage {
+    width: 25vw;
+    max-width: 40vh;
+    margin: 0 2vw;
+}
+
+.step span {
+    font-size: 6vh;
+    color: #fff;
+    line-height: 13vh;
+}
+
+.blackBackground {
+    background-color: #000;
+}
+
+.whiteBackground {
+    background-color: #fff;
+}
+
+.whiteBackground2 {
+    background-color: #ffffff;
+    height: 500vh;
+}
+
+.blackText {
+    color: #000 !important;
+}
+
+.imageSection {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2vh 0;
+    background-color: #88c4ff;
+    height: 300vh;
+}
+
+.phone1{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.phoneImage{
+    margin-top: 10vh;
+    margin-bottom: 10vh;
+    margin-left: 5vw;
+    width: 16vw;
+    height: auto;
+}
+
+.phone1_text{
+    font-size: 3vh;
+    color: #B2B2B2;
+    margin-right: 8vw;
+    line-height: 4.5vh;
+}
+
+.phoneImage2{
+    margin-top: 5vh;
+    margin-bottom: 5vh;
+    margin-right: 13vw;
+    width: 16vw;
+    height: auto;
+}
+
+.phone2_text{
+    font-size: 3vh;
+    color: #B2B2B2;
+    margin-left: 5vw;
+    line-height: 4.5vh;
+}
+
+.phone1_title{
+    font-size: 4vh;
+    font-weight: bold;
+    color: #2D3FE3;
+}
+
+.phone1_bold{
+    font-size: 3vh;
+    color: #000000;
+}
+
+.phone1_title2{
+    text-align: center;
+    font-size: 3vh;
+    margin-top: -13vh;
+    margin-right: 12vh;
+}
+
+.buttonsContainer2 {
+    display: flex;
+    gap: 2vw;
+    margin-top: 2vh;
+    margin-left: 5vh;
+}
+
+.box2 {
+    width: 91vw;
+    height: 18vh;
+    background-color: #000000;
+    color: #ffffff;
+    font-size: 2vh;
+    display: flex;
+    align-items: center;
+    text-align: left;
+    padding: 2vh 4vw;
+}

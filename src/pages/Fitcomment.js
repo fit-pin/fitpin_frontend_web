@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import logo from '../assets/img/Find Your Fit Pin.png';
 import image from '../assets/img/product.png';
-import searchIcon from '../assets/img/search.png';  // Import the search icon
+import searchIcon from '../assets/img/search.png';
 import styles from '../styles/Fitcomment.module.css';
 
 function Fitcomment() {
@@ -10,7 +10,9 @@ function Fitcomment() {
         <div className={styles.App}>
             <header className={styles.header}>
                 <div>
-                    <img src={logo} className={styles.logo} alt="logo" />
+                    <Link to="/">
+                        <img src={logo} className={styles.logo} alt="logo" />
+                    </Link>
                 </div>
                 <div className={styles.right}>
                     <Link to="/Fitcomment" className={styles.bold}>핏코멘트</Link>

@@ -16,7 +16,9 @@ function Service() {
     <div className={styles.App}>
       <header className={styles.header}>
         <div className={styles.left}>
-          <img src={logo} className={styles.logo} alt="logo" />
+          <Link to="/">
+            <img src={logo} className={styles.logo} alt="logo" />
+          </Link>
         </div>
         <div className={styles.right}>
           <span onClick={() => window.location.href = '/Fitcomment'}>핏코멘트</span>
