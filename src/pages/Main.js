@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import styles from '../styles/Main.module.css';
 import logo from '../assets/img/main/logo2.png';
@@ -16,6 +16,42 @@ import phone4 from '../assets/img/main/phone4.png';
 import phone5 from '../assets/img/main/phone5.png';
 
 function Main() {
+    const sectionRefs = useRef([]);
+
+    useEffect(() => {
+        const options = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1,
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add(styles.animate);
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, options);
+
+        sectionRefs.current.forEach(section => {
+            if (section) {
+                observer.observe(section);
+            }
+        });
+
+        return () => {
+            if (observer) {
+                // eslint-disable-next-line react-hooks/exhaustive-deps
+                sectionRefs.current.forEach(section => {
+                    if (section) {
+                        observer.unobserve(section);
+                    }
+                });
+            }
+        };
+    }, []);
+
     return (
         <div className={styles.App}>
             <header className={styles.header}>
@@ -54,26 +90,26 @@ function Main() {
                 </div>
             </div>
 
-            <div className={`${styles.section} ${styles.blackBackground}`}>
+            <div ref={(el) => sectionRefs.current[0] = el} className={`${styles.section} ${styles.blackBackground}`}>
                 <div className={styles.step}>
                     <img src={step1} alt="Step 1" className={styles.stepImage} />
                     <span>내가 사고 싶은<br />제품을 고르고</span>
                 </div>
             </div>
-            <div className={`${styles.section} ${styles.whiteBackground}`}>
+            <div ref={(el) => sectionRefs.current[1] = el} className={`${styles.section} ${styles.whiteBackground}`}>
                 <div className={styles.step}>
                     <span className={styles.blackText}>원하는 사이즈로<br />커스텀하면</span>
                     <img src={step2} alt="Step 2" className={styles.stepImage} />
                 </div>
             </div>
-            <div className={`${styles.section} ${styles.blackBackground}`}>
+            <div ref={(el) => sectionRefs.current[2] = el} className={`${styles.section} ${styles.blackBackground}`}>
                 <div className={styles.step}>
                     <img src={step3} alt="Step 3" className={styles.stepImage} />
                     <span>문 앞으로<br />배송해드려요</span>
                 </div>
             </div>
 
-            <div className={`${styles.section} ${styles.whiteBackground2}`}>
+            <div ref={(el) => sectionRefs.current[3] = el} className={`${styles.section} ${styles.whiteBackground2}`}>
                 <div className={styles.phone1}>
                     <div className={styles.phone1_text}>
                         <span className={styles.phone1_title}>클릭 한 번이면<br />수선이 뚝딱<br /><br /></span>
@@ -90,7 +126,7 @@ function Main() {
                 </div>
             </div>
 
-            <div className={`${styles.section} ${styles.whiteBackground2}`}>
+            <div ref={(el) => sectionRefs.current[4] = el} className={`${styles.section} ${styles.whiteBackground2}`}>
                 <div className={styles.phone1}>
                     <img src={phone2} alt="phone 2" className={styles.phoneImage2} />
                     <div className={styles.phone2_text}>
@@ -100,7 +136,7 @@ function Main() {
                     </div>
                 </div>
             </div>
-            <div className={`${styles.section} ${styles.whiteBackground2}`}>
+            <div ref={(el) => sectionRefs.current[5] = el} className={`${styles.section} ${styles.whiteBackground2}`}>
                 <div className={styles.phone1}>
                     <div className={styles.phone1_text}>
                         <span className={styles.phone1_title}>사이즈 정보 페이지<br /><br /></span>
@@ -110,9 +146,9 @@ function Main() {
                     <img src={phone3} alt="phone 3" className={styles.phoneImage} />
                 </div>
             </div>
-            <div className={`${styles.section} ${styles.whiteBackground2}`}>
+            <div ref={(el) => sectionRefs.current[6] = el} className={`${styles.section} ${styles.whiteBackground2}`}>
                 <div className={styles.phone1}>
-                    <img src={phone4} alt="phone 4" className={styles.phoneImage2} />
+                    <img src={phone4} alt="phone 4" className={styles.phoneImage3} />
                     <div className={styles.phone2_text}>
                         <span className={styles.phone1_title}>핏 코멘트 페이지<br /><br /></span>
                         <span className={styles.phone1_bold}>다른 사람들의 실착 후기가 궁금하다면 ?< br /></span>
@@ -120,10 +156,10 @@ function Main() {
                     </div>
                 </div>
             </div>
-            <div className={`${styles.section} ${styles.whiteBackground2}`}>
-                <div className={styles.phone1}>
-                    <div className={styles.phone1_title2}>
-                        <h1 style={{ marginTop: '14vh' }}>내가 원하는 옷을</h1>
+            <div ref={(el) => sectionRefs.current[7] = el} className={styles.whiteBackground2}>
+                <div className={styles.phone1} style={{ marginLeft: '11vw'}}>
+                    <div className={styles.phone1_title2} style={{ marginRight: '9vw'}}>
+                        <h1 style={{ marginTop: '20vh'}}>내가 원하는 옷을</h1>
                         <h1>나만을 위한 수선과 함께</h1>
                         <img src={logo2} alt="logo2" className={styles.logo2} />
                         <div className={styles.buttonsContainer2}>
@@ -137,17 +173,18 @@ function Main() {
                             </div>
                         </div>
                     </div>
-                    <img src={phone5} alt="phone 5" className={styles.phoneImage} />
+                    <img src={phone5} alt="phone 5" className={styles.phoneImage2} style={{ marginTop: '15vh', marginLeft: '5vw'}} />
                 </div>
             </div>
-            <div className={styles.box2}>
+
+            <div className={styles.box2} style={{ marginTop: '7vh'}} >
                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                     <div>
                         ㈜밀절미<br />
                         사업자 등록번호 : 000-11-22222 |<br />
                         08221 서울시 구로구 경인로 445 ([구]고척동 62-160) 동양미래대학교<br />
                     </div>
-                    <div style={{marginTop:'2.5vh', marginLeft: '24vw', textAlign: 'right'}}>
+                    <div style={{ marginTop: '2.5vh', marginLeft: '24vw', textAlign: 'right' }}>
                         TEL. 02-2610-1700 / FAX. 02-2688-5494<br />
                         COPYRIGHT(c) DONGYANG MIRAE UNIVERSITY. ALL RIGHTS RESERVED.
                     </div>
@@ -157,5 +194,4 @@ function Main() {
         </div>
     );
 }
-
 export default Main;
