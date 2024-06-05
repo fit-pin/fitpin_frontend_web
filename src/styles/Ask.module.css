@@ -1,138 +1,137 @@
 body {
-    font-family: 'SpoqaHanSansNeo-Regular', sans-serif;
-  }
-  
-  .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1vh 3vw;
-    background-color: #ffffff;
-    height: 8vh;
-    font-size: 2vh;
-  }
-  
-  .logo {
-    width: 6vw;
-    height: auto;
-  }
-  
-  .right {
-    display: flex;
-    gap: 2vw;
-    font-family: 'SpoqaHanSansNeo-Regular', sans-serif;
-  }
-  
-  .right span {
-    cursor: pointer;
-  }
-  
-  .bold {
-    font-weight: bold;
-  }
-  
-  .content {
-    padding: 2vh 4vw;
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-  }
-  
-  .leftContent {
-    width: 100%;
-    max-width: 60vw;
-    margin-left: 2vw;
-    margin-top: 6vh;
-    font-family: 'SpoqaHanSansNeo-Regular', sans-serif;
-  }
-  
-  .title {
-    font-family: 'GmarketSansTTFMedium';
-    font-size: 3.2vh;
-    margin-bottom: 1vh;
-  }
-  
-  .description {
-    margin-bottom: 3.5vh;
-    color: #919191;
-    font-size: 2.2vh;
-  }
-  
-  .formContainer {
-    display: flex;
-    justify-content: center;
-    width: 100%;
-    max-width: 80vw;
-    margin: 0 auto;
-    margin-top: 4vh;
-  }
-  
-  .form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-    margin: 0 0 0 -20vh;
-  }
-  
-  .formGroup {
-    margin-bottom: 3.5vh;
-    width: 100%;
-  }
-  
-  .label {
-    margin-bottom: 0.5vh;
-    font-weight: bold;
-    text-align: left;
-    display: block;
-    font-size: 2vh;
-  }
-  
-  .input,
-  .textarea {
-    width: 100%;
-    padding: 1.2vh;
-    border: 0.1vh solid #ccc;
-    border-radius: 0.5vh;
-    font-size: 2vh;
-  }
-  
-  .textarea {
-    resize: vertical;
-    height: 12vh;
-  }
-  
-  .fileInput {
-    border: 0.1vh solid #ccc;
-    padding: 0.8vh;
-    border-radius: 0.5vh;
-    width: 100%;
-  }
-  
-  .buttonGroup {
-    display: flex;
-    gap: 1.5vh;
-    justify-content: center;
-    width: 100%;
-  }
-  
-  .submitButton,
-  .cancelButton {
-    padding: 1.2vh 2.5vw;
-    border: none;
-    border-radius: 0.5vh;
-    font-size: 2vh;
-    cursor: pointer;
-    width: 100%;
-  }
-  
-  .submitButton {
-    background-color: black;
-    color: white;
-  }
-  
-  .cancelButton {
-    background-color: white;
-    border: 0.1vh solid #ccc;
-  }
-  
+  font-family: 'SpoqaHanSansNeo-Regular', sans-serif;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1vh 3vw;
+  background-color: #ffffff;
+  height: 8vh;
+  font-size: 2vh;
+}
+
+.logo {
+  width: 6vw;
+  height: auto;
+}
+
+.right {
+  display: flex;
+  gap: 2vw;
+  font-family: 'SpoqaHanSansNeo-Regular', sans-serif;
+}
+
+.right span {
+  cursor: pointer;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+.content {
+  padding: 2vh 4vw;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.leftContent {
+  width: 100%;
+  max-width: 60vw;
+  margin-left: 2vw;
+  margin-top: 6vh;
+  font-family: 'SpoqaHanSansNeo-Regular', sans-serif;
+}
+
+.title {
+  font-family: 'GmarketSansTTFMedium';
+  font-size: 3.2vh;
+  margin-bottom: 1vh;
+}
+
+.description {
+  margin-bottom: 3.5vh;
+  color: #919191;
+  font-size: 2.2vh;
+}
+
+.formContainer {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  max-width: 80vw;
+  margin: 0 auto;
+  margin-top: 4vh;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  margin: 0 0 0 -20vh;
+}
+
+.formGroup {
+  margin-bottom: 3.5vh;
+  width: 100%;
+}
+
+.label {
+  margin-bottom: 0.5vh;
+  font-weight: bold;
+  text-align: left;
+  display: block;
+  font-size: 2vh;
+}
+
+.input,
+.textarea {
+  width: 100%;
+  padding: 1.2vh;
+  border: 0.1vh solid #ccc;
+  border-radius: 0.5vh;
+  font-size: 2vh;
+}
+
+.textarea {
+  resize: vertical;
+  height: 12vh;
+}
+
+.fileInput {
+  border: 0.1vh solid #ccc;
+  padding: 0.8vh;
+  border-radius: 0.5vh;
+  width: 100%;
+}
+
+.buttonGroup {
+  display: flex;
+  gap: 1.5vh;
+  justify-content: center;
+  width: 100%;
+}
+
+.submitButton,
+.cancelButton {
+  padding: 1.2vh 2.5vw;
+  border: none;
+  border-radius: 0.5vh;
+  font-size: 2vh;
+  cursor: pointer;
+  width: 100%;
+}
+
+.submitButton {
+  background-color: black;
+  color: white;
+}
+
+.cancelButton {
+  background-color: white;
+  border: 0.1vh solid #ccc;
+}

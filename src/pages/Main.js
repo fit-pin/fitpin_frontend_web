@@ -156,12 +156,12 @@ function Main() {
                     </div>
                 </div>
             </div>
-            <div ref={(el) => sectionRefs.current[7] = el} className={styles.whiteBackground2}>
-                <div className={styles.phone1} style={{ marginLeft: '11vw'}}>
-                    <div className={styles.phone1_title2} style={{ marginRight: '9vw'}}>
-                        <h1 style={{ marginTop: '20vh'}}>내가 원하는 옷을</h1>
-                        <h1>나만을 위한 수선과 함께</h1>
-                        <img src={logo2} alt="logo2" className={styles.logo2} />
+            <div ref={(el) => sectionRefs.current[7] = el} className={styles.whiteBackground2} style={{ backgroundImage: `url(${background})` }}>
+                <div className={styles.phone1} style={{ marginLeft: '11vw' }}>
+                    <div className={styles.phone1_title2} style={{ marginRight: '9vw' }}>
+                        <h1 style={{ marginTop: '16vh', marginBottom: '-2vh' }}>내가 원하는 옷을</h1>
+                        <h1 style={{ marginBottom: '-2.5vh' }}>나만을 위한 수선과 함께</h1>
+                        <img src={logo2} alt="logo2" className={styles.logo2} style={{ marginBottom: '-1vh' }}></img>
                         <div className={styles.buttonsContainer2}>
                             <div className={styles.button}>
                                 <img src={appStore} alt="App Store" className={styles.buttonImage} />
@@ -173,11 +173,11 @@ function Main() {
                             </div>
                         </div>
                     </div>
-                    <img src={phone5} alt="phone 5" className={styles.phoneImage2} style={{ marginTop: '15vh', marginLeft: '5vw'}} />
+                    <img src={phone5} alt="phone 5" className={styles.phoneImage2} style={{ marginTop: '5vh', marginLeft: '5vw' }} />
                 </div>
             </div>
 
-            <div className={styles.box2} style={{ marginTop: '7vh'}} >
+            <div className={styles.box2}>
                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                     <div>
                         ㈜밀절미<br />
