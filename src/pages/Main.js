@@ -156,8 +156,8 @@ function Main() {
                     </div>
                 </div>
             </div>
-            <div ref={(el) => sectionRefs.current[7] = el} className={styles.whiteBackground2} style={{ backgroundImage: `url(${background})` }}>
-                <div className={styles.phone1} style={{ marginLeft: '11vw' }}>
+            <div ref={(el) => sectionRefs.current[7] = el} className={styles.whiteBackground2} style={{ backgroundImage: `url(${background})`, marginTop: '4vh' }}>
+                <div className={styles.phone1} style={{ marginLeft: '11vw'}}>
                     <div className={styles.phone1_title2} style={{ marginRight: '9vw' }}>
                         <h1 style={{ marginTop: '16vh', marginBottom: '-2vh' }}>내가 원하는 옷을</h1>
                         <h1 style={{ marginBottom: '-2.5vh' }}>나만을 위한 수선과 함께</h1>
