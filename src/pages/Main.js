@@ -6,6 +6,7 @@ import logo2 from '../assets/img/Find Your Fit Pin2.png';
 import appStore from '../assets/img/main/apple.png';
 import googlePlay from '../assets/img/main/google.png';
 import background from '../assets/img/main/background.png';
+import background2 from '../assets/img/main/background2.png';
 import step1 from '../assets/img/main/step1.png';
 import step2 from '../assets/img/main/step2.png';
 import step3 from '../assets/img/main/step3.png';
@@ -151,12 +152,12 @@ function Main() {
                     <img src={phone4} alt="phone 4" className={styles.phoneImage3} />
                     <div className={styles.phone2_text}>
                         <span className={styles.phone1_title}>핏 코멘트 페이지<br /><br /></span>
-                        <span className={styles.phone1_bold}>다른 사람들의 실착 후기가 궁금하다면 ?< br /></span>
+                        <span className={styles.phone1_bold}>다른 사람들의 실착 후기가 궁금하다면 ?<br /></span>
                         핏 코멘트에서 확인해요
                     </div>
                 </div>
             </div>
-            <div ref={(el) => sectionRefs.current[7] = el} className={styles.whiteBackground2} style={{ backgroundImage: `url(${background})`, marginTop: '4vh' }}>
+            <div ref={(el) => sectionRefs.current[7] = el} className={styles.whiteBackground2} style={{ backgroundImage: `url(${background2})`, marginTop: '4vh' }}>
                 <div className={styles.phone1} style={{ marginLeft: '11vw'}}>
                     <div className={styles.phone1_title2} style={{ marginRight: '9vw' }}>
                         <h1 style={{ marginTop: '16vh', marginBottom: '-2vh' }}>내가 원하는 옷을</h1>
@@ -194,4 +195,5 @@ function Main() {
         </div>
     );
 }
+
 export default Main;
