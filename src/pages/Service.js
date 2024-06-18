@@ -12,6 +12,39 @@ function Service() {
     console.log(`Page ${pageNumber} clicked`);
   };
 
+  const inquiries = [
+    {
+      date: '2024-04-24',
+      category: '교환문의',
+      question: '교환 요청합니다.',
+      author: '오주희'
+    },
+    {
+      date: '2024-04-23',
+      category: '배송문의',
+      question: '배송 상태가 궁금합니다.',
+      author: '임유나'
+    },
+    {
+      date: '2024-04-22',
+      category: '상품문의',
+      question: '이 상품 재고 있나요?',
+      author: '김효진'
+    },
+    {
+      date: '2024-04-21',
+      category: '결제문의',
+      question: '결제가 안 돼요.',
+      author: '서민지'
+    },
+    {
+      date: '2024-04-20',
+      category: '기타문의',
+      question: '기타문의 드립니다.',
+      author: '최수진'
+    }
+  ];
+
   return (
     <div className={styles.App}>
       <header className={styles.header}>
@@ -41,12 +74,12 @@ function Service() {
           </ul>
         </div>
         <div className={styles.rightContent}>
-          {Array.from({ length: 5 }).map((_, index) => (
+          {inquiries.map((inquiry, index) => (
             <div className={styles.inquiryBox} key={index}>
-              <p className={styles.inquiryDate}>2024-04-24 교환 / 환불문의</p>
+              <p className={styles.inquiryDate}>{inquiry.date} {inquiry.category}</p>
               <p className={styles.inquiryText}>
-                <span style={{ fontWeight: 'bold' }}>문의합니다.</span>
-                <span className={styles.inquiryAuthor}>나문희</span>
+                <span style={{ fontWeight: 'bold' }}>{inquiry.question}</span>
+                <span className={styles.inquiryAuthor}>{inquiry.author}</span>
               </p>
             </div>
           ))}
