@@ -1,6 +1,8 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Service from '../src/pages/Service';
+import Question from './pages/Question';
+import Exchange from './pages/Exchange';
 import Ask from '../src/pages/Ask';
 import Fitcomment from '../src/pages/Fitcomment';
 import Fitcomment2 from '../src/pages/Fitcomment2';
