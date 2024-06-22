@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import logo from '../assets/img/title.png';
 import cloth1 from '../assets/img/cloth1.png';
 import user1 from '../assets/img/user1.png';
@@ -7,6 +7,8 @@ import salesgraph from '../assets/img/salesgraph.png';
 import styles from '../styles/Repair.module.css';
 
 function Repair() {
+    const navigate = useNavigate();
+
     const requests = [
         { id: 4, name: '#신청자이름', date: '2024-04-11', status: '주문 완료' },
         { id: 3, name: '#신청자이름', date: '2024-04-09', status: '진행중' },
@@ -18,13 +20,11 @@ function Repair() {
         <div className={styles.App}>
             <header className={styles.header}>
                 <div>
-                    <Link to="/">
-                        <img src={logo} className={styles.logo} alt="logo" />
-                    </Link>
+                    <img src={logo} className={styles.logo} alt="logo" onClick={() => navigate('/')} />
                 </div>
                 <div className={styles.right}>
-                    <Link to="/Auction" className={styles.bold}>경매</Link>
-                    <span onClick={() => window.location.href = '/'}>로그아웃</span>
+                    <span className={styles.bold} onClick={() => navigate('/Auction')}>경매</span>
+                    <span onClick={() => navigate('/')}>로그아웃</span>
                 </div>
             </header>
             <div className={styles.content}>
@@ -36,9 +36,7 @@ function Repair() {
                             <div className={styles.auctionItem} key={index}>
                                 <img src={cloth1} alt={`Cloth ${index + 1}`} className={styles.clothImage} />
                                 <p className={styles.actionItemtext}>진행중인 경매 / 100</p>
-                                <Link to="/AuctionDetail">
-                                    <button className={styles.bidButton}>경매하기</button>
-                                </Link>
+                                <button className={styles.bidButton} onClick={() => navigate('/AuctionDetail')}>경매하기</button>
                             </div>
                         ))}
                     </div>

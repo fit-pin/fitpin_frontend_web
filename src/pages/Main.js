@@ -1,5 +1,5 @@
 import React, { useRef, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import styles from '../styles/Main.module.css';
 import logo from '../assets/img/main/logo2.png';
 import logo2 from '../assets/img/Find Your Fit Pin2.png';
@@ -18,6 +18,7 @@ import phone5 from '../assets/img/main/phone5.png';
 
 function Main() {
     const sectionRefs = useRef([]);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const options = {
@@ -57,14 +58,14 @@ function Main() {
         <div className={styles.App}>
             <header className={styles.header}>
                 <div>
-                    <Link to="/">
+                    <span onClick={() => navigate('/')}>
                         <img src={logo} className={styles.logo} alt="logo" />
-                    </Link>
+                    </span>
                 </div>
                 <div className={styles.right}>
-                    <span onClick={() => window.location.href = '/Fitcomment'}>핏 코멘트</span>
-                    <span onClick={() => window.location.href = '/Service'}>고객센터</span>
-                    <span onClick={() => window.location.href = '/Login'}>수선 업체 로그인</span>
+                    <span onClick={() => navigate('/FitComment')}>핏 코멘트</span>
+                    <span onClick={() => navigate('/Service')}>고객센터</span>
+                    <span onClick={() => navigate('/Login')}>수선 업체 로그인</span>
                 </div>
             </header>
             <div className={styles.mainScreen} style={{ backgroundImage: `url(${background})` }}>
@@ -158,7 +159,7 @@ function Main() {
                 </div>
             </div>
             <div ref={(el) => sectionRefs.current[7] = el} className={styles.whiteBackground2} style={{ backgroundImage: `url(${background2})`, marginTop: '4vh' }}>
-                <div className={styles.phone1} style={{ marginLeft: '11vw'}}>
+                <div className={styles.phone1} style={{ marginLeft: '11vw' }}>
                     <div className={styles.phone1_title2} style={{ marginRight: '9vw' }}>
                         <h1 style={{ marginTop: '16vh', marginBottom: '-2vh' }}>내가 원하는 옷을</h1>
                         <h1 style={{ marginBottom: '-2.5vh' }}>나만을 위한 수선과 함께</h1>

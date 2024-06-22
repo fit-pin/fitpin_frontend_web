@@ -1,29 +1,30 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import logo from '../assets/img/Find Your Fit Pin.png';
 import searchIcon from '../assets/img/search.png';
 import styles from '../styles/SignIn.module.css';
 
 function SignIn() {
+    const navigate = useNavigate();
     return (
         <div className={styles.App}>
             <header className={styles.header}>
                 <div>
-                    <Link to="/">
+                    <span onClick={() => navigate('/')}>
                         <img src={logo} className={styles.logo} alt="logo" />
-                    </Link>
+                    </span>
                 </div>
                 <div className={styles.right}>
-                    <span onClick={() => window.location.href = '/Fitcomment'}>핏 코멘트</span>
-                    <span onClick={() => window.location.href = '/Service'}>고객센터</span>
-                    <Link to="/Login" className={styles.bold}>수선 업체 로그인</Link>
+                    <span onClick={() => navigate('/FitComment')}>핏 코멘트</span>
+                    <span onClick={() => navigate('/Service')}>고객센터</span>
+                    <span onClick={() => navigate('/Login')} className={styles.bold}>수선 업체 로그인</span>
                 </div>
             </header>
             <div className={styles.content}>
                 <h2 className={styles.title}>회원가입</h2>
                 <div className={styles.loginPromptContainer}>
                     <p className={styles.loginPrompt}>
-                        이미 계정이 있나요? <Link to="/Login" className={styles.loginLink}>로그인</Link>
+                        이미 계정이 있나요? <span onClick={() => navigate('/Login')} className={styles.loginLink}>로그인</span>
                     </p>
                 </div>
                 <hr className={styles.underline} />

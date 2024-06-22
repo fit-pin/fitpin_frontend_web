@@ -1,22 +1,32 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import logo from '../assets/img/Find Your Fit Pin.png';
 import image from '../assets/img/product.png';
 import searchIcon from '../assets/img/search.png';
 import styles from '../styles/Fitcomment.module.css';
 
 function Fitcomment() {
+    const navigate = useNavigate();
+
     return (
         <div className={styles.App}>
             <header className={styles.header}>
                 <div>
-                    <Link to="/">
-                        <img src={logo} className={styles.logo} alt="logo" />
-                    </Link>
+                    <img
+                        src={logo}
+                        className={styles.logo}
+                        alt="logo"
+                        onClick={() => navigate('/')}
+                    />
                 </div>
                 <div className={styles.right}>
-                    <Link to="/Fitcomment" className={styles.bold}>핏코멘트</Link>
-                    <span onClick={() => window.location.href = '/Service'}>고객센터</span>
+                    <span
+                        className={styles.bold}
+                        onClick={() => navigate('/Fitcomment')}
+                    >
+                        핏코멘트
+                    </span>
+                    <span onClick={() => navigate('/Service')}>고객센터</span>
                 </div>
             </header>
             <div className={styles.content}>
@@ -40,9 +50,12 @@ function Fitcomment() {
                     {[1, 2, 3, 4].map((_, index) => (
                         <div className={styles.productBox} key={index}>
                             <div className={styles.imageContainer}>
-                                <Link to="/Fitcomment2">
-                                    <img src={image} className={styles.productImage} alt="product" />
-                                </Link>
+                                <img
+                                    src={image}
+                                    className={styles.productImage}
+                                    alt="product"
+                                    onClick={() => navigate('/Fitcomment2')}
+                                />
                             </div>
                             <div className={styles.productInfo}>
                                 <p className={styles.brandName}>브랜드 이름</p>
