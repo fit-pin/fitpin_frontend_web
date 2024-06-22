@@ -20,13 +20,16 @@ jobs:
                   node-version: 20.x
 
             - name: Cache node modules
-              uses: actions/cache@v1
+              uses: actions/cache@v3
+              env:
+                  cache-name: cache-node-modules
               with:
-                  path: node_modules
-                  key: ${{ runner.OS }}-build-${{ hashFiles('**/package-lock.json') }}
+                  path: ~/.npm
+                  key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
                   restore-keys: |
-                      ${{ runner.OS }}-build-
-                      ${{ runner.OS }}-
+                      ${{ runner.os }}-build-${{ env.cache-name }}-
+                      ${{ runner.os }}-build-
+                      ${{ runner.os }}-
 
             - name: Dependencies Install & build
               run: |
