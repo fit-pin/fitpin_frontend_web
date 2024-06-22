@@ -276,16 +276,18 @@
   bottom: 3.6vh;
 }
 
-.productTable th,
+.productTable th {
+  background-color: #eaeaea;
+  border: 0.1vh solid #ddd;
+  padding: 1vh;
+  text-align: center;
+}
+
 .productTable td {
   border: 0.1vh solid #ddd;
   padding: 1vh;
   text-align: center;
-
-}
-
-.gray {
-  background-color: #f4f4f4;
+  background-color: #ffffff;
 }
 
 .Section4 {
@@ -302,7 +304,7 @@
   position: relative;
   font-size: 1vh;
   word-spacing: 0.5vh;
-  line-height: 3vh;
+  line-height: 2.5vh;
 }
 
 .blueBorder {

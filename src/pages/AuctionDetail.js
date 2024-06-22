@@ -75,10 +75,6 @@ function AuctionDetail() {
                 </thead>
                 <tbody>
                   <tr>
-                    <th className={styles.gray}>MY</th>
-                    <th colSpan={4}>가지고 계신 제품의 실측을 입력해 보세요~!</th>
-                  </tr>
-                  <tr>
                     <td className={styles.gray}>1</td>
                     <td>44</td>
                     <td>48</td>
@@ -98,6 +94,13 @@ function AuctionDetail() {
                   <td>50</td>
                   <td>62</td>
                   <td>50</td>
+                </tr>
+                <tr>
+                  <td className={styles.gray}>4</td>
+                  <td>49</td>
+                  <td>51</td>
+                  <td>63</td>
+                  <td>55</td>
                 </tr>
               </tbody>
             </table>
