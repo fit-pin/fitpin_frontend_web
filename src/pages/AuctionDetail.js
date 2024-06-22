@@ -61,7 +61,7 @@ function AuctionDetail() {
         </div>
 
         <div className={styles.Section3}>
-          <div className={styles.background2}>
+          <div>
             <p className={styles.text3}>#제품정보</p>
               <table className={styles.productTable}>
                 <thead>
