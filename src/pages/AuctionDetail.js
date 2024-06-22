@@ -107,7 +107,7 @@ function AuctionDetail() {
         <div className={styles.Section4}>
           <div className={styles.clientInfo}>
           <div className={styles.text4}>#고객 정보</div>
-            <p className={styles.text5}>이름 : ㅇㄹ<br/>
+            <p className={styles.text5}>이름 : 밀절미<br/>
               주소 : 서울특별시 구로구 경인로 43길 49
               <br/> 
               <span className={styles.blue}>(고객님이 5km이내에 있습니다.)</span>

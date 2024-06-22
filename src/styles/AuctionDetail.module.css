@@ -304,3 +304,7 @@
   word-spacing: 0.5vh;
   line-height: 3vh;
 }
+
+.blueBorder {
+  border: 0.1vh solid blue;
+}
