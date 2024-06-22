@@ -64,7 +64,7 @@ function Main() {
                 <div className={styles.right}>
                     <span onClick={() => window.location.href = '/Fitcomment'}>핏 코멘트</span>
                     <span onClick={() => window.location.href = '/Service'}>고객센터</span>
-                    <span onClick={() => window.location.href = '/Login'}>로그인</span>
+                    <span onClick={() => window.location.href = '/Login'}>수선 업체 로그인</span>
                 </div>
             </header>
             <div className={styles.mainScreen} style={{ backgroundImage: `url(${background})` }}>

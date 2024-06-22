@@ -95,7 +95,6 @@
 
 .submitButton {
     width: 107%;
-    font-size: 2vh;
     background-color: #000000;
     color: #ffffff;
     border: none;
@@ -104,4 +103,11 @@
     height: 7.5vh;
     font-weight: bold;
     margin: 0 0 0 2vw;
+    text-decoration: none;
+}
+
+.submitButtontext {
+    text-align: center;
+    margin-top: 2.5vh;
+    font-size: 2.3vh;
 }

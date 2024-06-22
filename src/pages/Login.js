@@ -16,7 +16,7 @@ function LoginForm() {
                 <div className={styles.right}>
                     <span onClick={() => window.location.href = '/FitComment'}>핏 코멘트</span>
                     <span onClick={() => window.location.href = '/Service'}>고객센터</span>
-                    <Link to="/Login" className={styles.bold}>로그인</Link>
+                    <Link to="/Login" className={styles.bold}>수선 업체 로그인</Link>
                 </div>
             </header>
             <div className={styles.content}>
@@ -31,10 +31,11 @@ function LoginForm() {
                         <input type="password" placeholder="PASSWORD" />
                     </div>
                     <div className={styles.linkGroup}>
-                        <span>신규 사용자이신가요?</span>
+                        <span>신규 업체이신가요?</span>
                         <Link to="/SignIn" className={styles.registerLink}>회원가입</Link>
                     </div>
-                    <button type="submit" className={styles.submitButton}>로그인</button>
+                    <Link to="/Repair" className={styles.submitButton}>
+                    <div className={styles.submitButtontext}>로그인</div></Link>
                 </form>
             </div>
         </div>

@@ -16,7 +16,7 @@ function SignIn() {
                 <div className={styles.right}>
                     <span onClick={() => window.location.href = '/Fitcomment'}>핏 코멘트</span>
                     <span onClick={() => window.location.href = '/Service'}>고객센터</span>
-                    <Link to="/Login" className={styles.bold}>로그인</Link>
+                    <Link to="/Login" className={styles.bold}>수선 업체 로그인</Link>
                 </div>
             </header>
             <div className={styles.content}>
