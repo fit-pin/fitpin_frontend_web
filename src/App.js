@@ -1,6 +1,8 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Service from '../src/pages/Service';
+import Question from './pages/Question';
+import Exchange from './pages/Exchange';
 import Ask from '../src/pages/Ask';
 import Fitcomment from '../src/pages/Fitcomment';
 import Fitcomment2 from '../src/pages/Fitcomment2';
@@ -19,6 +21,8 @@ function App() {
         <Routes>
           <Route path="/" element={<Main />} />
           <Route path="/Service" element={<Service />} />
+          <Route path="/Question" element={<Question />} />
+          <Route path="/Exchange" element={<Exchange />} />
           <Route path="/Ask" element={<Ask />} />
           <Route path="/Fitcomment" element={<Fitcomment />} />
           <Route path="/Fitcomment2" element={<Fitcomment2 />} />

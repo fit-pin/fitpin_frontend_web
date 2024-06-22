@@ -66,8 +66,8 @@ function Service() {
           </p>
           <button className={styles.inquiryButton} onClick={() => navigate('../Ask')}>1:1 문의하기</button>
           <ul className={styles.links}>
-            <li><span onClick={() => navigate('/faq')}>자주 묻는 질문</span></li>
-            <li><span onClick={() => navigate('/exchange-refund')}>교환 및 환불</span></li>
+            <li><span onClick={() => navigate('/Question')}>자주 묻는 질문</span></li>
+            <li><span onClick={() => navigate('/Exchange')}>교환 및 환불</span></li>
           </ul>
         </div>
         <div className={styles.rightContent}>
