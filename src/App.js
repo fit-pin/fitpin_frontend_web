@@ -21,8 +21,8 @@ function App() {
 				<Routes>
 					<Route path="/" element={<Main />} />
 					<Route path="/Service" element={<Service />} />
-          <Route path="/Question" element={<Question />} />
-          <Route path="/Exchange" element={<Exchange />} />
+					<Route path="/Question" element={<Question />} />
+					<Route path="/Exchange" element={<Exchange />} />
 					<Route path="/Ask" element={<Ask />} />
 					<Route path="/Fitcomment" element={<Fitcomment />} />
 					<Route path="/Fitcomment2" element={<Fitcomment2 />} />
