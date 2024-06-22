@@ -1,22 +1,23 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import logo from '../assets/img/Find Your Fit Pin.png';
 import image from '../assets/img/Find Your Fit Pin2.png';
 import styles from '../styles/Login.module.css';
 
 function LoginForm() {
+    const navigate = useNavigate();
     return (
         <div className={styles.App}>
             <header className={styles.header}>
                 <div>
-                    <Link to="/">
+                    <span onClick={() => navigate('/')}>
                         <img src={logo} className={styles.logo} alt="logo" />
-                    </Link>
+                    </span>
                 </div>
                 <div className={styles.right}>
-                    <span onClick={() => window.location.href = '/FitComment'}>핏 코멘트</span>
-                    <span onClick={() => window.location.href = '/Service'}>고객센터</span>
-                    <Link to="/Login" className={styles.bold}>수선 업체 로그인</Link>
+                    <span onClick={() => navigate('/FitComment')}>핏 코멘트</span>
+                    <span onClick={() => navigate('/Service')}>고객센터</span>
+                    <span onClick={() => navigate('/Login')} className={styles.bold}>수선 업체 로그인</span>
                 </div>
             </header>
             <div className={styles.content}>
@@ -32,10 +33,10 @@ function LoginForm() {
                     </div>
                     <div className={styles.linkGroup}>
                         <span>신규 업체이신가요?</span>
-                        <Link to="/SignIn" className={styles.registerLink}>회원가입</Link>
+                        <span onClick={() => navigate('/SignIn')} className={styles.registerLink}>회원가입</span>
                     </div>
-                    <Link to="/Repair" className={styles.submitButton}>
-                    <div className={styles.submitButtontext}>로그인</div></Link>
+                    <span onClick={() => navigate('/Repair')} className={styles.submitButton}>
+                        <div className={styles.submitButtontext}>로그인</div></span>
                 </form>
             </div>
         </div>

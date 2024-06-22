@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import logo from '../assets/img/Find Your Fit Pin.png';
 import styles from '../styles/Fitcomment2.module.css';
 
@@ -9,17 +9,17 @@ import image3 from '../assets/img/fitcomment2/top3.jpg';
 import image4 from '../assets/img/fitcomment2/top4.jpg';
 
 function FitComment2() {
+    const navigate = useNavigate();
+
     return (
         <div className={styles.App}>
             <header className={styles.header}>
                 <div className={styles.left}>
-                    <Link to="/">
-                        <img src={logo} className={styles.logo} alt="logo" />
-                    </Link>
+                    <img src={logo} className={styles.logo} alt="logo" onClick={() => navigate('/')} />
                 </div>
                 <div className={styles.right}>
-                    <Link to="/Fitcomment" className={styles.bold}>핏코멘트</Link>
-                    <span onClick={() => window.location.href = '/Service'}>고객센터</span>
+                    <span className={styles.bold} onClick={() => navigate('/Fitcomment')}>핏코멘트</span>
+                    <span onClick={() => navigate('/Service')}>고객센터</span>
                 </div>
             </header>
             <div className={styles.content}>

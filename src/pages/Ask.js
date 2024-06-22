@@ -1,20 +1,20 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import logo from '../assets/img/Find Your Fit Pin.png';
 import styles from '../styles/Ask.module.css';
-import { Link } from 'react-router-dom';
 
 function Ask() {
+  const navigate = useNavigate();
+
   return (
     <div className={styles.App}>
       <header className={styles.header}>
         <div className={styles.left}>
-          <Link to="/">
-            <img src={logo} className={styles.logo} alt="logo" />
-          </Link>
+          <img src={logo} className={styles.logo} alt="logo" onClick={() => navigate('/')} />
         </div>
         <div className={styles.right}>
-          <span onClick={() => window.location.href = '/Fitcomment'}>핏코멘트</span>
-          <span onClick={() => window.location.href = '/Service'} className={styles.bold}>고객센터</span>
+          <span onClick={() => navigate('/Fitcomment')}>핏코멘트</span>
+          <span onClick={() => navigate('/Service')} className={styles.bold}>고객센터</span>
         </div>
       </header>
       <div className={styles.content}>
@@ -49,7 +49,7 @@ function Ask() {
             </div>
             <div className={styles.buttonGroup}>
               <button className={styles.submitButton} type="submit">등록</button>
-              <button className={styles.cancelButton} type="button" onClick={() => window.location.href = '/'}>취소</button>
+              <button className={styles.cancelButton} type="button" onClick={() => navigate('/')}>취소</button>
             </div>
           </form>
         </div>

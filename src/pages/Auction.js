@@ -1,11 +1,13 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import logo from '../assets/img/title.png';
 import user1 from '../assets/img/user1.png';
 import salesgraph from '../assets/img/salesgraph.png';
 import styles from '../styles/Auction.module.css';
 
 function Auction() {
+  const navigate = useNavigate();
+  
   const auctionItems = [
     { id: 3, type: '상의', keyword: '#바느질 #박음질', bid: '100,000원', applicationDate: '2024-06-20', endDate: '2024-06-25' },
     { id: 2, type: '상의', keyword: '#바느질 #박음질', bid: '100,000원', applicationDate: '2024-06-20', endDate: '2024-06-25' },
@@ -16,13 +18,11 @@ function Auction() {
     <div className={styles.App}>
       <header className={styles.header}>
         <div>
-          <Link to="/">
-            <img src={logo} className={styles.logo} alt="logo" />
-          </Link>
+          <img src={logo} className={styles.logo} alt="logo" onClick={() => navigate('/')} />
         </div>
         <div className={styles.right}>
-          <Link to="/Repair" className={styles.bold}>경매</Link>
-          <span onClick={() => window.location.href = '/'}>로그아웃</span>
+          <span className={styles.bold} onClick={() => navigate('/Repair')}>경매</span>
+          <span onClick={() => navigate('/')}>로그아웃</span>
         </div>
       </header>
       <div className={styles.content}>

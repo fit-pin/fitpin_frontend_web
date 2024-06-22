@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import logo from '../assets/img/Find Your Fit Pin.png';
 import styles from '../styles/Service.module.css';
 
 function Service() {
+  const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1);
   const totalPages = 5;
 
@@ -49,14 +50,11 @@ function Service() {
     <div className={styles.App}>
       <header className={styles.header}>
         <div className={styles.left}>
-          <Link to="/">
-            <img src={logo} className={styles.logo} alt="logo" />
-          </Link>
+          <img src={logo} className={styles.logo} alt="logo" onClick={() => navigate('/')} />
         </div>
         <div className={styles.right}>
-          <span onClick={() => window.location.href = '/Fitcomment'}>핏코멘트</span>
-          {/* 고객센터 */}
-          <Link to="/Service" className={styles.bold}>고객센터</Link>
+          <span onClick={() => navigate('/Fitcomment')}>핏코멘트</span>
+          <span className={styles.bold} onClick={() => navigate('/Service')}>고객센터</span>
         </div>
       </header>
       <div className={styles.content}>
@@ -66,11 +64,10 @@ function Service() {
             게시판을 통해<br />
             문의 및 상담이 가능합니다
           </p>
-          {/* 1:1 문의하기 */}
-          <Link to="../Ask" className={styles.inquiryButton}>1:1 문의하기</Link>
+          <button className={styles.inquiryButton} onClick={() => navigate('../Ask')}>1:1 문의하기</button>
           <ul className={styles.links}>
-            <li><Link to="/faq">자주 묻는 질문</Link></li>
-            <li><Link to="/exchange-refund">교환 및 환불</Link></li>
+            <li><span onClick={() => navigate('/faq')}>자주 묻는 질문</span></li>
+            <li><span onClick={() => navigate('/exchange-refund')}>교환 및 환불</span></li>
           </ul>
         </div>
         <div className={styles.rightContent}>
