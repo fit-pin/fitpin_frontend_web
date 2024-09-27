@@ -91,6 +91,7 @@
     margin-left: 0.5vh;
     color: #005AE2;
     text-decoration: none;
+    cursor: pointer;
 }
 
 .submitButton {
@@ -110,4 +111,11 @@
     text-align: center;
     margin-top: 2.5vh;
     font-size: 2.3vh;
+}
+
+.error {
+    color: red;
+    font-size: 1.5vh;
+    margin-left: 1.5vh;
+    margin-bottom: 1.0vh;
 }

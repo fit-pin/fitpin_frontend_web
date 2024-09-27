@@ -61,6 +61,7 @@
 .loginLink {
     color: #005AE2;
     text-decoration: none;
+    cursor: pointer;
 }
 
 .underline {
@@ -157,4 +158,25 @@
     margin-top: 0.5vh;
     height: 6vh;
     width: 41vw;
+}
+
+.error {
+    color: red;
+    font-size: 1.5vh;
+    margin-left: 1.5vh;
+    margin-bottom: 1.0vh;
+}
+
+.duerror1 {
+    color: blue;
+    font-size: 1.5vh;
+    margin-left: 1.5vh;
+    margin-bottom: 1.0vh;
+}
+
+.duerror2 {
+    color: red;
+    font-size: 1.5vh;
+    margin-left: 1.5vh;
+    margin-bottom: 1.0vh;
 }

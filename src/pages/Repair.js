@@ -5,10 +5,24 @@ import cloth1 from '../assets/img/cloth1.png';
 import user1 from '../assets/img/user1.png';
 import salesgraph from '../assets/img/salesgraph.png';
 import styles from '../styles/Repair.module.css';
+import axios from 'axios';
 
 function Repair() {
     const navigate = useNavigate();
 
+    const Logout = () => {
+        axios.post('http://localhost:8080/logout',null, {
+            // CORS 설정
+            withCredentials: true
+        }).then(response => {
+            console.log(response);
+            navigate('/');
+        }
+        ).catch(error => {
+            console.error(error);
+        });
+    }
+    
     const requests = [
         { id: 4, name: '#신청자이름', date: '2024-04-11', status: '주문 완료' },
         { id: 3, name: '#신청자이름', date: '2024-04-09', status: '진행중' },
@@ -24,7 +38,7 @@ function Repair() {
                 </div>
                 <div className={styles.right}>
                     <span className={styles.bold} onClick={() => navigate('/Auction')}>경매</span>
-                    <span onClick={() => navigate('/')}>로그아웃</span>
+                    <span onClick={Logout}>로그아웃</span>
                 </div>
             </header>
             <div className={styles.content}>
