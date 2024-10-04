@@ -14,6 +14,9 @@ function SignIn() {
 
     const [isUsernameAvailable, setIsUsernameAvailable] = useState(null);  // 중복 체크 상태 관리
     const [errors, setErrors] = useState({});
+    
+    const joinurl = 'http://localhost:8080/join';
+    const checkurl = 'http://localhost:8080/check-username';
 
     // 전화번호 업데이트 함수
     const updatePhoneNumber = (part1, part2, part3) => {
@@ -68,7 +71,7 @@ function SignIn() {
     // 아이디 중복 체크 함수
     const checkUsernameAvailability = async (username) => {
         try {
-            const response = await axios.post('http://localhost:8080/check-username', { username }, {
+            const response = await axios.post(checkurl, { username }, {
                 headers: { 'Content-Type': 'application/json' }
             });
             setIsUsernameAvailable(response.data);  // 서버에서 true/false 반환
@@ -89,11 +92,12 @@ function SignIn() {
     };
 
     // 회원가입
+    // url 변수저장
     const register = (e) => {
         e.preventDefault();
 
         if (validateForm()) {
-            axios.post('http://localhost:8080/join', form, {
+            axios.post(joinurl, form, {
                 headers: {
                     'Content-Type': 'application/json',
                 },

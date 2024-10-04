@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import logo from '../assets/img/Find Your Fit Pin.png';
 import image from '../assets/img/Find Your Fit Pin2.png';
@@ -8,6 +8,9 @@ import axios from 'axios';
 
 function LoginForm() {
     const navigate = useNavigate();
+
+    const loginurl = 'http://localhost:8080/login';
+    const reissueurl = 'http://localhost:8080/reissue';
 
     //유효성검사
     const [errors, setErrors] = useState({});
@@ -20,12 +23,9 @@ function LoginForm() {
     // 유효성 검사 함수
     const validateForm = () => {
         let newErrors = {};
-
         if (!form.username) newErrors.username = "아이디를 입력하세요.";
         if (!form.password) newErrors.password = "비밀번호를 입력하세요";
-
         setErrors(newErrors);
-
         return Object.keys(newErrors).length === 0;
     };
 
@@ -40,26 +40,45 @@ function LoginForm() {
     };
 
     // 로그인
-    const login = (e) => {
+    const login = async (e) => {
         e.preventDefault();
-
         if (validateForm()) {
-            axios.post('http://localhost:8080/login', form, {
+            axios.post(loginurl, form, {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                // CORS 설정
-                withCredentials: true,
-                HttpOnly: false
-            })
-            .then(res => {
-                console.log('res : ', JSON.stringify(res, null, 2));
+                withCredentials: true // CORS 설정
+            }).then(res => {
+                console.log('로그인 성공:', res.data);
+                // AccessToken과 RefreshToken 저장
+                localStorage.setItem('accessToken', res.data.accessToken);
+                localStorage.setItem('refreshToken', res.data.refreshToken);
                 navigate('/Repair');
             }).catch(err => {
-                console.log('failed : ', err);
+                console.log('로그인 실패:', err);
+                setErrors({ general: "로그인 실패" });
             });
         }
     };
+
+        // 자동 로그인 처리: 페이지 로드 시 Refresh Token을 이용해 Access Token 재발급 시도
+        useEffect(() => {
+            const refresh = localStorage.getItem('refreshToken');
+            if (refresh) {
+                axios.post(reissueurl, {}, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    withCredentials: true // 쿠키 사용
+                }).then(res => {
+                    console.log('토큰 재발급 성공:', res.data);
+                    localStorage.setItem('accessToken', res.data.accessToken);
+                    navigate('/Repair');
+                }).catch(err => {
+                    console.log('토큰 재발급 실패:', err);
+                });
+            }
+        }, [navigate]);
 
     return (
         <div className={styles.App}>
@@ -96,6 +115,7 @@ function LoginForm() {
                     </div>
                     <span className={styles.submitButton}>
                         <div className={styles.submitButtontext} onClick={login}>로그인</div></span>
+                        {errors.general && <p className={styles.error}>{errors.general}</p>}
                 </form>
             </div>
         </div>

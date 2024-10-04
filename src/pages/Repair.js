@@ -10,12 +10,17 @@ import axios from 'axios';
 function Repair() {
     const navigate = useNavigate();
 
+    const logouturl = 'http://localhost:8080/logout';
+
     const Logout = () => {
-        axios.post('http://localhost:8080/logout',null, {
+        axios.post(logouturl,null, {
             // CORS 설정
             withCredentials: true
         }).then(response => {
             console.log(response);
+            // 로그아웃 성공 시 localStorage에서 토큰 제거
+            localStorage.removeItem('accessToken');
+            localStorage.removeItem('refreshToken');
             navigate('/');
         }
         ).catch(error => {

@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from '../styles/Main.module.css';
 import logo from '../assets/img/main/logo2.png';
@@ -19,6 +19,9 @@ import phone5 from '../assets/img/main/phone5.png';
 function Main() {
     const sectionRefs = useRef([]);
     const navigate = useNavigate();
+
+    // 로그인 상태 확인을 위한 state
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
 
     useEffect(() => {
         const options = {
@@ -41,6 +44,12 @@ function Main() {
                 observer.observe(section);
             }
         });
+
+        // localStorage에서 accessToken을 확인
+        const accessToken = localStorage.getItem('accessToken');
+        if (accessToken) {
+            setIsLoggedIn(true);
+        }
 
         return () => {
             if (observer) {
@@ -65,7 +74,13 @@ function Main() {
                 <div className={styles.right}>
                     <span onClick={() => navigate('/FitComment')}>핏 코멘트</span>
                     <span onClick={() => navigate('/Service')}>고객센터</span>
-                    <span onClick={() => navigate('/Login')}>수선 업체 로그인</span>
+                    {isLoggedIn ? (
+                        // 로그인된 경우 "수선 페이지"로 변경하고 클릭 시 /Repair로 이동
+                        <span onClick={() => navigate('/Repair')}>수선 페이지</span>
+                    ) : (
+                        // 로그인되지 않은 경우 "수선 업체 로그인" 표시
+                        <span onClick={() => navigate('/Login')}>수선 업체 로그인</span>
+                    )}
                 </div>
             </header>
             <div className={styles.mainScreen} style={{ backgroundImage: `url(${background})` }}>
