@@ -15,10 +15,13 @@ import phone2 from '../assets/img/main/phone2.png';
 import phone3 from '../assets/img/main/phone3.png';
 import phone4 from '../assets/img/main/phone4.png';
 import phone5 from '../assets/img/main/phone5.png';
+import axios from 'axios';
 
 function Main() {
     const sectionRefs = useRef([]);
     const navigate = useNavigate();
+
+    const reissueurl = 'http://localhost:8080/reissue';
 
     // 로그인 상태 확인을 위한 state
     const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -51,6 +54,22 @@ function Main() {
             setIsLoggedIn(true);
         }
 
+        // Refresh Token을 이용해 Access Token 재발급 시도
+        const refresh = localStorage.getItem('refreshToken');
+            if (refresh) {
+                axios.post(reissueurl, {}, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    withCredentials: true // 쿠키 사용
+                }).then(res => {
+                    console.log('토큰 재발급 성공:', res.data);
+                    localStorage.setItem('accessToken', res.data.accessToken);
+                }).catch(err => {
+                    console.log('토큰 재발급 실패:', err);
+                });
+            }
+
         return () => {
             if (observer) {
                 // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -61,7 +80,7 @@ function Main() {
                 });
             }
         };
-    }, []);
+    },[]);
 
     return (
         <div className={styles.App}>

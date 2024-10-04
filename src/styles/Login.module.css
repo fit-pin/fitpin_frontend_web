@@ -119,3 +119,9 @@
     margin-left: 1.5vh;
     margin-bottom: 1.0vh;
 }
+
+.Loginerror {
+    color: red;
+    font-size: 2vh;
+    margin: 2vh -2.25vh 2vh 2vh;
+}

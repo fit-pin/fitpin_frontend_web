@@ -31,7 +31,7 @@ function Ask() {
 
       if (res) {
         alert('문의가 등록되었습니다.');
-        navigate('/');
+        navigate('/Service');
       } else {
         alert('문의 등록 중 오류가 발생했습니다.');
       }

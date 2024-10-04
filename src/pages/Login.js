@@ -47,7 +47,7 @@ function LoginForm() {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                withCredentials: true // CORS 설정
+                withCredentials: true, // CORS
             }).then(res => {
                 console.log('로그인 성공:', res.data);
                 // AccessToken과 RefreshToken 저장
@@ -115,7 +115,7 @@ function LoginForm() {
                     </div>
                     <span className={styles.submitButton}>
                         <div className={styles.submitButtontext} onClick={login}>로그인</div></span>
-                        {errors.general && <p className={styles.error}>{errors.general}</p>}
+                        {errors.general && <p className={styles.Loginerror}>{errors.general}</p>}
                 </form>
             </div>
         </div>
