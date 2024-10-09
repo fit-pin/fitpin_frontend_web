@@ -50,7 +50,7 @@ function Main() {
 
         // localStorage에서 accessToken을 확인
         const accessToken = localStorage.getItem('accessToken');
-        if (accessToken) {
+        if (accessToken != null) {
             setIsLoggedIn(true);
         }
 
