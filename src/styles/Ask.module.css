@@ -76,7 +76,7 @@ body {
 }
 
 .formGroup {
-  margin-bottom: 3.5vh;
+  margin-bottom: 2.5vh;
   width: 100%;
 }
 
@@ -93,8 +93,22 @@ body {
   width: 100%;
   padding: 1.2vh;
   border: 0.1vh solid #ccc;
+  box-sizing: border-box;
   border-radius: 0.5vh;
-  font-size: 2vh;
+  font-size: 1.7vh;
+  font-family: 'SpoqaHanSansNeo-Regular', sans-serif;
+}
+
+.inputname {
+  width: 30%;
+  padding: 1.2vh;
+  border: 0.1vh solid #ccc;
+  border-radius: 0.5vh;
+  font-size: 1.7vh;
+}
+
+.privateBtn{
+  margin-left: 2.3vh;
 }
 
 .textarea {
@@ -106,6 +120,7 @@ body {
   border: 0.1vh solid #ccc;
   padding: 0.8vh;
   border-radius: 0.5vh;
+  box-sizing: border-box;
   width: 100%;
 }
 
@@ -134,4 +149,10 @@ body {
 .cancelButton {
   background-color: white;
   border: 0.1vh solid #ccc;
+}
+
+.errorMessage {
+  color: red;
+  font-size: 1.5vh;
+  margin-left: 1.5vh;
 }

@@ -1,50 +1,38 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import logo from '../assets/img/Find Your Fit Pin.png';
 import styles from '../styles/Service.module.css';
+import axios from 'axios';
 
 function Service() {
   const navigate = useNavigate();
+  const inquiryurl = 'http://localhost:8080/inquiry';
   const [currentPage, setCurrentPage] = useState(1);
-  const totalPages = 5;
+  const [inquiries, setInquiries] = useState([]);
+  const [totalPages, setTotalPages] = useState(1);  
 
-  const handlePageClick = (pageNumber) => {
-    setCurrentPage(pageNumber);
-    console.log(`Page ${pageNumber} clicked`);
+  // 서버에서 페이징된 데이터를 가져오는 함수
+  const fetchInquiries = async (page) => {
+    try {
+      const response = await axios.get(inquiryurl, {
+        params: { page: page - 1, size: 5 }  // 서버에 요청하는 페이지 번호와 크기 설정
+      });
+      setInquiries(response.data.content);
+      setTotalPages(response.data.totalPages); 
+    } catch (error) {
+      console.error('데이터를 가져오는데 오류발생:', error);
+    }
   };
 
-  const inquiries = [
-    {
-      date: '2024-04-24',
-      category: '교환문의',
-      question: '교환 요청합니다.',
-      author: '오주희'
-    },
-    {
-      date: '2024-04-23',
-      category: '배송문의',
-      question: '배송 상태가 궁금합니다.',
-      author: '임유나'
-    },
-    {
-      date: '2024-04-22',
-      category: '상품문의',
-      question: '이 상품 재고 있나요?',
-      author: '김효진'
-    },
-    {
-      date: '2024-04-21',
-      category: '결제문의',
-      question: '결제가 안 돼요.',
-      author: '서민지'
-    },
-    {
-      date: '2024-04-20',
-      category: '기타문의',
-      question: '기타문의 드립니다.',
-      author: '최수진'
-    }
-  ];
+  useEffect(() => {
+    // 컴포넌트가 마운트될 때 현재 페이지의 문의 목록을 가져옴
+    fetchInquiries(currentPage);
+  }, [currentPage]);
+
+  const handlePageClick = (pageNumber) => {
+    setCurrentPage(pageNumber);  // 페이지 번호 클릭 시 상태 업데이트
+  };
+
 
   return (
     <div className={styles.App}>
@@ -71,19 +59,28 @@ function Service() {
           </ul>
         </div>
         <div className={styles.rightContent}>
-          {inquiries.map((inquiry, index) => (
-            <div className={styles.inquiryBox} key={index}>
-              <p className={styles.inquiryDate}>{inquiry.date} {inquiry.category}</p>
-              <p className={styles.inquiryText}>
-                <span style={{ fontWeight: 'bold' }}>{inquiry.question}</span>
-                <span className={styles.inquiryAuthor}>{inquiry.author}</span>
-              </p>
-            </div>
-          ))}
+          {inquiries.length > 0 ? (
+            inquiries.map((inquiry, index) => (
+              <div className={styles.inquiryBox} key={index}>
+                <p className={styles.inquiryDate}>{inquiry.createdAt} {inquiry.queryType}</p>
+                <p className={styles.inquiryText}>
+                  <span style={{ fontWeight: 'bold' }}>{inquiry.subject}</span>
+                  <span className={styles.inquiryAuthor}>{inquiry.name}</span>
+                </p>
+              </div>
+            ))
+          ) : (
+            <p>문의 내역이 없습니다.</p>
+          )}
         </div>
       </div>
       <div className={styles.pagination}>
-        <span className={styles.pageItem} onClick={() => handlePageClick(currentPage - 1)}>&lt;</span>
+        <span
+          className={styles.pageItem}
+          onClick={() => handlePageClick(Math.max(1, currentPage - 1))}
+        >
+          &lt;
+        </span>
         {Array.from({ length: totalPages }).map((_, index) => (
           <span
             key={index}
@@ -93,7 +90,12 @@ function Service() {
             {index + 1}
           </span>
         ))}
-        <span className={styles.pageItem} onClick={() => handlePageClick(currentPage + 1)}>&gt;</span>
+        <span
+          className={styles.pageItem}
+          onClick={() => handlePageClick(Math.min(totalPages, currentPage + 1))}
+        >
+          &gt;
+        </span>
       </div>
     </div>
   );
