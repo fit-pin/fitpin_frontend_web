@@ -4,13 +4,11 @@ import logo from '../assets/img/Find Your Fit Pin.png';
 import image from '../assets/img/Find Your Fit Pin2.png';
 import styles from '../styles/Login.module.css';
 import axios from 'axios';
+import { DATA_URL } from '../utils/Constant';
 
 
 function LoginForm() {
     const navigate = useNavigate();
-
-    const loginurl = 'http://localhost:8080/login';
-    const reissueurl = 'http://localhost:8080/reissue';
 
     //유효성검사
     const [errors, setErrors] = useState({});
@@ -43,7 +41,7 @@ function LoginForm() {
     const login = async (e) => {
         e.preventDefault();
         if (validateForm()) {
-            axios.post(loginurl, form, {
+            axios.post(`${DATA_URL}login`, form, {
                 headers: {
                     'Content-Type': 'application/json',
                 },
@@ -61,24 +59,24 @@ function LoginForm() {
         }
     };
 
-        // 자동 로그인 처리: 페이지 로드 시 Refresh Token을 이용해 Access Token 재발급 시도
-        useEffect(() => {
-            const refresh = localStorage.getItem('refreshToken');
-            if (refresh) {
-                axios.post(reissueurl, {}, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    withCredentials: true // 쿠키 사용
-                }).then(res => {
-                    console.log('토큰 재발급 성공:', res.data);
-                    localStorage.setItem('accessToken', res.data.accessToken);
-                    navigate('/Repair');
-                }).catch(err => {
-                    console.log('토큰 재발급 실패:', err);
-                });
-            }
-        }, [navigate]);
+    // 자동 로그인 처리: 페이지 로드 시 Refresh Token을 이용해 Access Token 재발급 시도
+    useEffect(() => {
+        const refresh = localStorage.getItem('refreshToken');
+        if (refresh) {
+            axios.post(`${DATA_URL}reissue`, {}, {
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                withCredentials: true // 쿠키 사용
+            }).then(res => {
+                console.log('토큰 재발급 성공:', res.data);
+                localStorage.setItem('accessToken', res.data.accessToken);
+                navigate('/Repair');
+            }).catch(err => {
+                console.log('토큰 재발급 실패:', err);
+            });
+        }
+    }, [navigate]);
 
     return (
         <div className={styles.App}>

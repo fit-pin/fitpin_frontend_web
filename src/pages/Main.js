@@ -16,12 +16,11 @@ import phone3 from '../assets/img/main/phone3.png';
 import phone4 from '../assets/img/main/phone4.png';
 import phone5 from '../assets/img/main/phone5.png';
 import axios from 'axios';
+import { DATA_URL } from '../utils/Constant';
 
 function Main() {
     const sectionRefs = useRef([]);
     const navigate = useNavigate();
-
-    const reissueurl = 'http://localhost:8080/reissue';
 
     // 로그인 상태 확인을 위한 state
     const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -57,7 +56,7 @@ function Main() {
         // Refresh Token을 이용해 Access Token 재발급 시도
         const refresh = localStorage.getItem('refreshToken');
             if (refresh) {
-                axios.post(reissueurl, {}, {
+                axios.post(`${DATA_URL}reissue`, {}, {
                     headers: {
                         'Content-Type': 'application/json',
                     },

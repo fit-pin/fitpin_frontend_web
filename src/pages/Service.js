@@ -1,38 +1,45 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import logo from '../assets/img/Find Your Fit Pin.png';
 import styles from '../styles/Service.module.css';
 import axios from 'axios';
+import { DATA_URL } from '../utils/Constant';
 
 function Service() {
   const navigate = useNavigate();
-  const inquiryurl = 'http://localhost:8080/inquiry';
+  const location = useLocation();
   const [currentPage, setCurrentPage] = useState(1);
   const [inquiries, setInquiries] = useState([]);
   const [totalPages, setTotalPages] = useState(1);  
+  
+  useEffect(() => {
+    // URL에서 쿼리 파라미터로 페이지 번호를 받아오기
+    const queryParams = new URLSearchParams(location.search);
+    const page = queryParams.get('page') ? parseInt(queryParams.get('page')) : 1;
+
+    // 상태를 업데이트하여 현재 페이지를 설정
+    setCurrentPage(page);
+    fetchInquiries(page);
+  }, [location.search]);
 
   // 서버에서 페이징된 데이터를 가져오는 함수
   const fetchInquiries = async (page) => {
     try {
-      const response = await axios.get(inquiryurl, {
+      const response = await axios.get(`${DATA_URL}inquiry`, {
         params: { page: page - 1, size: 5 }  // 서버에 요청하는 페이지 번호와 크기 설정
       });
-      setInquiries(response.data.content);
-      setTotalPages(response.data.totalPages); 
+    const inquiriesData = response.data._embedded ? response.data._embedded.inquiryEntityList : [];
+    setInquiries(inquiriesData);
+    setTotalPages(response.data.page.totalPages);
     } catch (error) {
       console.error('데이터를 가져오는데 오류발생:', error);
     }
   };
 
-  useEffect(() => {
-    // 컴포넌트가 마운트될 때 현재 페이지의 문의 목록을 가져옴
-    fetchInquiries(currentPage);
-  }, [currentPage]);
-
   const handlePageClick = (pageNumber) => {
-    setCurrentPage(pageNumber);  // 페이지 번호 클릭 시 상태 업데이트
+    navigate(`/Service?page=${pageNumber}`);
+    setCurrentPage(pageNumber);
   };
-
 
   return (
     <div className={styles.App}>
@@ -61,7 +68,8 @@ function Service() {
         <div className={styles.rightContent}>
           {inquiries.length > 0 ? (
             inquiries.map((inquiry, index) => (
-              <div className={styles.inquiryBox} key={index}>
+              <div className={styles.inquiryBox} key={index} style={{ cursor: 'pointer' }}
+              onClick={() => navigate('/Board', { state: { id: inquiry.id, page: currentPage } })}>
                 <p className={styles.inquiryDate}>{inquiry.createdAt} {inquiry.queryType}</p>
                 <p className={styles.inquiryText}>
                   <span style={{ fontWeight: 'bold' }}>{inquiry.subject}</span>
@@ -70,7 +78,7 @@ function Service() {
               </div>
             ))
           ) : (
-            <p>문의 내역이 없습니다.</p>
+            <p></p>
           )}
         </div>
       </div>

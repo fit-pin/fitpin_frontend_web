@@ -68,7 +68,6 @@
     border: none;
     border-bottom: 1px solid #dcdcdc;
     width: 50%;
-    margin: 1vh 0 0 2.5vw;
     margin-bottom: 1.2vh;
 }
 
@@ -99,16 +98,18 @@
 .inputGroup select {
     width: 100%;
     padding: 1vh 1vw;
-    font-size: 1.8vh;
+    font-size: 1.7vh;
     border: 1px solid #dcdcdc;
     border-radius: 4px;
     margin-bottom: 1vh;
+    box-sizing: border-box;
 }
 
 .addressSearch {
     display: flex;
     align-items: center;
-    width: 41.5vw;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .addressSearch input {
@@ -131,7 +132,8 @@
     display: flex;
     align-items: center;
     gap: 1vw;
-    width: 41vw;
+    width: 100%;
+    box-sizing: content-box;
 }
 
 .selectbox {
@@ -157,7 +159,8 @@
     cursor: pointer;
     margin-top: 0.5vh;
     height: 6vh;
-    width: 41vw;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .error {

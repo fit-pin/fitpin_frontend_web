@@ -15,8 +15,8 @@ function SignIn() {
     const [isUsernameAvailable, setIsUsernameAvailable] = useState(null);  // 중복 체크 상태 관리
     const [errors, setErrors] = useState({});
     
-    const joinurl = 'http://localhost:8080/join';
-    const checkurl = 'http://localhost:8080/check-username';
+    const joinurl = 'http://fitpin-web-back.kro.kr/join';
+    const checkurl = 'http://fitpin-web-back.kro.kr/check-username';
 
     // 전화번호 업데이트 함수
     const updatePhoneNumber = (part1, part2, part3) => {

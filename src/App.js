@@ -4,6 +4,7 @@ import Service from '../src/pages/Service';
 import Question from './pages/Question';
 import Exchange from './pages/Exchange';
 import Ask from '../src/pages/Ask';
+import Board from '../src/pages/Board';
 import Fitcomment from '../src/pages/Fitcomment';
 import Fitcomment2 from '../src/pages/Fitcomment2';
 import Login from './pages/Login';
@@ -12,6 +13,7 @@ import Main from './pages/Main';
 import Repair from './pages/Repair';
 import Auction from './pages/Auction';
 import AuctionDetail from './pages/AuctionDetail';
+import UpdateAsk from './pages/UpdateAsk';
 import './App.css';
 import { CookiesProvider } from 'react-cookie';
 
@@ -26,6 +28,8 @@ function App() {
 						<Route path="/Question" element={<Question />} />
 						<Route path="/Exchange" element={<Exchange />} />
 						<Route path="/Ask" element={<Ask />} />
+						<Route path='/UpdateAsk' element={<UpdateAsk />} />
+						<Route path="/Board" element={<Board />} />
 						<Route path="/Fitcomment" element={<Fitcomment />} />
 						<Route path="/Fitcomment2" element={<Fitcomment2 />} />
 						<Route path="/Login" element={<Login />} />

@@ -6,14 +6,13 @@ import user1 from '../assets/img/user1.png';
 import salesgraph from '../assets/img/salesgraph.png';
 import styles from '../styles/Repair.module.css';
 import axios from 'axios';
+import { DATA_URL } from '../utils/Constant';
 
 function Repair() {
     const navigate = useNavigate();
 
-    const logouturl = 'http://localhost:8080/logout';
-
     const Logout = () => {
-        axios.post(logouturl,null, {
+        axios.post(`${DATA_URL}logout`,null, {
             // CORS 설정
             withCredentials: true
         }).then(response => {
