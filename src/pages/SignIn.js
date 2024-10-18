@@ -4,6 +4,7 @@ import styles from '../styles/SignIn.module.css';
 import axios from 'axios';
 import { useState } from 'react';
 import DaumPost from './DaumPost';
+import { DATA_URL } from '../utils/Constant';
 
 function SignIn() {
     const navigate = useNavigate();
@@ -14,9 +15,6 @@ function SignIn() {
 
     const [isUsernameAvailable, setIsUsernameAvailable] = useState(null);  // 중복 체크 상태 관리
     const [errors, setErrors] = useState({});
-    
-    const joinurl = 'http://fitpin-web-back.kro.kr/join';
-    const checkurl = 'http://fitpin-web-back.kro.kr/check-username';
 
     // 전화번호 업데이트 함수
     const updatePhoneNumber = (part1, part2, part3) => {
@@ -71,7 +69,7 @@ function SignIn() {
     // 아이디 중복 체크 함수
     const checkUsernameAvailability = async (username) => {
         try {
-            const response = await axios.post(checkurl, { username }, {
+            const response = await axios.post(`${DATA_URL}check-username`, { username }, {
                 headers: { 'Content-Type': 'application/json' }
             });
             setIsUsernameAvailable(response.data);  // 서버에서 true/false 반환
@@ -97,7 +95,7 @@ function SignIn() {
         e.preventDefault();
 
         if (validateForm()) {
-            axios.post(joinurl, form, {
+            axios.post(`${DATA_URL}join`, form, {
                 headers: {
                     'Content-Type': 'application/json',
                 },

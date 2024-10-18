@@ -45,7 +45,7 @@ function LoginForm() {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                withCredentials: true // CORS
+                withCredentials: true, // CORS
             }).then(res => {
                 console.log('로그인 성공:', res.headers);
                 // AccessToken과 RefreshToken 저장
