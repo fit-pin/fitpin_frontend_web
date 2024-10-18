@@ -1,11 +1,14 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import logo from '../assets/img/Find Your Fit Pin.png';
 import styles from '../styles/Ask.module.css';
 import { DATA_URL } from '../utils/Constant';
+import axios from 'axios';
 
-function Ask() {
+function UpdateAsk() {
   const navigate = useNavigate();
+  const location = useLocation();
+  const { id } = location.state || {};
 
   // 첨부된 파일이 이미지인지 확인하는 상태
   const [isFileValid, setIsFileValid] = useState(true);
@@ -13,6 +16,16 @@ function Ask() {
   // 비공개 선택 상태 및 비밀번호 입력 상태 관리
   const [isPrivate, setIsPrivate] = useState('public'); // 비공개 여부
   const [password, setPassword] = useState('');
+
+    // 문의 데이터를 저장할 상태
+    const [inquiry, setInquiry] = useState({
+      name: '',
+      queryType: '',
+      subject: '',
+      queryContent: '',
+      privacy: 'public',
+      password: '',
+    });
 
   // 개별 필드의 오류 상태를 관리
   const [errors, setErrors] = useState({
@@ -24,14 +37,44 @@ function Ask() {
     password: '',
   });
 
-  const errorChange = (event) => {
+  // 문의 데이터를 서버에서 가져오는 함수
+  useEffect(() => {
+    if (id) {
+      const fetchInquiry = async () => {
+        try {
+          const response = await axios.get(`${DATA_URL}inquiry/${id}`);
+          const data = response.data;
+
+          // 서버에서 받아온 데이터를 상태에 저장
+          setInquiry({
+            name: data.name,
+            queryType: data.queryType,
+            subject: data.subject,
+            queryContent: data.queryContent,
+            privacy: data.privacy === 'public' ? 'public' : 'false',
+            password: data.password || '',
+          });
+        } catch (error) {
+          console.error('문의 데이터를 가져오는 중 오류 발생:', error);
+        }
+      };
+
+      fetchInquiry();
+    }
+  }, [id]);
+
+  const handleChange = (event) => {
     const { id, value } = event.target;
+    setInquiry((prev) => ({
+      ...prev,
+      [id]: value,
+    }));
 
     // 값이 입력될 때 해당 필드의 오류 메시지 초기화
     if (value.trim() !== '') {
       setErrors((prevErrors) => ({
         ...prevErrors,
-        [id]: '', // 오류 메시지를 빈 문자열로 설정
+        [id]: '',
       }));
     }
   };
@@ -125,16 +168,16 @@ function Ask() {
     }
 
     try {
-      const res = await fetch(`${DATA_URL}inquiry`, {
-        method: 'POST',
+      const res = await fetch(`${DATA_URL}inquiry/${id}`, {
+        method: 'PUT', // 수정 요청이므로 PUT 사용
         body: formData,
       });
 
       if (res.ok) {
-        alert('문의가 등록되었습니다.');
+        alert('문의가 수정되었습니다.');
         navigate('/Service');
       } else {
-        alert('문의 등록 중 오류가 발생했습니다.');
+        alert('문의 수정 중 오류가 발생했습니다.');
       }
     } catch (error) {
       console.error('Error 발생 :', error);
@@ -154,7 +197,7 @@ function Ask() {
       </header>
       <div className={styles.content}>
         <div className={styles.leftContent}>
-          <h2 className={styles.title}>1:1 문의하기</h2>
+          <h2 className={styles.title}>1:1 문의내역 수정</h2>
           <p className={styles.description}>
             제품 사용, 오염, 전용 박스 손상, 라벨 제거,<br />
             사은품 및 부속 사용/분실 시, 교환/환불이 불가능 합니다.
@@ -164,7 +207,7 @@ function Ask() {
           <form className={styles.form} onSubmit={dataSubmit}>
             <div className={styles.formGroup}>
               <label className={styles.label} htmlFor="name">이름</label>
-              <input className={styles.inputname} type="text" id="name" placeholder="이름을 입력하세요." onChange={errorChange}/>
+              <input className={styles.inputname} type="text" id="name" placeholder="이름을 입력하세요." value={inquiry.name} onChange={handleChange}/>
               <input className={styles.privateBtn} type="radio" id="public" name="privacy" value="public" onChange={PrivacyChange} defaultChecked />
               <label htmlFor="public">공개</label>
               <input className={styles.privateBtn} type="radio" id="private" name="privacy" value="private" onChange={PrivacyChange} />
@@ -173,13 +216,13 @@ function Ask() {
             </div>
               <div className={styles.formGroup}>
                 <label className={styles.label} htmlFor="password">비밀번호 (4자리)</label>
-                <input className={styles.inputname} type="password" id="password" placeholder="비밀번호를 입력하세요."
-                value={password} onChange={PasswordChange} />
+                <input className={styles.inputname} type="password" id="password" value={password}
+                placeholder="비밀번호를 입력하세요."onChange={PasswordChange} />
                 {errors.password && <p className={styles.errorMessage}>{errors.password}</p>}
               </div>
             <div className={styles.formGroup}>
               <label className={styles.label} htmlFor="queryType">문의유형</label>
-              <select className={styles.input} id="queryType"  onChange={errorChange}>
+              <select className={styles.input} id="queryType"  value={inquiry.queryType} onChange={handleChange}>
                 <option value="">문의 유형 선택</option>
                 <option value="배송">배송</option>
                 <option value="주문/결제">주문/결제</option>
@@ -194,22 +237,22 @@ function Ask() {
             </div>
             <div className={styles.formGroup}>
               <label className={styles.label} htmlFor="subject">제목</label>
-              <input className={styles.input} type="text" id="subject" placeholder="제목을 입력하세요." onChange={errorChange}/>
+              <input className={styles.input} type="text" id="subject" placeholder="제목을 입력하세요." value={inquiry.subject} onChange={handleChange}/>
               {errors.subject && <p className={styles.errorMessage}>{errors.subject}</p>}
             </div>
             <div className={styles.formGroup}>
               <label className={styles.label} htmlFor="queryContent">문의 내용</label>
-              <textarea className={styles.textarea} id="queryContent" placeholder="문의할 내용을 입력하세요." onChange={errorChange}></textarea>
+              <textarea className={styles.textarea} id="queryContent" placeholder="문의할 내용을 입력하세요." value={inquiry.queryContent} onChange={handleChange}></textarea>
               {errors.queryContent && <p className={styles.errorMessage}>{errors.queryContent}</p>}
             </div>
             <div className={styles.formGroup}>
               <label className={styles.label} htmlFor="attachment">사진 첨부</label>
-              <input className={styles.fileInput} type="file" id="attachment" accept="image/*" onChange={imgFileChange}/>
+              <input className={styles.fileInput} type="file" id="attachment" accept="image/*" value={inquiry.attachment} onChange={imgFileChange}/>
               {errors.attachment && <p className={styles.errorMessage}>{errors.attachment}</p>}
             </div>
             <div className={styles.buttonGroup}>
-              <button className={styles.submitButton} type="submit">등록</button>
-              <button className={styles.cancelButton} type="button" onClick={() => navigate('/')}>취소</button>
+              <button className={styles.submitButton} type="submit">수정</button>
+              <button className={styles.cancelButton} type="button" onClick={() => navigate('/Service')}>취소</button>
             </div>
           </form>
         </div>
@@ -218,4 +261,4 @@ function Ask() {
   );
 }
 
-export default Ask;
+export default UpdateAsk;

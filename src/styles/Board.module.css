@@ -29,18 +29,17 @@ body {
 
 .bold {
   font-weight: bold;
+  text-decoration: none;
+  color: inherit;
 }
 
 .content {
-  padding: 2vh 4vw;
   display: flex;
-  justify-content: center;
-  align-items: flex-start;
+  padding: 1vh 4vw;
 }
 
 .leftContent {
-  width: 100%;
-  max-width: 60vw;
+  width: 30%;
   margin-left: 2vw;
   margin-top: 6vh;
   font-family: 'SpoqaHanSansNeo-Regular', sans-serif;
@@ -58,21 +57,39 @@ body {
   font-size: 2.2vh;
 }
 
-.formContainer {
-  display: flex;
-  justify-content: center;
-  width: 100%;
-  max-width: 80vw;
-  margin: 0 auto;
-  margin-top: 4vh;
+.inquiryButton {
+  background-color: black;
+  color: white;
+  padding: 1vh 2vw;
+  border: none;
+  cursor: pointer;
+  border-radius: 1vh;
+  font-size: 2vh;
+  font-family: 'SpoqaHanSansNeo-Regular', sans-serif;
+  text-decoration: none;
 }
 
-.form {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-  margin: 0 0 0 -20vh;
+.links {
+  list-style: none;
+  padding: 0;
+  font-size: 2vh;
+}
+
+.links li {
+  margin-top: 4vh;
+  margin-bottom: -1vh;
+  cursor: pointer;
+}
+
+.links li a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.rightContent {
+  width: 70%;
+  margin-right: 2vw;
+  margin-top: 4vh;
 }
 
 .formGroup {
@@ -81,54 +98,38 @@ body {
 }
 
 .label {
-  margin-bottom: 0.5vh;
+  margin-bottom: 1.0vh;
   font-weight: bold;
   text-align: left;
   display: block;
   font-size: 2vh;
 }
 
-.input,
-.textarea {
+.subject{
+  font-weight: bold;
+  font-size: 3.8vh;
+}
+
+.date {
+  margin-top: 1.0vh;
+  text-align: left;
+  display: block;
+  font-size: 1.8vh;
+}
+
+.underline {
+  border: none;
+  border-bottom: 1px solid #dcdcdc;
   width: 100%;
-  padding: 1.2vh;
-  border: 0.1vh solid #ccc;
-  box-sizing: border-box;
-  border-radius: 0.5vh;
-  font-size: 1.7vh;
-  font-family: 'SpoqaHanSansNeo-Regular', sans-serif;
-}
-
-.inputname {
-  width: 30%;
-  padding: 1.2vh;
-  border: 0.1vh solid #ccc;
-  border-radius: 0.5vh;
-  font-size: 1.7vh;
-}
-
-.privateBtn{
-  margin-left: 2.3vh;
-}
-
-.textarea {
-  resize: vertical;
-  height: 12vh;
-}
-
-.fileInput {
-  border: 0.1vh solid #ccc;
-  padding: 0.8vh;
-  border-radius: 0.5vh;
-  box-sizing: border-box;
-  width: 100%;
+  margin-bottom: 1.2vh;
 }
 
 .buttonGroup {
   display: flex;
   gap: 1.5vh;
   justify-content: center;
-  width: 100%;
+  width: 30%;
+  float: right;
 }
 
 .submitButton,
@@ -136,7 +137,7 @@ body {
   padding: 1.2vh 2.5vw;
   border: none;
   border-radius: 0.5vh;
-  font-size: 2vh;
+  font-size: 1.7vh;
   cursor: pointer;
   width: 100%;
 }
@@ -151,8 +152,11 @@ body {
   border: 0.1vh solid #ccc;
 }
 
-.errorMessage {
-  color: red;
-  font-size: 1.5vh;
-  margin-left: 1.5vh;
+.imageButton {
+  border-radius: 0.5vh;
+  font-size: 1.7vh;
+  padding: 0.8vh 1.5vh;
+  background-color: black;
+  color: white;
+  cursor: pointer;
 }
