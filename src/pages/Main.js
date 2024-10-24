@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from '../styles/Main.module.css';
 import logo from '../assets/img/main/logo2.png';
@@ -15,10 +15,15 @@ import phone2 from '../assets/img/main/phone2.png';
 import phone3 from '../assets/img/main/phone3.png';
 import phone4 from '../assets/img/main/phone4.png';
 import phone5 from '../assets/img/main/phone5.png';
+import axios from 'axios';
+import { DATA_URL } from '../utils/Constant';
 
 function Main() {
     const sectionRefs = useRef([]);
     const navigate = useNavigate();
+
+    // 로그인 상태 확인을 위한 state
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
 
     useEffect(() => {
         const options = {
@@ -42,6 +47,31 @@ function Main() {
             }
         });
 
+        // localStorage에서 accessToken을 확인
+        const accessToken = localStorage.getItem('accessToken');
+        if (accessToken != null) {
+            setIsLoggedIn(true);
+        }
+
+        // Refresh Token을 이용해 Access Token 재발급 시도
+        const refresh = localStorage.getItem('refreshToken');
+            if (refresh) {
+                axios.post(`${DATA_URL}reissue`, {
+                    refreshToken: refresh
+                }, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    withCredentials: true // 쿠키 사용
+                }).then(res => {
+                    console.log('토큰 재발급 성공:', res.data);
+                    localStorage.setItem('accessToken', res.data.access);
+                    localStorage.setItem('refreshToken', res.data.refresh);
+                }).catch(err => {
+                    console.log('토큰 재발급 실패:', err);
+                });
+            }
+
         return () => {
             if (observer) {
                 // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -52,7 +82,7 @@ function Main() {
                 });
             }
         };
-    }, []);
+    },[]);
 
     return (
         <div className={styles.App}>
@@ -65,7 +95,13 @@ function Main() {
                 <div className={styles.right}>
                     <span onClick={() => navigate('/FitComment')}>핏 코멘트</span>
                     <span onClick={() => navigate('/Service')}>고객센터</span>
-                    <span onClick={() => navigate('/Login')}>수선 업체 로그인</span>
+                    {isLoggedIn ? (
+                        // 로그인된 경우 "수선 페이지"로 변경하고 클릭 시 /Repair로 이동
+                        <span onClick={() => navigate('/Repair')}>수선 페이지</span>
+                    ) : (
+                        // 로그인되지 않은 경우 "수선 업체 로그인" 표시
+                        <span onClick={() => navigate('/Login')}>수선 업체 로그인</span>
+                    )}
                 </div>
             </header>
             <div className={styles.mainScreen} style={{ backgroundImage: `url(${background})` }}>
