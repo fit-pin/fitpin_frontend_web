@@ -56,14 +56,17 @@ function Main() {
         // Refresh Token을 이용해 Access Token 재발급 시도
         const refresh = localStorage.getItem('refreshToken');
             if (refresh) {
-                axios.post(`${DATA_URL}reissue`, {}, {
+                axios.post(`${DATA_URL}reissue`, {
+                    refreshToken: refresh
+                }, {
                     headers: {
                         'Content-Type': 'application/json',
                     },
                     withCredentials: true // 쿠키 사용
                 }).then(res => {
                     console.log('토큰 재발급 성공:', res.data);
-                    localStorage.setItem('accessToken', res.data.accessToken);
+                    localStorage.setItem('accessToken', res.data.access);
+                    localStorage.setItem('refreshToken', res.data.refresh);
                 }).catch(err => {
                     console.log('토큰 재발급 실패:', err);
                 });

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import logo from '../assets/img/Find Your Fit Pin.png';
 import image from '../assets/img/Find Your Fit Pin2.png';
@@ -47,10 +47,11 @@ function LoginForm() {
                 },
                 withCredentials: true, // CORS
             }).then(res => {
-                console.log('로그인 성공:', res.headers);
-                // AccessToken과 RefreshToken 저장
-                localStorage.setItem('accessToken', res.data.accessToken);
-                localStorage.setItem('refreshToken', res.data.refreshToken);
+                // 로그인 성공 시 서버로부터 받은 토큰 저장
+                const { accessToken, refreshToken } = res.data;
+                localStorage.setItem('accessToken', accessToken);
+                localStorage.setItem('refreshToken', refreshToken);
+                console.log('로그인 성공:', res);
                 navigate('/Repair');
             }).catch(err => {
                 console.log('로그인 실패:', err);
@@ -58,25 +59,6 @@ function LoginForm() {
             });
         }
     };
-
-    // 자동 로그인 처리: 페이지 로드 시 Refresh Token을 이용해 Access Token 재발급 시도
-    useEffect(() => {
-        const refresh = localStorage.getItem('refreshToken');
-        if (refresh) {
-            axios.post(`${DATA_URL}reissue`, {}, {
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                withCredentials: true // 쿠키 사용
-            }).then(res => {
-                console.log('토큰 재발급 성공:', res.data);
-                localStorage.setItem('accessToken', res.data.accessToken);
-                navigate('/Repair');
-            }).catch(err => {
-                console.log('토큰 재발급 실패:', err);
-            });
-        }
-    }, [navigate]);
 
     return (
         <div className={styles.App}>

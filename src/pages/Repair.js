@@ -12,18 +12,24 @@ function Repair() {
     const navigate = useNavigate();
 
     const Logout = () => {
+        const refreshToken = localStorage.getItem('refreshToken');
+
         axios.post(`${DATA_URL}logout`,null, {
-            // CORS 설정
-            withCredentials: true
-        }).then(response => {
-            console.log(response);
-            // 로그아웃 성공 시 localStorage에서 토큰 제거
-            localStorage.removeItem('accessToken');
+            headers: {
+                // 로컬 스토리지에서 가져온 refreshToken을 헤더에 추가
+                'Authorization': refreshToken,  
+                'Content-Type': 'application/json',
+            },
+            withCredentials: true // CORS
+        }).then(res => {
+            console.log("로그아웃 성공 : ",res);
+            // 로컬 스토리지에서 토큰 제거
             localStorage.removeItem('refreshToken');
+            localStorage.removeItem('accessToken');
             navigate('/');
         }
         ).catch(error => {
-            console.error(error);
+            console.error("로그아웃 실패 :",error);
         });
     }
     
