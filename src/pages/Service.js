@@ -36,6 +36,25 @@ function Service() {
     }
   };
 
+  const handlePrivateInquiryClick = async (id) => {
+    const password = prompt("비밀번호를 입력하세요.");
+    if (password) {
+      try {
+        const response = await axios.post(`${DATA_URL}inquiry/${id}/checkpwd`, null, {
+          params: { password }
+        });
+        if (response.status === 200) {
+          alert('비밀번호 검증이 완료되었습니다.');
+          navigate('/Board', { state: { id: id, page: currentPage } });
+        }
+      } catch (error) {
+        alert('비밀번호가 맞지 않습니다.');
+      }
+    } else {
+      alert('비밀번호를 입력해야 조회 가능합니다.');
+    }
+  };
+
   const handlePageClick = (pageNumber) => {
     navigate(`/Service?page=${pageNumber}`);
     setCurrentPage(pageNumber);
@@ -69,11 +88,21 @@ function Service() {
           {inquiries.length > 0 ? (
             inquiries.map((inquiry, index) => (
               <div className={styles.inquiryBox} key={index} style={{ cursor: 'pointer' }}
-              onClick={() => navigate('/Board', { state: { id: inquiry.id, page: currentPage } })}>
+              onClick={() =>{
+                if (inquiry.privacy === 'private') {
+                  handlePrivateInquiryClick(inquiry.id);
+                } else {
+                  navigate('/Board', { state: { id: inquiry.id, page: currentPage } });
+                }
+              }}>
                 <p className={styles.inquiryDate}>{inquiry.createdAt} {inquiry.queryType}</p>
                 <p className={styles.inquiryText}>
-                  <span style={{ fontWeight: 'bold' }}>{inquiry.subject}</span>
-                  <span className={styles.inquiryAuthor}>{inquiry.name}</span>
+                  <span style={{ fontWeight: 'bold' }}>
+                    {inquiry.privacy === 'private' ? '비공개 게시물' : inquiry.subject}
+                  </span>
+                  <span className={styles.inquiryAuthor}>
+                    {inquiry.privacy === 'private' ? '비공개' : inquiry.name}
+                  </span>
                 </p>
               </div>
             ))

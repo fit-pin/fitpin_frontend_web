@@ -10,6 +10,8 @@ function Board() {
     const location = useLocation();
     const { id } = location.state || {};
     const [inquiry, setInquiry] = useState(null); // 문의 데이터를 저장할 상태
+    const [comments, setComments] = useState([]); // 댓글 목록 상태
+    const [newComment, setNewComment] = useState(''); // 새 댓글 입력 상태
 
     // 문의 상세 정보를 서버에서 가져오는 함수
     useEffect(() => {
@@ -22,38 +24,41 @@ function Board() {
                     console.error('문의 상세 정보를 가져오는데 오류 발생:', error);
                 }
             };
-            fetchInquiryDetail(); // 컴포넌트 마운트 시 데이터 가져오기
+
+            const fetchComments = async () => {
+                try {
+                    const response = await axios.get(`${DATA_URL}inquiry/${id}/comments`);
+                    setComments(response.data);
+                } catch (error) {
+                    console.error('댓글 목록을 가져오는데 오류 발생:', error);
+                }
+            };
+            fetchComments();
+            fetchInquiryDetail();
         }
     }, [id]);
 
-    // 이미지 팝업을 여는 함수
-    const openImagePopup = () => {
-        const imageUrl = `${DATA_URL}inquiryImg/${inquiry.attachmentPath.split('\\').pop()}`;
-        const img = new Image();
-        img.src = imageUrl;
-
-        // 이미지가 로드된 후에 창 크기 설정
-        img.onload = () => {
-            const imgWidth = img.width;
-            const imgHeight = img.height;
-
-            // 팝업 창의 크기를 이미지 크기와 비슷하게 설정
-            const popupWidth = imgWidth > 1000 ? 1000 : imgWidth;
-            const popupHeight = imgHeight > 600 ? 600 : imgHeight;
-
-            // 창의 크기와 위치를 설정하여 팝업을 엽니다
-            const left = (window.screen.width / 2) - (popupWidth / 2);
-            const top = (window.screen.height / 2) - (popupHeight / 2);
-
-            window.open(imageUrl, '_blank', `width=${popupWidth},height=${popupHeight},left=${left},top=${top},resizable=yes`);
-        };
-
-        img.onerror = () => {
-            alert('이미지를 불러오는 중 오류가 발생했습니다.');
-        };
+    // 댓글 제출 함수
+    const handleCommentSubmit = async () => {
+        if (newComment.trim() === '') {
+            alert('댓글을 입력하세요.');
+            return;
+        }
+        try {
+            await axios.post(`${DATA_URL}inquiry/${id}/comments`, newComment, {
+                headers: { 'Content-Type': 'text/plain' },
+            });
+            setNewComment(''); // 댓글 입력 필드 초기화
+            // 댓글 목록 갱신
+            const updatedComments = await axios.get(`${DATA_URL}inquiry/${id}/comments`);
+            setComments(updatedComments.data);
+        } catch (error) {
+            console.error('댓글 등록 중 오류 발생:', error);
+            alert('댓글 등록 중 오류가 발생했습니다.');
+        }
     };
 
-    // 삭제 요청을 처리하는 함수
+    // 삭제
     const handleDelete = async () => {
         const password = window.prompt('비밀번호를 입력하세요.');
         if (password) {
@@ -79,7 +84,7 @@ function Board() {
         }
     };
 
-    // 비밀번호 검증 요청
+    // 수정
     const handleEdit = async () => {
         const password = window.prompt('비밀번호를 입력하세요.');
         if (password) {
@@ -138,28 +143,54 @@ function Board() {
                             </div>
                             <hr className={styles.underline} />
                             <div className={styles.formGroup}>
-                                <label className={styles.label} htmlFor="name">작성자</label>
+                                <div className={styles.label} htmlFor="name">작성자</div>
                                 <div>{inquiry.name}</div>
                             </div>
                             <div className={styles.formGroup}>
-                                <label className={styles.label} htmlFor="queryType">문의유형</label>
+                                <div className={styles.label} htmlFor="queryType">문의유형</div>
                                 <div>{inquiry.queryType}</div>
                             </div>
                             <div className={styles.formGroup}>
-                                <label className={styles.label} htmlFor="queryContent">문의 내용</label>
+                                <div className={styles.label} htmlFor="queryContent">문의 내용</div>
                                 <div>{inquiry.queryContent}</div>
                             </div>
-                                {/* 이미지가 있을 경우 이미지 보기 버튼 추가 */}
+                                {/* 이미지가 있을 경우 이미지 보여줌 */}
                                 {inquiry.attachmentPath && (
                                 <div className={styles.formGroup}>
-                                    <button className={styles.imageButton} type="button" onClick={openImagePopup}>
-                                        이미지 보기
-                                    </button>
+                                    <img
+                                        src={`${DATA_URL}inquiryImg/${inquiry.attachmentPath.split('/').pop()}`}
+                                        alt="첨부 이미지"
+                                        className={styles.image}
+                                    />
                                 </div>
                             )}
                             <div className={styles.buttonGroup}>
                                 <button className={styles.submitButton} type="button" onClick={handleEdit}>수정</button>
                                 <button className={styles.cancelButton} type="button" onClick={handleDelete}>삭제</button>
+                            </div>
+                                {/* 댓글 입력과 목록 표시 */}
+                                <div className={styles.formGroup}>
+                                <hr className={styles.commentunderline} />
+                                <h3>관리자 답변</h3>
+                                <div className={styles.commentList}>
+                                    {comments.map((comment) => (
+                                        <div key={comment.id} className={styles.comment}>
+                                            <div>{comment.content}</div>
+                                            <div className={styles.commentdate}>{comment.createdAt}</div>
+                                        </div>
+                                    ))}
+                                </div>
+                                <div className={styles.commentformGroup}>
+                                    <textarea
+                                        className={styles.commentInput}
+                                        placeholder="댓글을 입력하세요."
+                                        value={newComment}
+                                        onChange={(e) => setNewComment(e.target.value)}
+                                    />
+                                    <button className={styles.commentButton} type="button" onClick={handleCommentSubmit}>
+                                        댓글 등록
+                                    </button>
+                                </div>
                             </div>
                         </form>
                     ) : (
