@@ -1,0 +1,207 @@
+body {
+  font-family: 'SpoqaHanSansNeo-Regular', sans-serif;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1vh 3vw;
+  background-color: #ffffff;
+  height: 8vh;
+  font-size: 2vh;
+}
+
+.logo {
+  width: 6vw;
+  height: auto;
+}
+
+.right {
+  display: flex;
+  gap: 2vw;
+  font-family: 'SpoqaHanSansNeo-Regular', sans-serif;
+}
+
+.right span {
+  cursor: pointer;
+}
+
+.bold {
+  font-weight: bold;
+  text-decoration: none;
+  color: inherit;
+}
+
+.content {
+  display: flex;
+  padding: 1vh 4vw;
+}
+
+.leftContent {
+  width: 30%;
+  margin-left: 2vw;
+  margin-top: 6vh;
+  font-family: 'SpoqaHanSansNeo-Regular', sans-serif;
+}
+
+.title {
+  font-family: 'GmarketSansTTFMedium';
+  font-size: 3.2vh;
+  margin-bottom: 1vh;
+}
+
+.description {
+  margin-bottom: 3.5vh;
+  color: #919191;
+  font-size: 2.2vh;
+}
+
+.inquiryButton {
+  background-color: black;
+  color: white;
+  padding: 1vh 2vw;
+  border: none;
+  cursor: pointer;
+  border-radius: 1vh;
+  font-size: 2vh;
+  font-family: 'SpoqaHanSansNeo-Regular', sans-serif;
+  text-decoration: none;
+}
+
+.links {
+  list-style: none;
+  padding: 0;
+  font-size: 2vh;
+}
+
+.links li {
+  margin-top: 4vh;
+  margin-bottom: -1vh;
+  cursor: pointer;
+}
+
+.links li a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.rightContent {
+  width: 70%;
+  margin-right: 2vw;
+  margin-top: 4vh;
+}
+
+.formGroup {
+  margin-bottom: 2.5vh;
+  width: 100%;
+}
+
+.label {
+  margin-bottom: 1.0vh;
+  font-weight: bold;
+  text-align: left;
+  display: block;
+  font-size: 2vh;
+}
+
+.subject{
+  font-weight: bold;
+  font-size: 3.8vh;
+}
+
+.date {
+  margin-top: 1.0vh;
+  text-align: left;
+  display: block;
+  font-size: 1.8vh;
+}
+
+.underline {
+  border: none;
+  border-bottom: 1px solid #dcdcdc;
+  width: 100%;
+  margin-bottom: 1.2vh;
+}
+
+.commentunderline {
+  border: none;
+  border-bottom: 1px solid #dcdcdc;
+  width: 100%;
+  margin-bottom: 1.2vh;
+}
+
+.buttonGroup {
+  display: flex;
+  gap: 1.5vh;
+  justify-content: center;
+  width: 30%;
+  float: right;
+}
+
+.submitButton,
+.cancelButton {
+  padding: 1.2vh 2.5vw;
+  border: none;
+  border-radius: 0.5vh;
+  font-size: 1.7vh;
+  cursor: pointer;
+  width: 100%;
+}
+
+.submitButton {
+  margin-bottom: 1.5vh;
+  background-color: black;
+  color: white;
+}
+
+.cancelButton {
+  margin-bottom: 1.5vh;
+  background-color: white;
+  border: 0.1vh solid #ccc;
+}
+
+.image {
+  max-width: 100%;
+  max-height: 250px; /* 원하는 높이로 설정 */
+  width: auto;
+  height: auto;
+  object-fit: contain; /* 이미지를 비율에 맞게 조절 */
+}
+
+.commentList {
+  margin-bottom: 1.5vh;
+}
+.commentdate{
+  text-align: left;
+  display: block;
+  font-size: 1.8vh;
+  margin-bottom: 1.0vh;
+}
+
+.commentformGroup {
+  margin-bottom: 2.5vh;
+  width: 100%;
+  height: 7.5vh;
+}
+
+.commentInput {
+  width: 84%;
+  height: 100%;
+  border: 0.1vh solid #ccc;
+  padding: 1.2vh;
+  font-family: 'SpoqaHanSansNeo-Regular', sans-serif;
+  box-sizing: border-box;
+  margin-right: 1.0vh;
+  float: left;
+}
+
+.commentButton {
+  width: 15.2%;
+  height: 100%;
+  margin-bottom: 1.5vh;
+  background-color: black;
+  border-radius: 0.5vh;
+  color: white;
+  float: left;
+}
