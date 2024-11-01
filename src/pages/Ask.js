@@ -209,7 +209,7 @@ function Ask() {
             </div>
             <div className={styles.buttonGroup}>
               <button className={styles.submitButton} type="submit">등록</button>
-              <button className={styles.cancelButton} type="button" onClick={() => navigate('/')}>취소</button>
+              <button className={styles.cancelButton} type="button" onClick={() => navigate('/Service')}>취소</button>
             </div>
           </form>
         </div>
