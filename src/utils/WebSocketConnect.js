@@ -7,7 +7,7 @@ export const WebSocketConnect = new Promise((reslove, reject) => {
 		brokerURL: 'ws://localhost:8080/sock',
 		onWebSocketClose: () => {
 			console.log('웹소켓 서버와 연결이 중단됨');
-			reject("웹소켓 서버와 연결이 중단됨");
+			reslove("웹소켓 서버와 연결이 중단됨");
 		},
 		onConnect: () => {
 			console.log('웹소켓 연결 성공');

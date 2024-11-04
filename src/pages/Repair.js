@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import logo from '../assets/img/title.png';
 import styles from '../styles/Repair.module.css';
-import axios from '../../node_modules/axios/index';
+import axios from 'axios';
 import { DATA_URL, WEBSOCKET_RECV } from '../utils/Constant';
 import WebSocketContext from '../utils/WebSocketConnect';
 
@@ -49,6 +49,8 @@ function Repair() {
 	useEffect(() => {
 		webScoket.then((client) => {
 			client.subscribe(WEBSOCKET_RECV, (m) => handleMassage(m, setItems));
+		}).catch(e => {
+			console.log(e);
 		});
 
 		// eslint-disable-next-line react-hooks/exhaustive-deps

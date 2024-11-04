@@ -80,22 +80,23 @@
 	font-family: 'GmarketSansTTF', sans-serif;
 	font-weight: bold;
 	margin-top: 4vh;
-	margin-bottom: 2vh;
 }
 
 .requestTitle {
-	font-size: 2.5vh;
-	font-family: 'GmarketSansTTF', sans-serif;
-	font-weight: bold;
-	margin-top: 6vh;
-	margin-bottom: 2vh;
+font-size: 2.5vh;
+    font-family: 'GmarketSansTTF', sans-serif;
+    font-weight: bold;
+    margin-top: 2vh;
+    margin-bottom: 2vh;
 }
 
 .auctionSection {
-	display: flex;
-	width: 100%;
-	overflow-x: overlay;
-	gap: 2vw;
+    display: flex;
+    width: 100%;
+    overflow-x: overlay;
+    gap: 2vw;
+    box-sizing: border-box;
+    padding: 15px;
 }
 
 .auctionItem {

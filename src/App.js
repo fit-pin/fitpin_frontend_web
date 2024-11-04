@@ -1,4 +1,4 @@
-import React, { createContext } from 'react';
+import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Service from '../src/pages/Service';
 import Question from './pages/Question';
@@ -17,6 +17,7 @@ import UpdateAsk from './pages/UpdateAsk';
 import './App.css';
 import { CookiesProvider } from 'react-cookie';
 import WebSocketContext, { WebSocketConnect } from './utils/WebSocketConnect';
+import AuctionDetailBack from './pages/AuctionDetail_Back';
 
 const Connect = WebSocketConnect;
 
@@ -42,6 +43,7 @@ function App() {
 							<Route path="/Repair" element={<Repair />} />
 							<Route path="/Auction" element={<Auction />} />
 							<Route path="/AuctionDetail" element={<AuctionDetail />} />
+							<Route path="/AuctionDetail-Back" element={<AuctionDetailBack />} />
 						</Routes>
 					</BrowserRouter>
 				</WebSocketContext.Provider>
