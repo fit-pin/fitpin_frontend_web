@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { createContext } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Service from '../src/pages/Service';
 import Question from './pages/Question';
@@ -16,29 +16,35 @@ import AuctionDetail from './pages/AuctionDetail';
 import UpdateAsk from './pages/UpdateAsk';
 import './App.css';
 import { CookiesProvider } from 'react-cookie';
+import WebSocketContext, { WebSocketConnect } from './utils/WebSocketConnect';
+
+const Connect = WebSocketConnect;
 
 function App() {
+
 	return (
 		<div className="App">
 			<CookiesProvider>
-				<BrowserRouter basename={process.env.PUBLIC_URL}>
-					<Routes>
-						<Route path="/" element={<Main />} />
-						<Route path="/Service" element={<Service />} />
-						<Route path="/Question" element={<Question />} />
-						<Route path="/Exchange" element={<Exchange />} />
-						<Route path="/Ask" element={<Ask />} />
-						<Route path='/UpdateAsk' element={<UpdateAsk />} />
-						<Route path="/Board" element={<Board />} />
-						<Route path="/Fitcomment" element={<Fitcomment />} />
-						<Route path="/Fitcomment2" element={<Fitcomment2 />} />
-						<Route path="/Login" element={<Login />} />
-						<Route path="/SignIn" element={<SignIn />} />
-						<Route path="/Repair" element={<Repair />} />
-						<Route path="/Auction" element={<Auction />} />
-						<Route path="/AuctionDetail" element={<AuctionDetail />} />
-					</Routes>
-				</BrowserRouter>
+				<WebSocketContext.Provider value={Connect}>
+					<BrowserRouter basename={process.env.PUBLIC_URL}>
+						<Routes>
+							<Route path="/" element={<Main />} />
+							<Route path="/Service" element={<Service />} />
+							<Route path="/Question" element={<Question />} />
+							<Route path="/Exchange" element={<Exchange />} />
+							<Route path="/Ask" element={<Ask />} />
+							<Route path="/UpdateAsk" element={<UpdateAsk />} />
+							<Route path="/Board" element={<Board />} />
+							<Route path="/Fitcomment" element={<Fitcomment />} />
+							<Route path="/Fitcomment2" element={<Fitcomment2 />} />
+							<Route path="/Login" element={<Login />} />
+							<Route path="/SignIn" element={<SignIn />} />
+							<Route path="/Repair" element={<Repair />} />
+							<Route path="/Auction" element={<Auction />} />
+							<Route path="/AuctionDetail" element={<AuctionDetail />} />
+						</Routes>
+					</BrowserRouter>
+				</WebSocketContext.Provider>
 			</CookiesProvider>
 		</div>
 	);
