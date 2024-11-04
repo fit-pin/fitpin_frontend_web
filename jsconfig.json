@@ -1,6 +1,6 @@
 {
     "compilerOptions": {
-        "target": "ES2016",
+        "target": "ESNext",
         "jsx": "react",
         "allowImportingTsExtensions": true,
         "strictNullChecks": true,

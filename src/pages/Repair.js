@@ -1,28 +1,54 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import logo from '../assets/img/title.png';
-import cloth1 from '../assets/img/cloth1.png';
-import user1 from '../assets/img/user1.png';
-import salesgraph from '../assets/img/salesgraph.png';
 import styles from '../styles/Repair.module.css';
-import axios from 'axios';
+import axios from '../../node_modules/axios/index';
 import { DATA_URL, WEBSOCKET_RECV } from '../utils/Constant';
 import WebSocketContext from '../utils/WebSocketConnect';
 
-/** @param {import('@stomp/stompjs').IMessage} message*/
-function handleMassage(message) {
+/**
+ * @param {import('@stomp/stompjs').IMessage} message
+ * @param {React.Dispatch<React.SetStateAction<RepairRecvType[]>>} setItems */
+async function handleMassage(message, setItems) {
 	/**@type {RepairRecvType} */
 	const body = JSON.parse(message.body);
-}
+	console.log(body);
 
+	body.items = await Promise.all(
+		body.items.map(async (item) => {
+			//TODO: 이거 나중에 상수화 해야함
+			try {
+				const req = await axios.get(
+					`http://fitpitback.kro.kr:8080/api/item-info/${item.itemKey}`,
+				);
+				console.log(req.data);
+
+				return {
+					...item,
+					itemImageUrl: req.data.itemImgName[0],
+					fitPrice: req.data.pitPrice,
+				};
+			} catch (error) {
+				console.error(`앱 백엔드에 요청실패: ${error}`);
+			}
+		}),
+	);
+
+	setItems((prev) => {
+		return [...prev, body];
+	});
+}
 
 function Repair() {
 	const navigate = useNavigate();
 	const webScoket = useContext(WebSocketContext);
 
+	/** @type {[Array<RepairRecvType>, React.Dispatch<React.SetStateAction<RepairRecvType[]>>]} */
+	const [items, setItems] = useState([]);
+
 	useEffect(() => {
 		webScoket.then((client) => {
-			client.subscribe(WEBSOCKET_RECV, handleMassage);
+			client.subscribe(WEBSOCKET_RECV, (m) => handleMassage(m, setItems));
 		});
 
 		// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -80,25 +106,61 @@ function Repair() {
 			</header>
 			<div className={styles.content}>
 				<div className={styles.leftContent}>
-					<p className={styles.welcome}>00수선 환영합니다</p>
-					<h1 className={styles.auctionTitle}>수선 경매</h1>
-					<div className={styles.auctionSection}>
-						{Array.from({ length: 5 }).map((_, index) => (
-							<div className={styles.auctionItem} key={index}>
-								<img
-									src={cloth1}
-									alt={`Cloth ${index + 1}`}
-									className={styles.clothImage}
-								/>
-								<p className={styles.actionItemtext}>진행중인 경매 / 100</p>
-								<button
-									className={styles.bidButton}
-									onClick={() => navigate('/AuctionDetail')}
-								>
-									경매하기
-								</button>
+					<div className={styles.titlDiv}>
+						<p className={styles.welcome}>00수선 환영합니다</p>
+						<div className={styles.storeInfo}>
+							<div className={styles.details}>
+								<h2>#00수선</h2>
+								<p>
+									<strong>주소:</strong> 서울특별시 구로구 경인로 445
+								</p>
+								<p>
+									<strong>전화번호: </strong> 010-1234-1234
+								</p>
+								<p>
+									<strong>가입일</strong> 2024-03-04
+								</p>
 							</div>
-						))}
+						</div>
+					</div>
+					<h1 className={styles.auctionTitle}>수선 경매</h1>
+
+					<div className={styles.auctionSection}>
+						{items.length ? (
+							items.map((payInfo) =>
+								payInfo.items.map((itemInfo, index) => (
+									<div className={styles.auctionItem} key={index}>
+										<p className={styles.actionItemtextPrice}>
+											수선 가격: {itemInfo.fitPrice}원
+										</p>
+										<img
+											//TODO: 이거 나중에 상수화 해야함
+											src={`http://fitpitback.kro.kr:8080/api/img/imgserve/itemimg/${itemInfo.itemImageUrl}`}
+											width={'130px'}
+											alt={`Cloth ${index + 1}`}
+											className={styles.clothImage}
+										/>
+										<p className={styles.actionItemtextTitle}>
+											{itemInfo.itemName}
+										</p>
+										<p className={styles.actionItemtext}>
+											요청자 이름: {payInfo.userName}
+										</p>
+										<p className={styles.actionItemtext}>
+											주소: {payInfo.userAddr} {payInfo.userAddrDetail}
+										</p>
+										<button
+											className={styles.bidButton}
+											onClick={() => navigate('/AuctionDetail')}
+										>
+											경매하기
+										</button>
+									</div>
+								)),
+							)
+						) : (
+							<div>아직 고객이 수선을 요청하지 않았습니다</div>
+						)}
 					</div>
 					<p className={styles.requestTitle}>수선 요청</p>
 					<table className={styles.requestTable}>
@@ -133,47 +195,6 @@ function Repair() {
 							))}
 						</tbody>
 					</table>
-				</div>
-				<div className={styles.rightContent}>
-					<p className={styles.rightTitleText}>상점 소개</p>
-					<div className={styles.storeInfo}>
-						<div className={styles.avatar}>
-							<img src={user1} alt="Store Avatar" />
-						</div>
-						<div className={styles.details}>
-							<h2>#00수선</h2>
-							<p>
-								<strong>사업자 등록증</strong>&nbsp;&nbsp;&nbsp; 2222-2222-2222
-							</p>
-							<p>
-								<strong>주소</strong>&nbsp;&nbsp;&nbsp; 서울특별시 구로구 경인로
-								445
-							</p>
-							<p>
-								<strong>가입일</strong>&nbsp;&nbsp;&nbsp; 2024-03-04
-							</p>
-
-							<div className={styles.separator}></div>
-							<div className={styles.keywords}>
-								<p>수선키워드</p>
-								<span>#단추달기</span>
-								<span>#박음질</span>
-								<span>#바지기장</span>
-							</div>
-							<p className={styles.completionInfo}>
-								완료한 의뢰
-								<span className={styles.completionInfo2}>100회</span>
-							</p>
-						</div>
-					</div>
-					<p className={styles.rightTitleText2}>판매량 그래프</p>
-					<div className={styles.salesGraph}>
-						<img
-							src={salesgraph}
-							alt="salesgraph"
-							className={styles.salesGraphImage}
-						/>
-					</div>
 				</div>
 			</div>
 		</div>
