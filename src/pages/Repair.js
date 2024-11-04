@@ -12,7 +12,7 @@ import WebSocketContext from '../utils/WebSocketConnect';
 /** @param {import('@stomp/stompjs').IMessage} message*/
 function handleMassage(message) {
 	/**@type {RepairRecvType} */
-	const body = JSON.parse(message.body);	
+	const body = JSON.parse(message.body);
 }
 
 
