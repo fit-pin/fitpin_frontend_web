@@ -65,3 +65,20 @@
 .title {
 	font-size: 2rem;
 }
+
+.auctionMain {
+    width: 100%;
+    height: 100%;
+}
+
+.auctionImage {
+    float: left;
+    width: 50%;
+    height: 100%;
+}
+
+.auctionInfo {
+    width: 50%;
+    float: right;
+    height: 100%;
+}
