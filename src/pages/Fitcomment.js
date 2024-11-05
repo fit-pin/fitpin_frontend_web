@@ -25,7 +25,7 @@ function Fitcomment() {
 
     // 검색기능
     const filteredProducts = products.filter((product) =>
-        product.itemName.toLowerCase().includes(searchTerm.toLowerCase())
+        product.itemName?.toLowerCase().includes(searchTerm.toLowerCase())
     );
     
     return (
