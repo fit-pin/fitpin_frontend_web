@@ -11,6 +11,5 @@ export const WEBSOCKET_SEND = '/recv/';
 // 웹소켓 전송 주소
 export const WEBSOCKET_RECV = '/action';
 
-
 //APP API 주소
 export const DATA_URL_APP = 'http://fitpitback.kro.kr:8080/';
