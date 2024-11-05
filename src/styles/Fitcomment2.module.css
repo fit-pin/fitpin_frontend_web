@@ -31,13 +31,18 @@ body {
 
 .content {
     display: flex;
-    flex-direction: column;
+    justify-content: center;
     align-items: center;
+    flex-direction: row;
+    gap: 5vw;
     padding: 1vh 4vw;
+    max-width: 40vw;
+    margin: 0 auto;
 }
 
 .topSection {
-    text-align: center;
+    flex: 1;
+    text-align: left;
 }
 
 .title {
@@ -57,13 +62,13 @@ body {
 
 .imageContainer {
     display: flex;
-    align-items: center;
-    justify-content: center;
+    align-items:start;
+    justify-content: left;
     gap: 1vh;
 }
 
 .productImage {
-    width: 12vw;
+    width: 20vw;
     height: auto;
 }
 
@@ -73,7 +78,8 @@ body {
 }
 
 .infoSection {
-    width: 64%;
+    flex: 1;
+    width: auto;
     margin-top: 2vh;
 }
 
@@ -112,8 +118,7 @@ body {
 }
 
 .common4 {
-    margin-left: 1.5vh;
-    margin-right: 5vh;
+    margin-right: 3.5vh;
     color: #575757;
     font-size: 2vh;
 }
@@ -147,9 +152,10 @@ p {
 
 .optionBox {
     background-color: #F7F7FB;
-    padding: 1vh;
+    padding: 1.7vh;
     border-radius: 0.5vh;
-    width: 9vw;
+    box-sizing: content-box;
+    width: 10vw;
 }
 
 .option {

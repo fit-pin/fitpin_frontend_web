@@ -10,7 +10,8 @@ function Service() {
   const location = useLocation();
   const [currentPage, setCurrentPage] = useState(1);
   const [inquiries, setInquiries] = useState([]);
-  const [totalPages, setTotalPages] = useState(1);  
+  const [totalPages, setTotalPages] = useState(1);
+  const username = localStorage.getItem('username');  
   
   useEffect(() => {
     // URL에서 쿼리 파라미터로 페이지 번호를 받아오기
@@ -29,29 +30,48 @@ function Service() {
         params: { page: page - 1, size: 5 }  // 서버에 요청하는 페이지 번호와 크기 설정
       });
     const inquiriesData = response.data._embedded ? response.data._embedded.inquiryEntityList : [];
-    setInquiries(inquiriesData);
-    setTotalPages(response.data.page.totalPages);
+      // 각 문의에 대해 댓글 상태 확인
+      const inquiriesWithComments = await Promise.all(
+        inquiriesData.map(async (inquiry) => {
+          try {
+            const commentsResponse = await axios.get(`${DATA_URL}inquiry/${inquiry.id}/comments`);
+            inquiry.hasComments = commentsResponse.data.length > 0; // 댓글이 있으면 true, 없으면 false
+          } catch (error) {
+            console.error('댓글 상태를 확인하는 중 오류 발생:', error);
+            inquiry.hasComments = false;
+          }
+          return inquiry;
+        })
+      );
+
+      setInquiries(inquiriesWithComments);
+      setTotalPages(response.data.page.totalPages);
     } catch (error) {
       console.error('데이터를 가져오는데 오류발생:', error);
     }
   };
 
   const handlePrivateInquiryClick = async (id) => {
-    const password = prompt("비밀번호를 입력하세요.");
-    if (password) {
-      try {
-        const response = await axios.post(`${DATA_URL}inquiry/${id}/checkpwd`, null, {
-          params: { password }
-        });
-        if (response.status === 200) {
-          alert('비밀번호 검증이 완료되었습니다.');
-          navigate('/Board', { state: { id: id, page: currentPage } });
-        }
-      } catch (error) {
-        alert('비밀번호가 맞지 않습니다.');
-      }
+
+    if (username === 'admin') {
+      navigate('/Board', { state: { id: id, page: currentPage } });
     } else {
-      alert('비밀번호를 입력해야 조회 가능합니다.');
+      const password = prompt("비밀번호를 입력하세요.");
+      if (password) {
+        try {
+          const response = await axios.post(`${DATA_URL}inquiry/${id}/checkpwd`, null, {
+            params: { password }
+          });
+          if (response.status === 200) {
+            alert('비밀번호 검증이 완료되었습니다.');
+            navigate('/Board', { state: { id: id, page: currentPage } });
+          }
+        } catch (error) {
+          alert('비밀번호가 맞지 않습니다.');
+        }
+      } else {
+        alert('비밀번호를 입력해야 조회 가능합니다.');
+      }
     }
   };
 
@@ -95,13 +115,17 @@ function Service() {
                   navigate('/Board', { state: { id: inquiry.id, page: currentPage } });
                 }
               }}>
-                <p className={styles.inquiryDate}>{inquiry.createdAt} {inquiry.queryType}</p>
+                <p className={styles.inquiryDate}>{inquiry.createdAt} {inquiry.queryType}
+                  <span className={inquiry.hasComments ? styles.inquiryYes : styles.inquiryNo}>
+                    {inquiry.hasComments ? '답변완료' : '답변대기'}
+                  </span>
+                </p>
                 <p className={styles.inquiryText}>
                   <span style={{ fontWeight: 'bold' }}>
-                    {inquiry.privacy === 'private' ? '비공개 게시물' : inquiry.subject}
+                    {inquiry.privacy === 'private' && username !== 'admin' ? '비공개 게시물' : inquiry.subject}
                   </span>
                   <span className={styles.inquiryAuthor}>
-                    {inquiry.privacy === 'private' ? '비공개' : inquiry.name}
+                    {inquiry.privacy === 'private' && username !== 'admin' ? '비공개' : inquiry.name}
                   </span>
                 </p>
               </div>

@@ -109,6 +109,17 @@ body {
   align-items: center;
   font-size: 2.1vh;
 }
+.inquiryYes {
+  color: #469536;
+  font-weight: bold;
+  padding-left: 2.0vh;
+}
+
+.inquiryNo {
+  color: red;
+  font-weight: bold;
+  padding-left: 2.0vh;
+}
 
 .inquiryAuthor {
   white-space: nowrap;

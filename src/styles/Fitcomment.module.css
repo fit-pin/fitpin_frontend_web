@@ -92,18 +92,25 @@ body {
     height: 2vh;
 }
 
-.productGrid {
+.productGridContainer {
     display: flex;
     justify-content: center;
+}
+
+.productGrid {
+    display: flex;
     flex-wrap: wrap;
+    justify-content: flex-start;
     gap: 2vh;
-    margin-top: 2vh;
+    max-width: 77.4vw;
+    margin: 0 auto;
 }
 
 .productBox {
     background-color: #ffffff;
     padding: 1.7vh;
     width: 17vw;
+    cursor: pointer;
 }
 
 .imageContainer {

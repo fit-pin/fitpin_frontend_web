@@ -26,6 +26,7 @@ function Repair() {
             // 로컬 스토리지에서 토큰 제거
             localStorage.removeItem('refreshToken');
             localStorage.removeItem('accessToken');
+            localStorage.removeItem('username');
             navigate('/');
         }
         ).catch(error => {
