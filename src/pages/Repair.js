@@ -3,25 +3,23 @@ import { useNavigate } from 'react-router-dom';
 import logo from '../assets/img/title.png';
 import styles from '../styles/Repair.module.css';
 import axios from 'axios';
-import { DATA_URL, WEBSOCKET_RECV } from '../utils/Constant';
+import { DATA_URL, DATA_URL_APP } from '../utils/Constant';
 import WebSocketContext from '../utils/WebSocketConnect';
+import { getUserDataMemory, setUserDataMemory } from '../utils/AppData';
 
 /**
  * @param {import('@stomp/stompjs').IMessage} message
- * @param {React.Dispatch<React.SetStateAction<RepairRecvType[]>>} setItems */
+ * @param {React.Dispatch<React.SetStateAction<RepairRecvType>>} setItems */
 async function handleMassage(message, setItems) {
 	/**@type {RepairRecvType} */
 	const body = JSON.parse(message.body);
-	console.log(body);
 
-	body.items = await Promise.all(
-		body.items.map(async (item) => {
-			//TODO: 이거 나중에 상수화 해야함
+	const mapBody = await Promise.all(
+		body.map(async (item) => {
 			try {
 				const req = await axios.get(
-					`http://fitpitback.kro.kr:8080/api/item-info/${item.itemKey}`,
+					`${DATA_URL_APP}api/item-info/${item.itemKey}`,
 				);
-				console.log(req.data);
 
 				return {
 					...item,
@@ -33,25 +31,56 @@ async function handleMassage(message, setItems) {
 			}
 		}),
 	);
-
+	
+	console.log(mapBody);
 	setItems((prev) => {
-		return [...prev, body];
+		if (prev) {
+			return [...prev, mapBody];
+		} else {
+			return mapBody
+		}
 	});
 }
 
 function Repair() {
+	const repairWebsocketUrl = '/action/buyItem';
+
+	
 	const navigate = useNavigate();
 	const webScoket = useContext(WebSocketContext);
 
-	/** @type {[Array<RepairRecvType>, React.Dispatch<React.SetStateAction<RepairRecvType[]>>]} */
-	const [items, setItems] = useState([]);
+	/** @type {[RepairRecvType, React.Dispatch<React.SetStateAction<RepairRecvType>>]} */
+	const [items, setItems] = useState();
+	/** @type {[UserData | undefined, React.Dispatch<React.SetStateAction<UserData>>]} */
+	const [userDataState, setUserDataState] = useState(getUserDataMemory());
 
+	// 웹소켓 연결용
 	useEffect(() => {
-		webScoket.then((client) => {
-			client.subscribe(WEBSOCKET_RECV, (m) => handleMassage(m, setItems));
-		}).catch(e => {
-			console.log(e);
-		});
+		webScoket
+			.then((client) => {
+				client.subscribe(repairWebsocketUrl, (m) => handleMassage(m, setItems));
+			})
+			.catch((e) => {
+				console.log(e);
+			});
+
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
+
+	// 수선 업체 정보 얻기용
+	useEffect(() => {
+		const userName = localStorage.getItem('username');
+		if (userName) {
+			axios
+				.get(`${DATA_URL}users/5`)
+				.then((res) => {
+					setUserDataMemory(res.data);
+					setUserDataState(res.data);
+				})
+				.catch((e) => {
+					console.error(`유저데이터 불러오기 실패: ${e}`);
+				});
+		}
 
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
@@ -109,17 +138,21 @@ function Repair() {
 			<div className={styles.content}>
 				<div className={styles.leftContent}>
 					<div className={styles.titlDiv}>
-						<p className={styles.welcome}>00수선 환영합니다</p>
+						<p className={styles.welcome}>
+							{userDataState?.company} 수선 환영합니다
+						</p>
 						<div className={styles.storeInfo}>
 							<div className={styles.details}>
-								<h2>#00수선</h2>
+								<h2>#{userDataState?.company} 수선</h2>
 								<p>
-									<strong>주소:</strong> 서울특별시 구로구 경인로 445
+									<strong>주소:</strong> {userDataState?.address1}{' '}
+									{userDataState?.address2}
 								</p>
 								<p>
-									<strong>전화번호: </strong> 010-1234-1234
+									<strong>전화번호: </strong> {userDataState?.phone}
 								</p>
 								<p>
+									{/* TODO: 가입일 DB연동 */}
 									<strong>가입일</strong> 2024-03-04
 								</p>
 							</div>
@@ -128,38 +161,37 @@ function Repair() {
 					<h1 className={styles.auctionTitle}>수선 경매</h1>
 
 					<div className={styles.auctionSection}>
-						{items.length ? (
-							items.map((payInfo) =>
-								payInfo.items.map((itemInfo, index) => (
-									<div className={styles.auctionItem} key={index}>
-										<p className={styles.actionItemtextPrice}>
-											수선 가격: {itemInfo.fitPrice}원
-										</p>
-										<img
-											//TODO: 이거 나중에 상수화 해야함
-											src={`http://fitpitback.kro.kr:8080/api/img/imgserve/itemimg/${itemInfo.itemImageUrl}`}
-											width={'130px'}
-											alt={`Cloth ${index + 1}`}
-											className={styles.clothImage}
-										/>
-										<p className={styles.actionItemtextTitle}>
-											{itemInfo.itemName}
-										</p>
-										<p className={styles.actionItemtext}>
-											요청자 이름: {payInfo.userName}
-										</p>
-										<p className={styles.actionItemtext}>
-											주소: {payInfo.userAddr} {payInfo.userAddrDetail}
-										</p>
-										<button
-											className={styles.bidButton}
-											onClick={() => navigate('/AuctionDetail')}
-										>
-											경매하기
-										</button>
-									</div>
-								)),
-							)
+						{items ? (
+							items.map((itemInfo, index) => (
+								<div className={styles.auctionItem} key={index}>
+									<p className={styles.actionItemtextPrice}>
+										수선 가격: {itemInfo.fitPrice}원
+									</p>
+									<img
+										src={`${DATA_URL_APP}api/img/imgserve/itemimg/${itemInfo.itemImageUrl}`}
+										width={'130px'}
+										alt={`Cloth ${index + 1}`}
+										className={styles.clothImage}
+									/>
+									<p className={styles.actionItemtextTitle}>
+										{itemInfo.itemName}
+									</p>
+									<p className={styles.actionItemtext}>
+										요청자 이름: {itemInfo.userName}
+									</p>
+									<p className={styles.actionItemtext}>
+										주소: {itemInfo.userAddr} {itemInfo.userAddrDetail}
+									</p>
+									<button
+										className={styles.bidButton}
+										onClick={() =>
+											navigate('/AuctionDetail', { state: itemInfo })
+										}
+									>
+										경매하기
+									</button>
+								</div>
+							))
 						) : (
 							<div>아직 고객이 수선을 요청하지 않았습니다</div>
 						)}

@@ -1,10 +1,14 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import logo from '../assets/img/title.png';
 import styles from '../styles/AuctionDetail.module.css';
-import cloth2 from '../assets/img/cloth2.png';
+import { DATA_URL_APP } from '../utils/Constant';
+import { getUserDataMemory } from '../utils/AppData';
 
 function AuctionDetail() {
+	/** @type {RepairRecvType[0]} */
+	const location = useLocation().state;
+
 	return (
 		<div className={styles.App}>
 			<header className={styles.header}>
@@ -24,7 +28,7 @@ function AuctionDetail() {
 			</header>
 			<div className={styles.content}>
 				<div className={styles.contentMain}>
-					<p className={styles.welcome}>00수선 환영합니다</p>
+					<p className={styles.welcome}>{getUserDataMemory().company} 수선 환영합니다</p>
 					<div className={styles.contentView}>
 						<p className={styles.title}>경매 상품</p>
 						<div className={styles.auctionTimeDiv}>
@@ -35,8 +39,13 @@ function AuctionDetail() {
 						<div className={styles.auctionMain}>
 							{/* 왼쪽 */}
 							<div className={styles.auctionImage}>
-								<p className={styles.itemTitle}>[ 제품명 ]</p>
-								<img src={cloth2} className={styles.cloth} alt="cloth2" />
+								<p className={styles.itemTitle}>[ {location.itemName} ]</p>
+
+								<img
+									src={`${DATA_URL_APP}api/img/imgserve/itemimg/${location.itemImageUrl}`}
+									className={styles.cloth}
+									alt="cloth2"
+								/>
 								<p className={styles.itemInfoTitle}>#제품정보</p>
 								<table className={styles.table}>
 									<thead>
@@ -99,8 +108,8 @@ function AuctionDetail() {
 								<div className={styles.auctionUserView}>
 									<p className={styles.itemInfoTitle}>#고객정보</p>
 									<div className={styles.auctionUserValue}>
-										<p>이름: 석정현</p>
-										<p>주소: 서울특별시 구로구 경인로 445</p>
+										<p>이름: {location.userName}</p>
+										<p>주소: {location.userAddr} {location.userAddrDetail}</p>
 									</div>
 								</div>
 							</div>
