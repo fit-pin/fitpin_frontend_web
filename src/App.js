@@ -21,7 +21,6 @@ import WebSocketContext, { WebSocketConnect } from './utils/WebSocketConnect';
 const Connect = WebSocketConnect;
 
 function App() {
-
 	return (
 		<div className="App">
 			<CookiesProvider>

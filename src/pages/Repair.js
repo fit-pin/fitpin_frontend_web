@@ -4,7 +4,10 @@ import logo from '../assets/img/title.png';
 import styles from '../styles/Repair.module.css';
 import axios from 'axios';
 import { DATA_URL, DATA_URL_APP } from '../utils/Constant';
-import WebSocketContext from '../utils/WebSocketConnect';
+import WebSocketContext, {
+	allUnSubscribe,
+	subscribe,
+} from '../utils/WebSocketConnect';
 import { getUserDataMemory, setUserDataMemory } from '../utils/AppData';
 
 /**
@@ -30,10 +33,10 @@ async function handleMassage(message, setItems) {
 			}
 		}),
 	);
-	
+
 	console.log(mapBody);
 	setItems((prev) => {
-		if (prev) {	
+		if (prev) {
 			return [...prev, ...mapBody];
 		} else {
 			return mapBody;
@@ -54,9 +57,14 @@ function Repair() {
 
 	// 웹소켓 연결용
 	useEffect(() => {
+		// 모든 구독 없에고 들감
+		allUnSubscribe();
+
 		webScoket
 			.then((client) => {
-				client.subscribe(repairWebsocketUrl, (m) => handleMassage(m, setItems));
+				subscribe(client, repairWebsocketUrl, (m) =>
+					handleMassage(m, setItems),
+				);
 			})
 			.catch((e) => {
 				console.log(e);
@@ -68,9 +76,10 @@ function Repair() {
 	// 수선 업체 정보 얻기용
 	useEffect(() => {
 		const userName = localStorage.getItem('username');
-		if (userName) {
+
+		if (userName && !userDataState) {
 			axios
-				.get(`${DATA_URL}users/5`)
+				.get(`${DATA_URL}users/${userName}`)
 				.then((res) => {
 					setUserDataMemory(res.data);
 					setUserDataState(res.data);
@@ -150,8 +159,7 @@ function Repair() {
 									<strong>전화번호: </strong> {userDataState?.phone}
 								</p>
 								<p>
-									{/* TODO: 가입일 DB연동 */}
-									<strong>가입일</strong> 2024-03-04
+									<strong>가입일</strong> {userDataState?.joinDate}
 								</p>
 							</div>
 						</div>
