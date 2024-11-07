@@ -24,7 +24,6 @@ async function handleMassage(message, setItems) {
 				return {
 					...item,
 					itemImageUrl: req.data.itemImgName[0],
-					fitPrice: req.data.pitPrice,
 				};
 			} catch (error) {
 				console.error(`앱 백엔드에 요청실패: ${error}`);
@@ -34,10 +33,10 @@ async function handleMassage(message, setItems) {
 	
 	console.log(mapBody);
 	setItems((prev) => {
-		if (prev) {
-			return [...prev, mapBody];
+		if (prev) {	
+			return [...prev, ...mapBody];
 		} else {
-			return mapBody
+			return mapBody;
 		}
 	});
 }
@@ -45,7 +44,6 @@ async function handleMassage(message, setItems) {
 function Repair() {
 	const repairWebsocketUrl = '/action/buyItem';
 
-	
 	const navigate = useNavigate();
 	const webScoket = useContext(WebSocketContext);
 
@@ -165,7 +163,7 @@ function Repair() {
 							items.map((itemInfo, index) => (
 								<div className={styles.auctionItem} key={index}>
 									<p className={styles.actionItemtextPrice}>
-										수선 가격: {itemInfo.fitPrice}원
+										수선 가격: {itemInfo.pitPrice}원
 									</p>
 									<img
 										src={`${DATA_URL_APP}api/img/imgserve/itemimg/${itemInfo.itemImageUrl}`}
@@ -185,7 +183,10 @@ function Repair() {
 									<button
 										className={styles.bidButton}
 										onClick={() =>
-											navigate('/AuctionDetail', { state: itemInfo })
+											navigate(
+												`/AuctionDetail?auctionId=${itemInfo.auctionId}`,
+												{ state: itemInfo },
+											)
 										}
 									>
 										경매하기

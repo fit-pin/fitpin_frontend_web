@@ -1,23 +1,36 @@
-
 type RepairRecvType = [
 	{
 		auctionId: string;
 		userEmail: string;
 		userName: string;
 		userAddr: string;
-		userNumber: string;
-		itemTotal: string;
 		userAddrDetail: string;
+		userNumber: string;
+		itemTotal: number;
 		itemKey: number;
 		itemName: string;
 		itemSize: string;
 		itemPrice: number;
+		pitPrice: number;
 		qty: 1;
 		pitStatus: boolean;
+
+		pitItemOrder: {
+			itemType: string;
+			itemSize: string;
+			itemHeight: number | null;
+			itemShoulder: number | null;
+			itemChest: number | null;
+			itemSleeve: number | null;
+			frontrise: number | null;
+			itemWaists: number | null;
+			itemThighs: number | null;
+			itemHemWidth: number | null;
+			itemhipWidth: number | null;
+		} | null;
+
 		/**추후 state 쪽에서 */
 		itemImageUrl: string | undefined;
-		/**추후 state 쪽에서 */
-		fitPrice: number | undefined;
 	},
 ];
 
@@ -32,4 +45,4 @@ type UserData = {
 	address2: string;
 	phone: string;
 	role: string;
-}
+};

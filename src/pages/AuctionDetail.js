@@ -1,13 +1,35 @@
-import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import React, { useContext, useEffect } from 'react';
+import { Link, useLocation, useParams, useSearchParams } from 'react-router-dom';
 import logo from '../assets/img/title.png';
 import styles from '../styles/AuctionDetail.module.css';
 import { DATA_URL_APP } from '../utils/Constant';
 import { getUserDataMemory } from '../utils/AppData';
+import WebSocketContext from '../utils/WebSocketConnect';
+
+async function handleMassage(message, setItems) {}
 
 function AuctionDetail() {
+	const webScoket = useContext(WebSocketContext);
 	/** @type {RepairRecvType[0]} */
 	const location = useLocation().state;
+	const auctionId= useSearchParams()[0].get('auctionId')
+
+	// 웹소켓서버 전송용
+	const AuctionSendUrl = `/recv/Auction/${auctionId}`;
+	
+
+	// 웹소켓 연결용
+	useEffect(() => {
+		webScoket
+			.then((client) => {
+				client.publish({destination: AuctionSendUrl});
+			})
+			.catch((e) => {
+				console.log(e);
+			});
+
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
 
 	return (
 		<div className={styles.App}>
@@ -28,7 +50,9 @@ function AuctionDetail() {
 			</header>
 			<div className={styles.content}>
 				<div className={styles.contentMain}>
-					<p className={styles.welcome}>{getUserDataMemory().company} 수선 환영합니다</p>
+					<p className={styles.welcome}>
+						{getUserDataMemory()?.company} 수선 환영합니다
+					</p>
 					<div className={styles.contentView}>
 						<p className={styles.title}>경매 상품</p>
 						<div className={styles.auctionTimeDiv}>
@@ -109,7 +133,9 @@ function AuctionDetail() {
 									<p className={styles.itemInfoTitle}>#고객정보</p>
 									<div className={styles.auctionUserValue}>
 										<p>이름: {location.userName}</p>
-										<p>주소: {location.userAddr} {location.userAddrDetail}</p>
+										<p>
+											주소: {location.userAddr} {location.userAddrDetail}
+										</p>
 									</div>
 								</div>
 							</div>
