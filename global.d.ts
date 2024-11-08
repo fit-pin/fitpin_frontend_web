@@ -73,6 +73,6 @@ type RecvPriceState = {
 	auctionTime: number;
 	price?: number;
 	auctionList: [
-		{ token: string; company: string; price: number; time: Date, isMy: boolean = false },
+		{ token: string; company: string; price: number; time: Date, itemName?: string, isMy: boolean = false},
 	];
 };

@@ -77,7 +77,7 @@ function Repair() {
 	useEffect(() => {
 		const userName = localStorage.getItem('username');
 
-		if (userName && !userDataState) {
+		if (userName) {
 			axios
 				.get(`${DATA_URL}users/${userName}`)
 				.then((res) => {

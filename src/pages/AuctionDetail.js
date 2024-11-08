@@ -87,7 +87,7 @@ function AuctionDetail() {
 	// 유저 정보, 아이템 정보 추가로 요청하는
 	useEffect(() => {
 		const userName = localStorage.getItem('username');
-		if (userName && !userDataState) {
+		if (userName) {
 			axios
 				.get(`${DATA_URL}users/${userName}`)
 				.then((res) => {
@@ -223,7 +223,7 @@ function AuctionDetail() {
 			<div className={styles.content}>
 				<div className={styles.contentMain}>
 					<p className={styles.welcome}>
-						{getUserDataMemory()?.company} 수선 환영합니다
+						{userDataState?.company} 수선 환영합니다
 					</p>
 					<div className={styles.contentView}>
 						<p className={styles.title}>경매 상품</p>
