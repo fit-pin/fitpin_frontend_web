@@ -11,7 +11,6 @@ import Login from './pages/Login';
 import SignIn from './pages/SignIn';
 import Main from './pages/Main';
 import Repair from './pages/Repair';
-import Auction from './pages/Auction';
 import AuctionDetail from './pages/AuctionDetail';
 import UpdateAsk from './pages/UpdateAsk';
 import './App.css';
@@ -39,7 +38,6 @@ function App() {
 							<Route path="/Login" element={<Login />} />
 							<Route path="/SignIn" element={<SignIn />} />
 							<Route path="/Repair" element={<Repair />} />
-							<Route path="/Auction" element={<Auction />} />
 							<Route path="/AuctionDetail" element={<AuctionDetail />} />
 						</Routes>
 					</BrowserRouter>

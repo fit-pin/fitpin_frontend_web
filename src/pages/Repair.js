@@ -9,72 +9,135 @@ import WebSocketContext, {
 	subscribe,
 } from '../utils/WebSocketConnect';
 import { getUserDataMemory, setUserDataMemory } from '../utils/AppData';
+import ErrorPage from './ErrorPage';
 
 /**
  * @param {import('@stomp/stompjs').IMessage} message
- * @param {React.Dispatch<React.SetStateAction<RepairRecvType>>} setItems */
-async function handleMassage(message, setItems) {
-	/**@type {RepairRecvType} */
-	const body = JSON.parse(message.body);
+ * @param {React.Dispatch<React.SetStateAction<RepairItemState>>} setItems
+ * @param {"connect" | "buyItem" | "endItem"} type
+ * @param {string} token
+ * */
+async function handleMassage(message, setItems, type, token) {
+	console.log(JSON.parse(message.body));
 
-	const mapBody = await Promise.all(
-		body.map(async (item) => {
-			try {
-				const req = await axios.get(
-					`${DATA_URL_APP}api/item-info/${item.itemKey}`,
-				);
-
+	if (type === 'connect') {
+		/**@type {recvRepairListType} */
+		const body = JSON.parse(message.body);
+		
+		//TODO: 이곳을 완성하자
+		const meperData = body.map((list) => {
+			if (list.userList[token]) {
 				return {
-					...item,
-					itemImageUrl: req.data.itemImgName[0],
+					myAuction: {
+						state: list.auction.state,
+						auction: list.auction.actionData,
+					},
 				};
-			} catch (error) {
-				console.error(`앱 백엔드에 요청실패: ${error}`);
+			} else {
+				return {
+					otherAuction: {
+						state: list.auction.state,
+					},
+				};
 			}
-		}),
-	);
+		});
+	}
 
-	console.log(mapBody);
-	setItems((prev) => {
-		if (prev) {
-			return [...prev, ...mapBody];
-		} else {
-			return mapBody;
-		}
-	});
+	if (type === 'buyItem') {
+		/**@type {RepairRecvType[]} */
+		const body = JSON.parse(message.body);
+
+		const mapBody = await Promise.all(
+			body.map(async (item) => {
+				try {
+					const req = await axios.get(
+						`${DATA_URL_APP}api/item-info/${item.itemKey}`,
+					);
+
+					return {
+						...item,
+						itemImageUrl: req.data.itemImgName[0],
+					};
+				} catch (error) {
+					console.error(`앱 백엔드에 요청실패: ${error}`);
+				}
+			}),
+		);
+		setItems((prev) => {
+			if (prev?.otherAuction) {
+				return { ...prev, otherAuction: [...prev.otherAuction, mapBody] };
+			} else {
+				return { ...prev, otherAuction: mapBody };
+			}
+		});
+	}
 }
 
 function Repair() {
-	const repairWebsocketUrl = '/action/buyItem';
+	const recvRepairList = '/action/repair/connect';
+	const recvBuyItem = '/action/repair/buyItem';
+	const recvEndItem = '/action/repair/endItem';
+
+	const SendConnect = '/recv/repair/connect';
+
+	const token = localStorage.getItem('accessToken');
 
 	const navigate = useNavigate();
 	const webScoket = useContext(WebSocketContext);
 
-	/** @type {[RepairRecvType, React.Dispatch<React.SetStateAction<RepairRecvType>>]} */
+	/** @type {[RepairItemState, React.Dispatch<React.SetStateAction<RepairItemState>>]} */
 	const [items, setItems] = useState();
 	/** @type {[UserData | undefined, React.Dispatch<React.SetStateAction<UserData>>]} */
-	const [userDataState, setUserDataState] = useState(getUserDataMemory());
+	const [userDataState, setUserDataState] = useState({
+		onMemory: true,
+		userData: getUserDataMemory(),
+	});
+
+	const myAuction = items?.myAuction;
+	const otherAuction = items?.otherAuction;
+
+	const userData = userDataState.userData;
 
 	// 웹소켓 연결용
 	useEffect(() => {
 		// 모든 구독 없에고 들감
 		allUnSubscribe();
 
+		if (!token || userDataState.onMemory || !userDataState.userData) {
+			return;
+		}
+
 		webScoket
 			.then((client) => {
-				subscribe(client, repairWebsocketUrl, (m) =>
-					handleMassage(m, setItems),
+				subscribe(client, recvRepairList, (m) =>
+					handleMassage(m, setItems, 'connect', token),
 				);
+				subscribe(client, recvBuyItem, (m) =>
+					handleMassage(m, setItems, 'buyItem', token),
+				);
+				subscribe(client, recvEndItem, (m) =>
+					handleMassage(m, setItems, 'endItem', token),
+				);
+				client.publish({
+					destination: SendConnect,
+					body: JSON.stringify({
+						token: token,
+						company: userDataState.userData.company,
+					}),
+				});
 			})
 			.catch((e) => {
 				console.log(e);
 			});
 
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
+	}, [userDataState]);
 
 	// 수선 업체 정보 얻기용
 	useEffect(() => {
+		if (!token) {
+			return;
+		}
 		const userName = localStorage.getItem('username');
 
 		if (userName) {
@@ -82,7 +145,10 @@ function Repair() {
 				.get(`${DATA_URL}users/${userName}`)
 				.then((res) => {
 					setUserDataMemory(res.data);
-					setUserDataState(res.data);
+					setUserDataState({
+						onMemory: false,
+						userData: res.data,
+					});
 				})
 				.catch((e) => {
 					console.error(`유저데이터 불러오기 실패: ${e}`);
@@ -117,6 +183,10 @@ function Repair() {
 			});
 	};
 
+	if (!token) {
+		return <ErrorPage messge="유효하지 않는 접근입니다" navigate="/" />;
+	}
+
 	const requests = [
 		{ id: 4, name: '#신청자이름', date: '2024-04-11', status: '주문 완료' },
 		{ id: 3, name: '#신청자이름', date: '2024-04-09', status: '진행중' },
@@ -136,9 +206,6 @@ function Repair() {
 					/>
 				</div>
 				<div className={styles.right}>
-					<span className={styles.bold} onClick={() => navigate('/Auction')}>
-						경매
-					</span>
 					<span onClick={Logout}>로그아웃</span>
 				</div>
 			</header>
@@ -146,20 +213,20 @@ function Repair() {
 				<div className={styles.leftContent}>
 					<div className={styles.titlDiv}>
 						<p className={styles.welcome}>
-							{userDataState?.company} 수선 환영합니다
+							{userData?.company} 수선 환영합니다
 						</p>
 						<div className={styles.storeInfo}>
 							<div className={styles.details}>
-								<h2>#{userDataState?.company} 수선</h2>
+								<h2>#{userData?.company} 수선</h2>
 								<p>
-									<strong>주소:</strong> {userDataState?.address1}{' '}
-									{userDataState?.address2}
+									<strong>주소:</strong> {userData?.address1}{' '}
+									{userData?.address2}
 								</p>
 								<p>
-									<strong>전화번호: </strong> {userDataState?.phone}
+									<strong>전화번호: </strong> {userData?.phone}
 								</p>
 								<p>
-									<strong>가입일</strong> {userDataState?.joinDate}
+									<strong>가입일</strong> {userData?.joinDate}
 								</p>
 							</div>
 						</div>
@@ -167,15 +234,14 @@ function Repair() {
 					<h1 className={styles.auctionTitle}>수선 경매</h1>
 
 					<div className={styles.auctionSection}>
-						{items ? (
-							items.map((itemInfo, index) => (
+						{otherAuction ? (
+							otherAuction.map((itemInfo, index) => (
 								<div className={styles.auctionItem} key={index}>
 									<p className={styles.actionItemtextPrice}>
 										수선 가격: {itemInfo.pitPrice}원
 									</p>
 									<img
 										src={`${DATA_URL_APP}api/img/imgserve/itemimg/${itemInfo.itemImageUrl}`}
-										width={'130px'}
 										alt={`Cloth ${index + 1}`}
 										className={styles.clothImage}
 									/>
