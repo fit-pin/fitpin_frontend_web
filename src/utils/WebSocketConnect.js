@@ -3,23 +3,30 @@ import { Client } from '@stomp/stompjs';
 import { createContext } from 'react';
 import { WEB_SCOKET_URL } from './Constant';
 
-export const WebSocketConnect = new Promise((reslove, reject) => {
-	const scoketClient = new Client({
+/**
+ * @param {Object} param0
+ * @param {(client: Client) => void} param0.connect 
+ * @param {(client: Client) => void} param0.disconnect 
+ * @param {(client: Client) => void} param0.close 
+*/
+export function WebSocketConnect({connect, disconnect, close}) {
+	const client = new Client({
 		brokerURL: WEB_SCOKET_URL,
 		onWebSocketClose: () => {
-			console.log('웹소켓 서버와 연결이 중단됨');
-			reslove('웹소켓 서버와 연결이 중단됨');
+			console.log('웹소켓 서버와 통신 종료');
+			close(client);
 		},
 		onConnect: () => {
-			console.log('웹소켓 연결 성공');
-			reslove(scoketClient);
+			console.log('웹소켓 서버와 연결됨');
+			connect(client);
 		},
 		onDisconnect: () => {
-			console.log('웹소켓 서버와 연결 중단');
+			console.log('웹소켓 서버와 연결이 중단됨');
+			disconnect(client);
 		},
 	});
-	scoketClient.activate();
-});
+	client.activate();
+};
 
 /** @type {Array<import('@stomp/stompjs').StompSubscription>} */
 let subscribeList = [];
@@ -42,6 +49,6 @@ export function allUnSubscribe() {
 	subscribeList = [];
 }
 
-/** @type {React.Context<Promise<Client>>} */
+/** @type {React.Context<SocketState>} */
 const WebSocketContext = createContext();
 export default WebSocketContext;

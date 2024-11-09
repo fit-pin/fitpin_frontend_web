@@ -1,5 +1,5 @@
 type AuctionState = "AUCTION_CREATE" | "AUCTION_PROGRESS" | "AUCTION_END" | "AUCTION_UNDEFINDE" | "AUCTION_UNDEFINDE"
-    
+
 type RepairRecvType = {
 	auctionId: string;
 	userEmail: string;
@@ -68,19 +68,16 @@ type recvRepairListType = [
 
 /** 수선 업체 화면 로그인 정보 */
 type UserData = {
-	onMemory: boolean;
-	userData: {
-		id: number;
-		company: string;
-		username: string;
-		password: string;
-		zipcode: string;
-		address1: string;
-		address2: string;
-		phone: string;
-		role: string;
-		joinDate: string
-	}
+	id: number;
+	company: string;
+	username: string;
+	password: string;
+	zipcode: string;
+	address1: string;
+	address2: string;
+	phone: string;
+	role: string;
+	joinDate: string
 };
 
 /** 가격 호가 제시할때 보내는 타입 */
@@ -102,4 +99,9 @@ type RecvPriceState = {
 type ErrorPageProps = {
 	navigate: string;
 	messge: string;
+}
+
+type SocketState = {
+	state: "connect" | "disconnect" | "close";
+	client: import('@stomp/stompjs').Client;
 }

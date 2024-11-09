@@ -23,7 +23,7 @@ async function handleMassage(message, setItems, type, token) {
 	if (type === 'connect') {
 		/**@type {recvRepairListType} */
 		const body = JSON.parse(message.body);
-		
+
 		//TODO: 이곳을 완성하자
 		const meperData = body.map((list) => {
 			if (list.userList[token]) {
@@ -83,55 +83,44 @@ function Repair() {
 	const token = localStorage.getItem('accessToken');
 
 	const navigate = useNavigate();
-	const webScoket = useContext(WebSocketContext);
+	const webSocketContext = useContext(WebSocketContext);	
 
 	/** @type {[RepairItemState, React.Dispatch<React.SetStateAction<RepairItemState>>]} */
 	const [items, setItems] = useState();
 	/** @type {[UserData | undefined, React.Dispatch<React.SetStateAction<UserData>>]} */
-	const [userDataState, setUserDataState] = useState({
-		onMemory: true,
-		userData: getUserDataMemory(),
-	});
+	const [userData, setUserData] = useState(getUserDataMemory());
 
 	const myAuction = items?.myAuction;
 	const otherAuction = items?.otherAuction;
-
-	const userData = userDataState.userData;
 
 	// 웹소켓 연결용
 	useEffect(() => {
 		// 모든 구독 없에고 들감
 		allUnSubscribe();
 
-		if (!token || userDataState.onMemory || !userDataState.userData) {
+		if (!token || !userData || webSocketContext.state !== 'connect') {
 			return;
 		}
 
-		webScoket
-			.then((client) => {
-				subscribe(client, recvRepairList, (m) =>
-					handleMassage(m, setItems, 'connect', token),
-				);
-				subscribe(client, recvBuyItem, (m) =>
-					handleMassage(m, setItems, 'buyItem', token),
-				);
-				subscribe(client, recvEndItem, (m) =>
-					handleMassage(m, setItems, 'endItem', token),
-				);
-				client.publish({
-					destination: SendConnect,
-					body: JSON.stringify({
-						token: token,
-						company: userDataState.userData.company,
-					}),
-				});
-			})
-			.catch((e) => {
-				console.log(e);
-			});
-
+		const client = webSocketContext.client;
+		subscribe(client, recvRepairList, (m) =>
+			handleMassage(m, setItems, 'connect', token),
+		);
+		subscribe(client, recvBuyItem, (m) =>
+			handleMassage(m, setItems, 'buyItem', token),
+		);
+		subscribe(client, recvEndItem, (m) =>
+			handleMassage(m, setItems, 'endItem', token),
+		);
+		client.publish({
+			destination: SendConnect,
+			body: JSON.stringify({
+				token: token,
+				company: userData.company,
+			}),
+		});
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [userDataState]);
+	}, [webSocketContext.state, userData]);
 
 	// 수선 업체 정보 얻기용
 	useEffect(() => {
@@ -145,10 +134,7 @@ function Repair() {
 				.get(`${DATA_URL}users/${userName}`)
 				.then((res) => {
 					setUserDataMemory(res.data);
-					setUserDataState({
-						onMemory: false,
-						userData: res.data,
-					});
+					setUserData(res.data);
 				})
 				.catch((e) => {
 					console.error(`유저데이터 불러오기 실패: ${e}`);

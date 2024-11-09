@@ -70,7 +70,7 @@ function formatTime(seconds) {
 }
 
 function AuctionDetail() {
-	const webScoket = useContext(WebSocketContext);
+	const webSocketContext = useContext(WebSocketContext);
 	const auctionId = useSearchParams()[0].get('auctionId');
 	const token = localStorage.getItem('accessToken');
 
@@ -148,7 +148,7 @@ function AuctionDetail() {
 
 	const handleBid = async () => {
 		const price = PriceValueRef.current.value;
-		const client = await webScoket;
+		const client = webSocketContext.client;
 
 		PriceValueRef.current.value = '';
 		if (!price) {
@@ -171,37 +171,35 @@ function AuctionDetail() {
 
 	// 웹소켓 연결용
 	useEffect(() => {
-		const token = localStorage.getItem('accessToken');
-		if (token) {
-			webScoket
-				.then((client) => {
-					// 모든 구독 없에고 들감
-					allUnSubscribe();
+		// 모든 구독 없에고 들감
+		allUnSubscribe();
 
-					// 접속 여부를 보냄
-					client.publish({ destination: `${AuctionSendUrl}/connect/${token}` });
-
-					// 시간 측정 용
-					subscribe(client, `${AuctionRecvUrl}/time`, (m) =>
-						handleMassage(m, 'time', setAuctionValue, token),
-					);
-
-					// 호가 받는 용
-					subscribe(client, `${AuctionRecvUrl}/price`, (m) =>
-						handleMassage(m, 'price', setAuctionValue, token),
-					);
-
-					// 접속 시 데이터 받기
-					subscribe(client, `${AuctionRecvUrl}/roomData/${token}`, (m) =>
-						handleMassage(m, 'roomData', setAuctionValue, token),
-					);
-				})
-				.catch((e) => {
-					console.log(e);
-				});
+		if (!token || webSocketContext.state !== 'connect') {
+			return;
 		}
+
+		const client = webSocketContext.client;
+
+		// 접속 여부를 보냄
+		client.publish({ destination: `${AuctionSendUrl}/connect/${token}` });
+
+		// 시간 측정 용
+		subscribe(client, `${AuctionRecvUrl}/time`, (m) =>
+			handleMassage(m, 'time', setAuctionValue, token),
+		);
+
+		// 호가 받는 용
+		subscribe(client, `${AuctionRecvUrl}/price`, (m) =>
+			handleMassage(m, 'price', setAuctionValue, token),
+		);
+
+		// 접속 시 데이터 받기
+		subscribe(client, `${AuctionRecvUrl}/roomData/${token}`, (m) =>
+			handleMassage(m, 'roomData', setAuctionValue, token),
+		);
+
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
+	}, [token, webSocketContext.state]);
 
 	return (
 		<div className={styles.App}>
