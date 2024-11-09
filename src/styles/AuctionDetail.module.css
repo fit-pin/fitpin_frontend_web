@@ -1,303 +1,272 @@
+p {
+	font-size: 1rem;
+}
+
 .header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1vh 3vw;
-  background-color: #ffffff;
-  height: 8vh;
-  font-size: 2vh;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 1vh 3vw;
+	background-color: #ffffff;
+	height: 8vh;
+	font-size: 2vh;
 }
 
 .logo {
-  width: 6vw;
-  height: auto;
+	width: 6vw;
+	height: auto;
 }
 
 .right {
-  display: flex;
-  gap: 2vw;
-  font-family: 'SpoqaHanSansNeo-Regular', sans-serif;
+	display: flex;
+	gap: 2vw;
+	font-family: 'SpoqaHanSansNeo-Regular', sans-serif;
 }
 
 .right span,
 .right .bold {
-  cursor: pointer;
-  color: #000;
-  text-decoration: none;
+	cursor: pointer;
+	color: #000;
+	text-decoration: none;
 }
 
 .right .bold {
-  font-weight: bold;
-}
-
-.menu {
-  display: flex;
-  gap: 2vw;
-  font-family: 'SpoqaHanSansNeo-Regular', sans-serif;
-}
-
-.menuItem {
-  text-decoration: none;
-  color: #000;
-}
-
-
-.content {
-  display: flex;
-  width: 40vw;
-  height: 40vw;
-  position: relative;
-  left: 4vh;
-
-}
-
-.centerContent {
-  width: 35vw;
-  height: 43vw;
-  position: relative;
-  left: 30vw;
-  top: 5vw;
-  background-color: #f4f4f4;
+	font-weight: bold;
 }
 
 .welcome {
-  font-size: 3.5vh;
-  margin-bottom: 2vh;
-  width: 100%;
-  position: relative;
-  left: 10vw;
-  bottom: 8vh;
+	font-size: 2rem;
+	padding-bottom: 20px;
 }
 
-.auctionTagTitle {
-  font-size: 2.4vh;
-  font-family: 'GmarketSansTTF', sans-serif;
-  font-weight: bold;
-  margin-top: 4vh;
-  margin-bottom: 2vh;
-  width: 12vh;
-  position: relative;
-  top: -7vh;
-  left: 1.5vw;
+.content {
+	height: 1000px;
+	width: 100%;
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+	justify-content: center;
 }
 
-.auctionTime {
-  gap: 2vw;
-  width: 20vh;
-  height: 5vh;
-  font-size: 2vh;
-  position: relative;
-  bottom: 6vh;
-  left: 4vh;
-  font-weight: bold;
+.contentMain {
+	width: 65%;
+	height: 93%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
 }
 
-.red {
-  color: red;
+.contentView {
+	background-color: #fdfdfd;
+	width: 100%;
+	display: flex;
+	height: 100%;
+	box-sizing: border-box;
+	min-width: 950px;
+	padding: 20px;
+	border-radius: 20px;
+	box-shadow: 0 0.5vh 1vh rgba(0, 0, 0, 0.1);
+	flex-direction: column;
 }
 
-.Section1 {
-  flex-direction: column;
-  width: 15vw;
-  height: 18vw;
-  position: relative;
-  top: 1vw;
-  left: 0vw;
+.auctionMain {
+    width: 100%;
+    height: 100%;
+    gap: 9%;
+    display: flex;
+    justify-content: center;
 }
 
-.text {
-  font-size: 1.3vh;
-  position: relative;
-  left: 2vh;
-  font-weight: bold;
+.auctionImage {
+	display: flex;
+	gap: 15px;
+	flex-direction: column;
+	align-items: center;
 }
 
-.background1 {
-  background-color: #ffffff;
-  width: 15vw;
-  height: 18vw;
-  border: 0.1vh solid black;
-  border-radius: 1vh;
-  position: relative;
-  top: 1.5vh;
+.title {
+	margin-bottom: 30px;
+	font-size: 2rem;
 }
 
 .cloth {
-  width: 14vw;
-  height: 18vw;
-  position: relative;
-  top: 0vh;
-  left: 1vh;
+	border: 1px solid black;
+	border-radius: 15px;
+    max-width: 400px;
+    max-height: 400px;
+	background-color: white;
 }
 
-.Section2 {
-  flex-direction: column;
-  width: 25vw;
-  height: 30vw;
-  position: relative;
-  bottom: 16.3vw;
-  left: 16.5vw;
+.ImageDiv > img {
+	width: 100px;
 }
 
-.shorthr {
-  width: 30%;
-  margin-left: 0;
-  position: relative;
-  top: 0.5vw;
+.auctionTimeDiv {
+	text-align: center;
+	margin-bottom: 20px;
 }
 
-.shorthr2 {
-  width: 30%;
-  margin-left: 0;
-  position: relative;
-  bottom: 0.5vw;
+.auctionTimeTitle,
+.auctionTime {
+	font-size: 1.5rem;
+	display: inline;
 }
 
-.text2 {
-  font-size: 1.2vh;
-  position: relative;
-  left: 1vh;
-  font-weight: bold;
+.auctionTime {
+	color: red;
 }
 
-.blue {
-  color: blue;
+.itemTitle {
+	margin: 0;
+	font-size: 1.2rem;
+	text-align: center;
+	font-weight: bold;
 }
 
-.auctionHistory {
-  border: 0.1vh solid black;
-  flex-direction: column;
-  width: 12vw;
-  height: 14vw;
-  position: relative;
-  top: 0vw;
+.itemInfoTitle {
+	margin: 0;
+	font-weight: bold;
+	font-size: 1.2rem;
 }
 
-.historyTitleText {
-  font-size: 1.2vh;
-  font-weight: bold;
-  position: relative;
-  left: 0.5vw;
-  bottom: -1vh;
+table,
+td,
+tr {
+	text-align: center;
+	background-color: white;
+	border: 1px solid #ebebeb;
+	padding: 15px;
+	border-collapse: collapse;
 }
 
-.historyText {
-  font-size: 1.2vh;
-  position: relative;
-  top: 4vw;
-  left: 0.5vw;
-  line-height: 2vh;
+table {
+	border-radius: 5px;
 }
 
-.bidInput {
-  padding: 1vh;
-  width: 12vh;
-  text-align: center;
-  font-size: 1vh;
-  border-top: none;
-  border-left: none;
-  border-right: none;
-  background-color: #f4f4f4;
-  position: relative;
-  left: 0.2vh;
+.tableHeader,
+thead > tr > td {
+	background-color: #f5f5f5;
+}
+
+.auctionInfo {
+	display: flex;
+	gap: 15px;
+	align-items: flex-start;
+	flex-direction: column;
+}
+
+.auctionCulDiv {
+	display: inline;
+	border-top: 1px solid black;
+	padding: 3px;
+	border-bottom: 1px solid black;
+}
+
+.auctionCulDiv > p {
+	display: inline;
+	font-size: 1.1rem;
+}
+
+.auctionCulPrice {
+	font-weight: bold;
+	color: blue;
+}
+
+.auctionView {
+	box-sizing: border-box;
+	padding: 10px;
+	width: 380px;
+	display: flex;
+	flex-direction: column;
+	height: 380px;
+	border-radius: 5px;
+	border: 1px solid black;
+}
+
+.auctionViewTitle {
+	font-weight: bold;
+	font-size: 1.4rem;
+	height: 10%;
+}
+
+.auctionViewText {
+	height: 90%;
+	overflow-y: overlay;
+	display: flex;
+	flex-direction: column-reverse;
+}
+
+.auctionMessageDiv {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+}
+
+.auctionMessageInfo > p {
+	display: inline;
+	font-size: 1.1rem;
+}
+
+.auctionMessageInfo {
+	padding: 3%;
+}
+
+.auctionMessagePrice {
+	color: blue;
 }
 
 
-.bidButton {
-  background-color: #000;
-  color: #fff;
-  border: none;
-  border-radius: 0.3vh;
-  cursor: pointer;
-  font-size: 1vh;
-  width: 7vh;
-  height: 2.5vh;
-  position: relative;
-  left: 0.7vw;
-  top: 0.4vh;
+.auctionInputDiv {
+	width: 100%;
+	height: 40px;
+	display: flex;
+	gap: 10px;
+	flex-direction: row;
 }
 
-.Section3 {
-  flex-direction: column;
-  width: 20vw;
-  height: 20vw;
-  position: relative;
-  top: 20vw;
-  left: 2.3vw;
+.auctionInputPrice {
+	flex: 10;
+	border: initial;
+	background-color: initial;
+	height: 100%;
+	margin: 0;
+	padding: 0;
+	font-size: 1.1rem;
+	text-align: center;
+	border-bottom: 1px solid black;
+}
+.auctionInputPrice:focus {
+	outline: none;
+} /* outline 테두리 없애기 */
+
+.auctionInputPrice::-webkit-outer-spin-button,
+.auctionInputPrice::-webkit-inner-spin-button {
+	-webkit-appearance: none;
+	margin: 0;
 }
 
-.text3 {
-  font-size: 1.5vh;
-  font-weight: bold;
-  position: relative;
-  bottom: 3vh;
-  left: 1vh;
+.auctionInputBT {
+	background-color: #000;
+	color: white;
+	margin: 0;
+	box-sizing: border-box;
+	padding: 5px;
+	cursor: pointer;
+	font-weight: bold;
+	border-radius: 5px;
+	font-size: 1.1rem;
+	flex: 4;
 }
 
-.text4 {
-  position: relative;
-  font-size: 1.5vh;
-  font-weight: bold;
-  top: 0.3vh;
-  left: 1vh;
+.auctionUserView {
+	width: 100%;
 }
 
-.text5 {
-  position: relative;
-  font-size: 1.4vh;
-  top: 1vh;
-  left: 1vh;
-  line-height: 3.8vh;
+.auctionUserValue {
+	margin-top: 5px;
 }
 
-.productInfo,
-.customerInfo {
-  background-color: #f4f4f4;
-  padding: 1vh;
-  border-radius: 1vh;
-  margin-bottom: 2vh;
-}
-
-.productTable {
-  width: 28vh;
-  height: 10vh;
-  border-collapse: collapse;
-  font-size: 1vh;
-  position: relative;
-  bottom: 1vh;
-}
-
-.productTable th {
-  background-color: #eaeaea;
-  border: 0.1vh solid #ddd;
-  padding: 1vh;
-  text-align: center;
-}
-
-.productTable td {
-  border: 0.1vh solid #ddd;
-  padding: 1vh;
-  text-align: center;
-  background-color: #ffffff;
-}
-
-.Section4 {
-  flex-direction: column;
-  width: 20vw;
-  height: 20vw;
-  position: relative;
-  bottom: 2vw;
-  left: 19vw;
-}
-
-.clientInfo {
-  gap: 2vw;
-  position: relative;
-  font-size: 1vh;
-  word-spacing: 0.5vh;
-  line-height: 2.5vh;
-}
-
-.blueBorder {
-  border: 0.1vh solid blue;
+.auctionUserValue > p {
+	font-size: 1.2rem;
+	margin-bottom: 5px;
 }

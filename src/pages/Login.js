@@ -19,12 +19,12 @@ function LoginForm() {
     });
 
     // 유효성 검사 함수
-    const validateForm = () => {
-        let newErrors = {};
-        if (!form.username) newErrors.username = "아이디를 입력하세요.";
-        if (!form.password) newErrors.password = "비밀번호를 입력하세요";
-        setErrors(newErrors);
-        return Object.keys(newErrors).length === 0;
+    const validateForm = (e) => {
+            let newErrors = {};
+            if (!form.username) newErrors.username = "아이디를 입력하세요.";
+            if (!form.password) newErrors.password = "비밀번호를 입력하세요";
+            setErrors(newErrors);
+            return Object.keys(newErrors).length === 0
     };
 
     // 각 필드가 변경될 때 해당 오류를 제거하는 핸들러
@@ -37,26 +37,35 @@ function LoginForm() {
         }
     };
 
+    // 엔터키로 로그인
+    const handleKeyDown = (e) => {
+        if (e.key === 'Enter') {
+            login(e);
+        }
+    };
+
     // 로그인
     const login = async (e) => {
         e.preventDefault();
         if (validateForm()) {
-            axios.post(`${DATA_URL}login`, form, {
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                withCredentials: true, // CORS
-            }).then(res => {
-                // 로그인 성공 시 서버로부터 받은 토큰 저장
+            try {
+                const res = await axios.post(`${DATA_URL}login`, form, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    withCredentials: true, // CORS
+                });
                 const { accessToken, refreshToken } = res.data;
                 localStorage.setItem('accessToken', accessToken);
                 localStorage.setItem('refreshToken', refreshToken);
+                localStorage.setItem('username',form.username);
                 console.log('로그인 성공:', res);
+
                 navigate('/Repair');
-            }).catch(err => {
+            } catch (err) {
                 console.log('로그인 실패:', err);
                 setErrors({ general: "로그인 실패" });
-            });
+            }
         }
     };
 
@@ -76,7 +85,7 @@ function LoginForm() {
             </header>
             <div className={styles.content}>
                 <img src={image} className={styles.titleImage} alt="Find Your Fit Pin" />
-                <form className={styles.form}>
+                <form className={styles.form} onKeyDown={handleKeyDown}>
                     <div className={styles.inputGroup}>
                         <label>아이디</label>
                         <input type="text" placeholder="ID"
