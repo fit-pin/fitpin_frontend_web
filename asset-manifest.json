@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/fitpin_frontend_web/static/css/main.3dc802de.css",
-    "main.js": "/fitpin_frontend_web/static/js/main.3b402070.js",
+    "main.js": "/fitpin_frontend_web/static/js/main.36ac76cf.js",
     "static/js/453.bcb002ef.chunk.js": "/fitpin_frontend_web/static/js/453.bcb002ef.chunk.js",
     "static/media/SpoqaHanSansNeo-Regular.ttf": "/fitpin_frontend_web/static/media/SpoqaHanSansNeo-Regular.95ececb5af85b0f66467.ttf",
     "static/media/GmarketSansTTFMedium.ttf": "/fitpin_frontend_web/static/media/GmarketSansTTFMedium.d4bac6b182bed73c9375.ttf",
@@ -24,11 +24,11 @@
     "static/media/step1.png": "/fitpin_frontend_web/static/media/step1.9177b402f1acd90ef142.png",
     "index.html": "/fitpin_frontend_web/index.html",
     "main.3dc802de.css.map": "/fitpin_frontend_web/static/css/main.3dc802de.css.map",
-    "main.3b402070.js.map": "/fitpin_frontend_web/static/js/main.3b402070.js.map",
+    "main.36ac76cf.js.map": "/fitpin_frontend_web/static/js/main.36ac76cf.js.map",
     "453.bcb002ef.chunk.js.map": "/fitpin_frontend_web/static/js/453.bcb002ef.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.3dc802de.css",
-    "static/js/main.3b402070.js"
+    "static/js/main.36ac76cf.js"
   ]
 }
