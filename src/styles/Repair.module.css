@@ -130,6 +130,11 @@ font-size: 2.5vh;
 	color: blue;
 }
 
+.clothImage {
+	max-width: 130px;
+	max-height: 160px;
+}
+
 .bidButton {
 	background-color: black;
 	color: white;
@@ -265,4 +270,8 @@ font-size: 2.5vh;
 
 .statusCompleted {
 	color: red;
+}
+
+.activeNav {
+	cursor: pointer;
 }
