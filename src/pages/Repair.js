@@ -441,7 +441,7 @@ function Repair() {
 										<td>
 											{item.auction.userAddr} {item.auction.userAddrDetail}
 										</td>
-										<td>{item.auction.pitPrice}</td>
+										<td>{item.auction.pitPrice}원</td>
 										<td
 											className={
 												styles[
