@@ -427,7 +427,7 @@ function Repair() {
 										onClick={(e) =>
 											item.state === 'AUCTION_PROGRESS'
 												? navigate(
-														`/AuctionDetail?auctionId=${item.auction.auctionId}`,
+														`/AuctionDetail?auctionId=${item.auction?.auctionId}`,
 														{ state: item.auction },
 													)
 												: navigate(

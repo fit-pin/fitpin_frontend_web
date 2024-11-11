@@ -221,7 +221,7 @@ function AuctionDetail() {
 			.then((res) => {
 				/** @type {[]} */
 				let sizes;
-				if (itemInfo?.pitItemOrder.itemType === '상의') {
+				if (itemInfo?.pitItemOrder?.itemType === '상의') {
 					sizes = res.data.itemTopInfo;
 				} else {
 					sizes = res.data.itemBottomInfo;
@@ -375,7 +375,7 @@ function AuctionDetail() {
 											<td className={styles.tableHeader}>수선 사이즈</td>
 											{size.map((n, index) => (
 												<td key={index}>
-													{itemInfo?.pitItemOrder[sizeMap.get(n)]}
+													{itemInfo?.pitItemOrder?.[sizeMap.get(n)]}
 												</td>
 											))}
 										</tr>
