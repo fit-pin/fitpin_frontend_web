@@ -16,6 +16,7 @@ import UpdateAsk from './pages/UpdateAsk';
 import './App.css';
 import { CookiesProvider } from 'react-cookie';
 import WebSocketContext, { WebSocketConnect } from './utils/WebSocketConnect';
+import RepairDetail from './pages/RepairDetail';
 
 function App() {
 	/** @type {[SocketState, React.Dispatch<React.SetStateAction<SocketState>>]} */
@@ -62,6 +63,7 @@ function App() {
 							<Route path="/SignIn" element={<SignIn />} />
 							<Route path="/Repair" element={<Repair />} />
 							<Route path="/AuctionDetail" element={<AuctionDetail />} />
+							<Route path="/RepairDetail" element={<RepairDetail />} />
 						</Routes>
 					</BrowserRouter>
 				</WebSocketContext.Provider>

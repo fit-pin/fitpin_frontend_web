@@ -133,19 +133,20 @@ async function handleMassage(message, setItems, type, company) {
 
 	if (type === 'endItem') {
 		const endItem = Number(message.body);
+		console.log(endItem);
 
 		setItems((prev) => {
-			const otherRes = prev.otherAuction.map(
+			const otherRes = prev.otherAuction.filter(
 				(list) => list.auctionId !== endItem,
 			);
-			const myRes = prev.myAuction.map((list) => {
-				if (list.auction.auctionId === endItem) {
-					list.state = 'AUCTION_END';
-				}
-				return list;
-			});
+			const myRes = prev.myAuction.filter((list) => list.auctionId !== endItem);
 
-			return { ...prev, otherAuction: otherRes, myAuction: myRes };
+			return {
+				...prev,
+				otherAuction: otherRes,
+				myAuction: myRes,
+				reqestRefrash: !prev.reqestRefrash,
+			};
 		});
 	}
 
@@ -187,7 +188,7 @@ function Repair() {
 	const webSocketContext = useContext(WebSocketContext);
 
 	/** @type {[RepairItemState, React.Dispatch<React.SetStateAction<RepairItemState>>]} */
-	const [items, setItems] = useState();
+	const [items, setItems] = useState({ reqestRefrash: false });
 	/** @type {[UserData | undefined, React.Dispatch<React.SetStateAction<UserData>>]} */
 	const [userData, setUserData] = useState(getUserDataMemory());
 
@@ -260,6 +261,8 @@ function Repair() {
 			.then((res) => {
 				/** @type {RepairRecvType[]} */
 				const data = res.data;
+				console.log(data);
+
 				if (!data.length) {
 					return;
 				}
@@ -272,9 +275,15 @@ function Repair() {
 				});
 
 				setItems((prev) => {
+					const prevAuction = prev.myAuction?.filter((item) =>
+						resData.every((value) => {
+							return value.auction?.repairId !== item.auction?.repairId;
+						}),
+					);
+
 					let my;
-					if (prev?.myAuction) {
-						my = [...prev.myAuction, ...resData];
+					if (prev?.myAuction?.length) {
+						my = [...prevAuction, ...resData];
 					} else {
 						my = resData;
 					}
@@ -290,7 +299,7 @@ function Repair() {
 			});
 
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [userData?.company]);
+	}, [userData?.company, items.reqestRefrash]);
 
 	const Logout = () => {
 		const refreshToken = localStorage.getItem('refreshToken');
@@ -414,18 +423,17 @@ function Repair() {
 								myAuction.map((item, index) => (
 									<tr
 										key={index}
-										style={
-											item.state === 'AUCTION_PROGRESS'
-												? { cursor: 'pointer' }
-												: {}
-										}
+										style={{ cursor: 'pointer' }}
 										onClick={(e) =>
 											item.state === 'AUCTION_PROGRESS'
 												? navigate(
 														`/AuctionDetail?auctionId=${item.auction.auctionId}`,
 														{ state: item.auction },
 													)
-												: {}
+												: navigate(
+														`/RepairDetail?repairId=${item.auction?.repairId}`,
+														{ state: item.auction },
+													)
 										}
 									>
 										<td>{item.auction.itemName}</td>

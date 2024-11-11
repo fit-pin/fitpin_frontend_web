@@ -293,7 +293,7 @@ function AuctionDetail() {
 		});
 	};
 
-	if (!token || !auctionId) {
+	if (!token || auctionId === null) {
 		return <ErrorPage messge="유효하지 않는 접근입니다" navigate="/" />;
 	}
 
@@ -325,9 +325,6 @@ function AuctionDetail() {
 					</Link>
 				</div>
 				<div className={styles.right}>
-					<Link to="/Auction" className={styles.bold}>
-						경매
-					</Link>
 					<Link to="/" className={styles.bold}>
 						로그아웃
 					</Link>

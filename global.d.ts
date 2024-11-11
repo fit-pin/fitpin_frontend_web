@@ -32,6 +32,9 @@ type RepairRecvType = {
 
 	/**추후 state 쪽에서 */
 	itemImageUrl: string | undefined;
+
+	/** 수선 페이지에서 DB 값 불러올때*/
+	repairId: number | undefined
 }
 
 type ItemState = {
@@ -52,6 +55,7 @@ type RepairItemState = {
 		auction: RepairRecvType;
 	}]
 	otherAuction: RepairRecvType[];
+	reqestRefrash: boolean;
 }
 
 type recvRepairListType = [
