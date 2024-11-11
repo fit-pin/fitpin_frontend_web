@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Service from '../src/pages/Service';
 import Question from './pages/Question';
@@ -17,7 +17,6 @@ import './App.css';
 import { CookiesProvider } from 'react-cookie';
 import WebSocketContext, { WebSocketConnect } from './utils/WebSocketConnect';
 
-
 function App() {
 	/** @type {[SocketState, React.Dispatch<React.SetStateAction<SocketState>>]} */
 	const [scoketState, setScoketState] = useState({
@@ -31,13 +30,13 @@ function App() {
 	useEffect(() => {
 		WebSocketConnect({
 			connect: (client) => {
-				setScoketState({ state: 'connect', client});
+				setScoketState({ state: 'connect', client });
 			},
 			close: (client) => {
-				setScoketState({ state: 'close', client});
+				setScoketState({ state: 'close', client });
 			},
 			disconnect: (client) => {
-				setScoketState({ state: 'disconnect', client});
+				setScoketState({ state: 'disconnect', client });
 			},
 		});
 
