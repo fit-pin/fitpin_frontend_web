@@ -1,7 +1,7 @@
-type AuctionState = "AUCTION_CREATE" | "AUCTION_PROGRESS" | "AUCTION_END" | "AUCTION_UNDEFINDE" | "AUCTION_UNDEFINDE"
+type AuctionState = "AUCTION_CREATE" | "AUCTION_PROGRESS" | "AUCTION_END" | "AUCTION_UNDEFINDE"
 
 type RepairRecvType = {
-	auctionId: string;
+	auctionId: number;
 	userEmail: string;
 	userName: string;
 	userAddr: string;
@@ -32,37 +32,36 @@ type RepairRecvType = {
 
 	/**추후 state 쪽에서 */
 	itemImageUrl: string | undefined;
-
-	/**추후 경메 쪽에서 */
-	originItem: {
-		itemHeight: number | null;
-		itemShoulder: number | null;
-		itemChest: number | null;
-		itemSleeve: number | null;
-		frontrise: number | null;
-		itemWaists: number | null;
-		itemThighs: number | null;
-		itemHemWidth: number | null;
-		itemhipWidth: number | null;
-	} | undefined;
 }
 
+type ItemState = {
+	itemHeight: number | null;
+	itemShoulder: number | null;
+	itemChest: number | null;
+	itemSleeve: number | null;
+	frontrise: number | null;
+	itemWaists: number | null;
+	itemThighs: number | null;
+	itemHemWidth: number | null;
+	itemhipWidth: number | null;
+}
 
 type RepairItemState = {
-	myAuction: {
+	myAuction: [{
 		state: string;
-		auction: RepairRecvType[]
-	}
+		auction: RepairRecvType;
+	}]
+	
 	otherAuction: RepairRecvType[]
 }
 
 type recvRepairListType = [
 	{
 		auction: {
-			actionData: RepairRecvType[],
-			state: AuctionState
+			actionData: RepairRecvType;
+			state: AuctionState;
 		},
-		userList: {}
+		userList: string[];
 	}
 ]
 
@@ -77,11 +76,12 @@ type UserData = {
 	address2: string;
 	phone: string;
 	role: string;
-	joinDate: string
+	joinDate: string;
 };
 
 /** 가격 호가 제시할때 보내는 타입 */
 type sendPrice = {
+	auctionId: number;
 	token: string;
 	company: string;
 	price: number;
@@ -90,7 +90,10 @@ type sendPrice = {
 /** 경매 실제 state 타입 */
 type RecvPriceState = {
 	auctionTime: number;
+	state: AuctionState;
 	price?: number;
+	endPrice?: sendPrice;
+	actionData: RepairRecvType;
 	auctionList: [
 		{ token: string; company: string; price: number; time: Date, itemName?: string, isMy: boolean = false},
 	];
@@ -104,4 +107,10 @@ type ErrorPageProps = {
 type SocketState = {
 	state: "connect" | "disconnect" | "close";
 	client: import('@stomp/stompjs').Client;
+}
+
+type RecvRoomData = {
+	state: AuctionState;
+	actionData?: RepairRecvType;
+	recvPrice?: sendPrice;
 }

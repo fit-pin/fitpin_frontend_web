@@ -9,42 +9,7 @@ import WebSocketContext, {
 	subscribe,
 } from '../utils/WebSocketConnect';
 import axios from 'axios';
-
-/**
- * @param {import('@stomp/stompjs').IMessage} message
- * @param {"time" | "price" | "roomData"} type
- * @param {React.Dispatch<React.SetStateAction<RecvPriceState>>} setAuctionValue
- * @param {String} token
- */
-async function handleMassage(message, type, setAuctionValue, token) {
-	switch (type) {
-		case 'time':
-			setAuctionValue((prev) => {
-				return { ...prev, auctionTime: message.body };
-			});
-			break;
-		case 'price':
-			/** @type {RecvPriceState['auctionList'][0]} */
-			const body = JSON.parse(message.body);
-
-			if (token === body.token) {
-				body.isMy = true;
-			}
-
-			body.time = new Date(body.time);
-
-			setAuctionValue((prev) => {
-				return {
-					...prev,
-					price: body.price,
-					auctionList: [...prev.auctionList, body],
-				};
-			});
-			break;
-		default:
-			break;
-	}
-}
+import ErrorPage from './ErrorPage';
 
 /** 의류 맵 */
 const sizeMap = new Map();
@@ -69,71 +34,231 @@ function formatTime(seconds) {
 	return `${hours}:${minutes}:${secs}`;
 }
 
+/**
+ * @param {import('@stomp/stompjs').IMessage} message
+ * @param {"time" | "price" | "roomData"} type
+ * @param {React.Dispatch<React.SetStateAction<RecvPriceState>>} setAuctionValue
+ * @param {String} token
+ */
+async function handleMassage(message, type, setAuctionValue, token) {
+	if (type !== 'time') {
+		console.log(JSON.parse(message.body));
+	}
+
+	if (type === 'roomData') {
+		/** @type {RecvRoomData} */
+		const body = JSON.parse(message.body);
+
+		if (body.state === 'AUCTION_END') {
+			setAuctionValue((prev) => {
+				return {
+					...prev,
+					state: body.state,
+					endPrice: body.recvPrice,
+				};
+			});
+		}
+
+		if (body.state === 'AUCTION_UNDEFINDE') {
+			setAuctionValue((prev) => {
+				return {
+					...prev,
+					state: body.state,
+				};
+			});
+		}
+
+		if (body.state === 'AUCTION_PROGRESS') {
+			setAuctionValue((prev) => {
+				return {
+					...prev,
+					state: body.state,
+					actionData: {
+						...prev?.actionData,
+						...body?.actionData,
+					},
+				};
+			});
+		}
+	}
+
+	if (type === 'time') {
+		setAuctionValue((prev) => {
+			return { ...prev, auctionTime: message.body };
+		});
+	}
+
+	if (type === 'price') {
+		/** @type {RecvPriceState['auctionList'][0]} */
+		const body = JSON.parse(message.body);
+
+		if (token === body.token) {
+			body.isMy = true;
+		}
+
+		body.time = new Date(body.time);
+
+		setAuctionValue((prev) => {
+			return {
+				...prev,
+				price: body.price,
+				auctionList: [...prev.auctionList, body],
+			};
+		});
+	}
+}
+
 function AuctionDetail() {
 	const webSocketContext = useContext(WebSocketContext);
 	const auctionId = useSearchParams()[0].get('auctionId');
 	const token = localStorage.getItem('accessToken');
 
-	/** @type {[RepairRecvType[0], React.Dispatch<React.SetStateAction<RepairRecvType[0]>>]} */
-	const [itemInfo, setItemInfo] = useState(useLocation().state);
-
 	/** @type {[RecvPriceState, React.Dispatch<React.SetStateAction<RecvPriceState>>]} */
 	const [auctionValue, setAuctionValue] = useState({
+		state: 'AUCTION_PROGRESS',
 		auctionTime: 0,
 		auctionList: [],
+		actionData: useLocation().state,
 	});
-	const [userDataState, setUserDataState] = useState(getUserDataMemory());
+	const itemInfo = auctionValue?.actionData;
 
-	// 유저 정보, 아이템 정보 추가로 요청하는
+	console.log(itemInfo?.itemImageUrl);
+
+	/** @type {[ItemState, React.Dispatch<React.SetStateAction<ItemState>>]} */
+	const [item, setItem] = useState();
+
+	/** @type {[UserData | undefined, React.Dispatch<React.SetStateAction<UserData>>]} */
+	const [userData, setUserData] = useState(getUserDataMemory());
+
+	// 서버 전송용
+	const sendConnect = `/recv/auction/${auctionId}/connect`;
+	const sendPrice = `/recv/auction/${auctionId}/price`;
+
+	// 서버 응답용
+	const recvRoomData = `/action/auction/${auctionId}/roomdata/${token}`;
+	// 전체 경매 응답용
+	const recvRoomAll = `/action/auction/${auctionId}/roomdata/all`;
+	const recvPrice = `/action/auction/${auctionId}/price`;
+	const recvTime = `/action/auction/${auctionId}/time`;
+
+	// 웹소켓 연결용
 	useEffect(() => {
+		// 모든 구독 없에고 들감
+		allUnSubscribe();
+
+		console.log(userData?.company);
+		if (
+			!token ||
+			!auctionId ||
+			!userData?.company ||
+			webSocketContext.state !== 'connect'
+		) {
+			return;
+		}
+
+		const client = webSocketContext.client;
+
+		// 접속 시 데이터 받기
+		subscribe(client, recvRoomData, (m) =>
+			handleMassage(m, 'roomData', setAuctionValue, token),
+		);
+
+		// 전체 경매 응답 메시지 받기
+		subscribe(client, recvRoomAll, (m) =>
+			handleMassage(m, 'roomData', setAuctionValue, token),
+		);
+
+		// 호가 받는 용
+		subscribe(client, recvPrice, (m) =>
+			handleMassage(m, 'price', setAuctionValue, token),
+		);
+
+		// 시간 측정용
+		subscribe(client, recvTime, (m) =>
+			handleMassage(m, 'time', setAuctionValue, token),
+		);
+
+		// 접속 여부를 보냄
+		client.publish({
+			destination: sendConnect,
+			body: JSON.stringify({
+				token,
+				company: userData?.company,
+			}),
+		});
+
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [webSocketContext.state, userData?.company]);
+
+	// 유저 정보 요청
+	useEffect(() => {
+		if (!token || !auctionId) {
+			return;
+		}
+
 		const userName = localStorage.getItem('username');
 		if (userName) {
 			axios
 				.get(`${DATA_URL}users/${userName}`)
 				.then((res) => {
 					setUserDataMemory(res.data);
-					setUserDataState(res.data);
+					setUserData(res.data);
 				})
 				.catch((e) => {
 					console.error(`유저데이터 불러오기 실패: ${e}`);
 				});
 		}
 
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
+
+	// 아이템 정보 요청
+	useEffect(() => {
+		if (!itemInfo?.itemName || !auctionId) {
+			return;
+		}
+
 		axios
-			.get(`${DATA_URL_APP}api/item-info/${itemInfo.itemKey}`)
+			.get(`${DATA_URL_APP}api/item-info/${itemInfo?.itemKey}`)
 			.then((res) => {
 				/** @type {[]} */
 				let sizes;
-				if (itemInfo.pitItemOrder.itemType === '상의') {
+				if (itemInfo?.pitItemOrder.itemType === '상의') {
 					sizes = res.data.itemTopInfo;
 				} else {
 					sizes = res.data.itemBottomInfo;
 				}
 
+				const itemImgName = res.data.itemImgName[0];
+
 				for (const size of sizes) {
-					if (size.itemSize === itemInfo.itemSize) {
-						setItemInfo((prev) => {
-							return { ...prev, originItem: size };
-						});
+					if (size.itemSize === itemInfo?.itemSize) {
+						setItem(size);
+						if (!itemInfo.itemImageUrl) {
+							setAuctionValue((prev) => {
+								return {
+									...prev,
+									actionData: {
+										...prev.actionData,
+										itemImageUrl: itemImgName,
+									},
+								};
+							});
+						}
+
 						break;
 					}
 				}
 			});
 
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
+	}, [itemInfo?.itemName]);
 
 	/** @type {React.MutableRefObject<HTMLInputElement>} */
 	const PriceValueRef = useRef();
 
-	// 서버 전송용
-	const AuctionSendUrl = `/recv/Auction/${auctionId}`;
-
-	// 서버 응답 받는용
-	const AuctionRecvUrl = `/action/Auction/${auctionId}`;
-
 	let size;
-	if (itemInfo.pitItemOrder.itemType === '상의') {
+	if (itemInfo?.pitItemOrder?.itemType === '상의') {
 		size = ['총장', '어깨너비', '가슴단면', '소매길이'];
 	} else {
 		size = [
@@ -157,49 +282,41 @@ function AuctionDetail() {
 
 		/**@type {sendPrice} */
 		const body = {
-			company: getUserDataMemory()?.company,
+			auctionId,
+			company: userData?.company,
 			price: price,
 			token: token,
 		};
 
 		// 호가 보내기
 		client.publish({
-			destination: `${AuctionSendUrl}/price`,
+			destination: sendPrice,
 			body: JSON.stringify(body),
 		});
 	};
 
-	// 웹소켓 연결용
-	useEffect(() => {
-		// 모든 구독 없에고 들감
-		allUnSubscribe();
+	if (!token || !auctionId) {
+		return <ErrorPage messge="유효하지 않는 접근입니다" navigate="/" />;
+	}
 
-		if (!token || webSocketContext.state !== 'connect') {
-			return;
-		}
-
-		const client = webSocketContext.client;
-
-		// 접속 여부를 보냄
-		client.publish({ destination: `${AuctionSendUrl}/connect/${token}` });
-
-		// 시간 측정 용
-		subscribe(client, `${AuctionRecvUrl}/time`, (m) =>
-			handleMassage(m, 'time', setAuctionValue, token),
+	if (auctionValue.state === 'AUCTION_END') {
+		const endPrice = auctionValue?.endPrice;
+		return (
+			<ErrorPage
+				messge={`최종 낙찰가: ${endPrice?.price}\n낙찰 업체: ${endPrice?.company}`}
+				navigate="/Repair"
+			/>
 		);
+	}
 
-		// 호가 받는 용
-		subscribe(client, `${AuctionRecvUrl}/price`, (m) =>
-			handleMassage(m, 'price', setAuctionValue, token),
+	if (auctionValue.state === 'AUCTION_UNDEFINDE') {
+		return (
+			<ErrorPage
+				messge="경매가 종료되었거나, 찾을 수 없는 경매 입니다."
+				navigate="/Repair"
+			/>
 		);
-
-		// 접속 시 데이터 받기
-		subscribe(client, `${AuctionRecvUrl}/roomData/${token}`, (m) =>
-			handleMassage(m, 'roomData', setAuctionValue, token),
-		);
-
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [token, webSocketContext.state]);
+	}
 
 	return (
 		<div className={styles.App}>
@@ -220,9 +337,7 @@ function AuctionDetail() {
 			</header>
 			<div className={styles.content}>
 				<div className={styles.contentMain}>
-					<p className={styles.welcome}>
-						{userDataState?.company} 수선 환영합니다
-					</p>
+					<p className={styles.welcome}>{userData?.company} 수선 환영합니다</p>
 					<div className={styles.contentView}>
 						<p className={styles.title}>경매 상품</p>
 						<div className={styles.auctionTimeDiv}>
@@ -235,10 +350,10 @@ function AuctionDetail() {
 						<div className={styles.auctionMain}>
 							{/* 왼쪽 */}
 							<div className={styles.auctionImage}>
-								<p className={styles.itemTitle}>[ {itemInfo.itemName} ]</p>
+								<p className={styles.itemTitle}>[ {itemInfo?.itemName} ]</p>
 
 								<img
-									src={`${DATA_URL_APP}api/img/imgserve/itemimg/${itemInfo.itemImageUrl}`}
+									src={`${DATA_URL_APP}api/img/imgserve/itemimg/${itemInfo?.itemImageUrl}`}
 									className={styles.cloth}
 									alt="cloth2"
 								/>
@@ -255,11 +370,9 @@ function AuctionDetail() {
 									<tbody>
 										<tr>
 											<td className={styles.tableHeader}>원본 사이즈</td>
-											{itemInfo.originItem
+											{item
 												? size.map((n, index) => (
-														<td key={index}>
-															{itemInfo.originItem[sizeMap.get(n)]}
-														</td>
+														<td key={index}>{item[sizeMap.get(n)]}</td>
 													))
 												: size.map((_, index) => <td key={index}>0</td>)}
 										</tr>
@@ -267,7 +380,7 @@ function AuctionDetail() {
 											<td className={styles.tableHeader}>수선 사이즈</td>
 											{size.map((n, index) => (
 												<td key={index}>
-													{itemInfo.pitItemOrder[sizeMap.get(n)]}
+													{itemInfo?.pitItemOrder[sizeMap.get(n)]}
 												</td>
 											))}
 										</tr>
@@ -280,7 +393,7 @@ function AuctionDetail() {
 								<div className={styles.auctionCulDiv}>
 									<p>현재최저가: </p>
 									<p className={styles.auctionCulPrice}>
-										{auctionValue.price || itemInfo.pitPrice}원
+										{auctionValue.price || itemInfo?.pitPrice}원
 									</p>
 								</div>
 								<div className={styles.auctionView}>
@@ -333,9 +446,9 @@ function AuctionDetail() {
 								<div className={styles.auctionUserView}>
 									<p className={styles.itemInfoTitle}>#고객정보</p>
 									<div className={styles.auctionUserValue}>
-										<p>이름: {itemInfo.userName}</p>
+										<p>이름: {itemInfo?.userName}</p>
 										<p>
-											주소: {itemInfo.userAddr} {itemInfo.userAddrDetail}
+											주소: {itemInfo?.userAddr} {itemInfo?.userAddrDetail}
 										</p>
 									</div>
 								</div>

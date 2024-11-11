@@ -14,19 +14,17 @@ import ErrorPage from './ErrorPage';
 /**
  * @param {import('@stomp/stompjs').IMessage} message
  * @param {React.Dispatch<React.SetStateAction<RepairItemState>>} setItems
- * @param {"connect" | "buyItem" | "endItem"} type
- * @param {string} token
+ * @param {"connect" | "buyItem" | "endItem" | "price"} type
+ * @param {string} company
  * */
-async function handleMassage(message, setItems, type, token) {
-	console.log(JSON.parse(message.body));
-
+async function handleMassage(message, setItems, type, company) {
 	if (type === 'connect') {
+		console.log(JSON.parse(message.body));
 		/**@type {recvRepairListType} */
 		const body = JSON.parse(message.body);
 
-		//TODO: 이곳을 완성하자
 		const meperData = body.map((list) => {
-			if (list.userList[token]) {
+			if (list.userList.includes(company)) {
 				return {
 					myAuction: {
 						state: list.auction.state,
@@ -35,11 +33,72 @@ async function handleMassage(message, setItems, type, token) {
 				};
 			} else {
 				return {
-					otherAuction: {
-						state: list.auction.state,
-					},
+					otherAuction: list.auction.actionData,
 				};
 			}
+		});
+
+		/** @type {RepairRecvType[]} */
+		const otherAuction = await Promise.all(
+			meperData
+				.filter((list) => list.otherAuction)
+				.flatMap(async (list) => {
+					const item = list.otherAuction;
+
+					try {
+						const req = await axios.get(
+							`${DATA_URL_APP}api/item-info/${item.itemKey}`,
+						);
+						return {
+							...item,
+							itemImageUrl: req.data.itemImgName[0],
+						};
+					} catch (error) {
+						console.error(`앱 백엔드에 요청실패: ${error}`);
+					}
+				}),
+		);
+
+		const myAuction = await Promise.all(
+			meperData
+				.filter((list) => list.myAuction)
+				.flatMap(async (list) => {
+					const item = list.myAuction?.auction;
+
+					try {
+						const req = await axios.get(
+							`${DATA_URL_APP}api/item-info/${item.itemKey}`,
+						);
+
+						item.itemImageUrl = req.data.itemImgName[0];
+
+						return {
+							...list.myAuction,
+							auction: item,
+						};
+					} catch (error) {
+						console.error(`앱 백엔드에 요청실패: ${error}`);
+					}
+				}),
+		);
+
+		setItems((prev) => {
+			let my = prev?.myAuction;
+			let other = prev?.otherAuction;
+
+			if (prev?.otherAuction) {
+				other = [...prev.otherAuction, ...otherAuction];
+			} else {
+				other = otherAuction;
+			}
+
+			if (prev?.myAuction) {
+				my = [...prev.myAuction, ...myAuction];
+			} else {
+				my = myAuction;
+			}
+
+			return { myAuction: my, otherAuction: other };
 		});
 	}
 
@@ -65,25 +124,64 @@ async function handleMassage(message, setItems, type, token) {
 		);
 		setItems((prev) => {
 			if (prev?.otherAuction) {
-				return { ...prev, otherAuction: [...prev.otherAuction, mapBody] };
+				return { ...prev, otherAuction: [...prev.otherAuction, ...mapBody] };
 			} else {
 				return { ...prev, otherAuction: mapBody };
 			}
 		});
 	}
+
+	if (type === 'endItem') {
+		const endItem = Number(message.body);
+
+		setItems((prev) => {
+			const otherRes = prev.otherAuction.filter(
+				(list) => list.auctionId !== endItem,
+			);
+			const myRes = prev.myAuction.filter(
+				(list) => list.auction.auctionId !== endItem,
+			);
+
+			return { ...prev, otherAuction: otherRes, myAuction: myRes };
+		});
+	}
+
+	if (type === 'price') {
+		/**@type {sendPrice} */
+		const body = JSON.parse(message.body);
+
+		setItems((prev) => {
+			const otherRes = prev.otherAuction.map((list) => {
+				if (list.auctionId === body.auctionId) {
+					list.pitPrice = body.price;
+				}
+				return list;
+			});
+
+			const myRes = prev.myAuction.map((list) => {
+				if (list.auction.auctionId === body.auctionId) {
+					list.auction.pitPrice = body.price;
+				}
+				return list;
+			});
+
+			return { ...prev, otherAuction: otherRes, myAuction: myRes };
+		});
+	}
 }
 
 function Repair() {
-	const recvRepairList = '/action/repair/connect';
+	const token = localStorage.getItem('accessToken');
+
+	const recvRepairList = `/action/repair/connect/${token}`;
 	const recvBuyItem = '/action/repair/buyItem';
 	const recvEndItem = '/action/repair/endItem';
+	const recvAllPrice = '/action/auction/*/price';
 
 	const SendConnect = '/recv/repair/connect';
 
-	const token = localStorage.getItem('accessToken');
-
 	const navigate = useNavigate();
-	const webSocketContext = useContext(WebSocketContext);	
+	const webSocketContext = useContext(WebSocketContext);
 
 	/** @type {[RepairItemState, React.Dispatch<React.SetStateAction<RepairItemState>>]} */
 	const [items, setItems] = useState();
@@ -93,24 +191,29 @@ function Repair() {
 	const myAuction = items?.myAuction;
 	const otherAuction = items?.otherAuction;
 
+	console.log(myAuction);
+
 	// 웹소켓 연결용
 	useEffect(() => {
 		// 모든 구독 없에고 들감
 		allUnSubscribe();
 
-		if (!token || !userData || webSocketContext.state !== 'connect') {
+		if (!token || !userData?.company || webSocketContext.state !== 'connect') {
 			return;
 		}
 
 		const client = webSocketContext.client;
 		subscribe(client, recvRepairList, (m) =>
-			handleMassage(m, setItems, 'connect', token),
+			handleMassage(m, setItems, 'connect', userData?.company),
 		);
 		subscribe(client, recvBuyItem, (m) =>
-			handleMassage(m, setItems, 'buyItem', token),
+			handleMassage(m, setItems, 'buyItem', userData?.company),
 		);
 		subscribe(client, recvEndItem, (m) =>
-			handleMassage(m, setItems, 'endItem', token),
+			handleMassage(m, setItems, 'endItem', userData?.company),
+		);
+		subscribe(client, recvAllPrice, (m) =>
+			handleMassage(m, setItems, 'price', userData?.company),
 		);
 		client.publish({
 			destination: SendConnect,
@@ -120,13 +223,14 @@ function Repair() {
 			}),
 		});
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [webSocketContext.state, userData]);
+	}, [webSocketContext.state, userData?.company]);
 
 	// 수선 업체 정보 얻기용
 	useEffect(() => {
 		if (!token) {
 			return;
 		}
+
 		const userName = localStorage.getItem('username');
 
 		if (userName) {
@@ -173,13 +277,6 @@ function Repair() {
 		return <ErrorPage messge="유효하지 않는 접근입니다" navigate="/" />;
 	}
 
-	const requests = [
-		{ id: 4, name: '#신청자이름', date: '2024-04-11', status: '주문 완료' },
-		{ id: 3, name: '#신청자이름', date: '2024-04-09', status: '진행중' },
-		{ id: 2, name: '#신청자이름', date: '2024-04-06', status: '수선 완료' },
-		{ id: 1, name: '#신청자이름', date: '2024-04-05', status: '수선 완료' },
-	];
-
 	return (
 		<div className={styles.App}>
 			<header className={styles.header}>
@@ -205,8 +302,8 @@ function Repair() {
 							<div className={styles.details}>
 								<h2>#{userData?.company} 수선</h2>
 								<p>
-									<strong>주소:</strong> {userData?.address1}{' '}
-									{userData?.address2}
+									<strong>주소: </strong>
+									{`${userData?.address1} ${userData?.address2}`}
 								</p>
 								<p>
 									<strong>전화번호: </strong> {userData?.phone}
@@ -220,7 +317,7 @@ function Repair() {
 					<h1 className={styles.auctionTitle}>수선 경매</h1>
 
 					<div className={styles.auctionSection}>
-						{otherAuction ? (
+						{otherAuction?.length ? (
 							otherAuction.map((itemInfo, index) => (
 								<div className={styles.auctionItem} key={index}>
 									<p className={styles.actionItemtextPrice}>
@@ -261,33 +358,58 @@ function Repair() {
 					<table className={styles.requestTable}>
 						<thead>
 							<tr>
-								<th>번호</th>
-								<th>이름</th>
-								<th>신청일</th>
-								<th>진행 상태</th>
+								<th>제품명</th>
+								<th>요청자</th>
+								<th>주소</th>
+								<th>수선 가격</th>
+								<th>상태</th>
 							</tr>
 						</thead>
 						<tbody>
-							{requests.map((request) => (
-								<tr key={request.id}>
-									<td>{request.id}</td>
-									<td>{request.name}</td>
-									<td>{request.date}</td>
-									<td
-										className={
-											styles[
-												request.status === '진행중'
-													? 'statusInProgress'
-													: request.status === '수선 완료'
-														? 'statusCompleted'
-														: 'statusDefault'
-											]
+							{myAuction?.length ? (
+								myAuction.map((item, index) => (
+									<tr
+										key={index}
+										style={
+											item.state === 'AUCTION_PROGRESS'
+												? { cursor: 'pointer' }
+												: {}
+										}
+										onClick={(e) =>
+											item.state === 'AUCTION_PROGRESS'
+												? navigate(
+														`/AuctionDetail?auctionId=${item.auction.auctionId}`,
+														{ state: item.auction },
+													)
+												: {}
 										}
 									>
-										{request.status}
-									</td>
-								</tr>
-							))}
+										<td>{item.auction.itemName}</td>
+										<td>{item.auction.userName}</td>
+										<td>
+											{item.auction.userAddr} {item.auction.userAddrDetail}
+										</td>
+										<td>{item.auction.pitPrice}</td>
+										<td
+											className={
+												styles[
+													item.state === 'AUCTION_PROGRESS'
+														? 'statusInProgress'
+														: item.state.status === 'AUCTION_END'
+															? 'statusCompleted'
+															: 'statusDefault'
+												]
+											}
+										>
+											{item.state === 'AUCTION_PROGRESS'
+												? '경매 진행중'
+												: '경매 완료'}
+										</td>
+									</tr>
+								))
+							) : (
+								<></>
+							)}
 						</tbody>
 					</table>
 				</div>
