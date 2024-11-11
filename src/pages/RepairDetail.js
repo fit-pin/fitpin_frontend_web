@@ -1,5 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useLocation, useSearchParams } from 'react-router-dom';
+import {
+	Link,
+	useLocation,
+	useNavigate,
+	useSearchParams,
+} from 'react-router-dom';
 import logo from '../assets/img/title.png';
 import styles from '../styles/RepairDetail.module.css';
 import { DATA_URL, DATA_URL_APP } from '../utils/Constant';
@@ -23,6 +28,7 @@ sizeMap.set('밑면 단면', 'itemHemWidth');
 function RepairDetail() {
 	const token = localStorage.getItem('accessToken');
 	const repairId = useSearchParams()[0].get('repairId');
+	const navigate = useNavigate();
 
 	/** @type {[UserData | undefined, React.Dispatch<React.SetStateAction<UserData>>]} */
 	const [userData, setUserData] = useState(getUserDataMemory());
@@ -171,6 +177,31 @@ function RepairDetail() {
 		];
 	}
 
+	const Logout = () => {
+		const refreshToken = localStorage.getItem('refreshToken');
+
+		axios
+			.post(`${DATA_URL}logout`, null, {
+				headers: {
+					// 로컬 스토리지에서 가져온 refreshToken을 헤더에 추가
+					Authorization: refreshToken,
+					'Content-Type': 'application/json',
+				},
+				withCredentials: true, // CORS
+			})
+			.then((res) => {
+				console.log('로그아웃 성공 : ', res);
+				// 로컬 스토리지에서 토큰 제거
+				localStorage.removeItem('refreshToken');
+				localStorage.removeItem('accessToken');
+				localStorage.removeItem('username');
+				navigate('/');
+			})
+			.catch((error) => {
+				console.error('로그아웃 실패 :', error);
+			});
+	};
+
 	if (!token || repairId === null) {
 		return <ErrorPage messge="유효하지 않는 접근입니다" navigate="/" />;
 	}
@@ -193,9 +224,7 @@ function RepairDetail() {
 					</Link>
 				</div>
 				<div className={styles.right}>
-					<Link to="/" className={styles.bold}>
-						로그아웃
-					</Link>
+					<span onClick={Logout}>로그아웃</span>
 				</div>
 			</header>
 			<div className={styles.content}>
