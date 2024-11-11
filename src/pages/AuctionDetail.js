@@ -122,8 +122,6 @@ function AuctionDetail() {
 	});
 	const itemInfo = auctionValue?.actionData;
 
-	console.log(itemInfo?.itemImageUrl);
-
 	/** @type {[ItemState, React.Dispatch<React.SetStateAction<ItemState>>]} */
 	const [item, setItem] = useState();
 

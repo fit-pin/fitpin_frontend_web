@@ -51,8 +51,7 @@ type RepairItemState = {
 		state: string;
 		auction: RepairRecvType;
 	}]
-	
-	otherAuction: RepairRecvType[]
+	otherAuction: RepairRecvType[];
 }
 
 type recvRepairListType = [

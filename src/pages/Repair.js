@@ -98,7 +98,7 @@ async function handleMassage(message, setItems, type, company) {
 				my = myAuction;
 			}
 
-			return { myAuction: my, otherAuction: other };
+			return { ...prev, myAuction: my, otherAuction: other };
 		});
 	}
 
@@ -135,12 +135,15 @@ async function handleMassage(message, setItems, type, company) {
 		const endItem = Number(message.body);
 
 		setItems((prev) => {
-			const otherRes = prev.otherAuction.filter(
+			const otherRes = prev.otherAuction.map(
 				(list) => list.auctionId !== endItem,
 			);
-			const myRes = prev.myAuction.filter(
-				(list) => list.auction.auctionId !== endItem,
-			);
+			const myRes = prev.myAuction.map((list) => {
+				if (list.auction.auctionId === endItem) {
+					list.state = 'AUCTION_END';
+				}
+				return list;
+			});
 
 			return { ...prev, otherAuction: otherRes, myAuction: myRes };
 		});
@@ -190,8 +193,6 @@ function Repair() {
 
 	const myAuction = items?.myAuction;
 	const otherAuction = items?.otherAuction;
-
-	console.log(myAuction);
 
 	// 웹소켓 연결용
 	useEffect(() => {
@@ -247,6 +248,49 @@ function Repair() {
 
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
+
+	// 낙찰된 경매 목록 얻기용
+	useEffect(() => {
+		if (!token || !userData?.company) {
+			return;
+		}
+
+		axios
+			.get(`${DATA_URL}getauction/${userData?.company}`)
+			.then((res) => {
+				/** @type {RepairRecvType[]} */
+				const data = res.data;
+				if (!data.length) {
+					return;
+				}
+
+				const resData = data.map((item) => {
+					return {
+						state: 'AUCTION_END',
+						auction: item,
+					};
+				});
+
+				setItems((prev) => {
+					let my;
+					if (prev?.myAuction) {
+						my = [...prev.myAuction, ...resData];
+					} else {
+						my = resData;
+					}
+
+					return {
+						...prev,
+						myAuction: my,
+					};
+				});
+			})
+			.catch((e) => {
+				console.error(`이전 경매 불러오기 실패: ${e}`);
+			});
+
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [userData?.company]);
 
 	const Logout = () => {
 		const refreshToken = localStorage.getItem('refreshToken');
