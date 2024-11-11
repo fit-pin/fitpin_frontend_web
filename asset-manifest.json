@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/fitpin_frontend_web/static/css/main.184a1a88.css",
-    "main.js": "/fitpin_frontend_web/static/js/main.f9c9d51a.js",
+    "main.css": "/fitpin_frontend_web/static/css/main.39cd8cff.css",
+    "main.js": "/fitpin_frontend_web/static/js/main.23b2347a.js",
     "static/js/453.bcb002ef.chunk.js": "/fitpin_frontend_web/static/js/453.bcb002ef.chunk.js",
     "static/media/SpoqaHanSansNeo-Regular.ttf": "/fitpin_frontend_web/static/media/SpoqaHanSansNeo-Regular.95ececb5af85b0f66467.ttf",
     "static/media/GmarketSansTTFMedium.ttf": "/fitpin_frontend_web/static/media/GmarketSansTTFMedium.d4bac6b182bed73c9375.ttf",
@@ -22,12 +22,12 @@
     "static/media/phone5.png": "/fitpin_frontend_web/static/media/phone5.de0e829c193a1a7c80ed.png",
     "static/media/step1.png": "/fitpin_frontend_web/static/media/step1.9177b402f1acd90ef142.png",
     "index.html": "/fitpin_frontend_web/index.html",
-    "main.184a1a88.css.map": "/fitpin_frontend_web/static/css/main.184a1a88.css.map",
-    "main.f9c9d51a.js.map": "/fitpin_frontend_web/static/js/main.f9c9d51a.js.map",
+    "main.39cd8cff.css.map": "/fitpin_frontend_web/static/css/main.39cd8cff.css.map",
+    "main.23b2347a.js.map": "/fitpin_frontend_web/static/js/main.23b2347a.js.map",
     "453.bcb002ef.chunk.js.map": "/fitpin_frontend_web/static/js/453.bcb002ef.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.184a1a88.css",
-    "static/js/main.f9c9d51a.js"
+    "static/css/main.39cd8cff.css",
+    "static/js/main.23b2347a.js"
   ]
 }
