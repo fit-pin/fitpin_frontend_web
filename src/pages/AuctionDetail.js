@@ -276,14 +276,18 @@ function AuctionDetail() {
 	}
 
 	const handleBid = async () => {
-		const price = PriceValueRef.current.value;
+		const price = Number(PriceValueRef.current.value);
 		const client = webSocketContext.client;
 
 		PriceValueRef.current.value = '';
 		if (!price) {
 			return;
 		}
-
+		const prevPrice = auctionValue?.price || itemInfo?.pitPrice
+		if (price >= prevPrice) {
+			alert("현재 수선가격 보다 더 낮게 입찰해야 합니다");
+		}
+		
 		/**@type {sendPrice} */
 		const body = {
 			auctionId,
