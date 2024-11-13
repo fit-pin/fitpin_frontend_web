@@ -13,6 +13,7 @@ import Main from './pages/Main';
 import Repair from './pages/Repair';
 import AuctionDetail from './pages/AuctionDetail';
 import UpdateAsk from './pages/UpdateAsk';
+import Management from './pages/Management'
 import './App.css';
 import { CookiesProvider } from 'react-cookie';
 import WebSocketContext, { WebSocketConnect } from './utils/WebSocketConnect';
@@ -54,6 +55,7 @@ function App() {
 							<Route path="/Service" element={<Service />} />
 							<Route path="/Question" element={<Question />} />
 							<Route path="/Exchange" element={<Exchange />} />
+							<Route path="/Management" element={<Management />} />
 							<Route path="/Ask" element={<Ask />} />
 							<Route path="/UpdateAsk" element={<UpdateAsk />} />
 							<Route path="/Board" element={<Board />} />

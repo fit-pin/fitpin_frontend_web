@@ -10,6 +10,7 @@ function Fitcomment() {
     const navigate = useNavigate();
     const [products, setProducts] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
+    const [isAdmin, setIsAdmin] = useState(false);
 
     useEffect(() => {
         const commentInfo = async () => {
@@ -20,6 +21,12 @@ function Fitcomment() {
                 console.error('Error fitcomment data:', error);
             }
         };
+
+        const username = localStorage.getItem('username');
+        if (username === 'admin') {
+            setIsAdmin(true);
+        }
+
         commentInfo();
     }, []);
 
@@ -35,6 +42,9 @@ function Fitcomment() {
                 <img src={logo} className={styles.logo} alt="logo" onClick={() => navigate('/')} />
             </div>
             <div className={styles.right}>
+                {isAdmin && (
+                        <span onClick={() => navigate('/Management')}>경매관리</span>
+                )}
                 <span className={styles.bold} onClick={() => navigate('/Fitcomment')}>핏코멘트</span>
                 <span onClick={() => navigate('/Service')}>고객센터</span>
             </div>
