@@ -11,7 +11,8 @@ function Service() {
   const [currentPage, setCurrentPage] = useState(1);
   const [inquiries, setInquiries] = useState([]);
   const [totalPages, setTotalPages] = useState(1);
-  const username = localStorage.getItem('username');  
+  const username = localStorage.getItem('username');
+  const [isAdmin, setIsAdmin] = useState(false);
   
   useEffect(() => {
     // URL에서 쿼리 파라미터로 페이지 번호를 받아오기
@@ -21,6 +22,11 @@ function Service() {
     // 상태를 업데이트하여 현재 페이지를 설정
     setCurrentPage(page);
     fetchInquiries(page);
+
+    const username = localStorage.getItem('username');
+    if (username === 'admin') {
+        setIsAdmin(true);
+    }
   }, [location.search]);
 
   // 서버에서 페이징된 데이터를 가져오는 함수
@@ -87,6 +93,9 @@ function Service() {
           <img src={logo} className={styles.logo} alt="logo" onClick={() => navigate('/')} />
         </div>
         <div className={styles.right}>
+          {isAdmin && (
+                        <span onClick={() => navigate('/Management')}>경매관리</span>
+          )}
           <span onClick={() => navigate('/Fitcomment')}>핏코멘트</span>
           <span className={styles.bold} onClick={() => navigate('/Service')}>고객센터</span>
         </div>

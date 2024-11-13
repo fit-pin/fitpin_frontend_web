@@ -24,6 +24,7 @@ function Main() {
 
     // 로그인 상태 확인을 위한 state
     const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [isAdmin, setIsAdmin] = useState(false);
 
     useEffect(() => {
         const options = {
@@ -46,6 +47,11 @@ function Main() {
                 observer.observe(section);
             }
         });
+
+        const username = localStorage.getItem('username');
+        if (username === 'admin') {
+            setIsAdmin(true);
+        }
 
         // localStorage에서 accessToken을 확인
         const accessToken = localStorage.getItem('accessToken');
@@ -93,6 +99,9 @@ function Main() {
                     </span>
                 </div>
                 <div className={styles.right}>
+                    {isAdmin && (
+                        <span onClick={() => navigate('/Management')}>경매관리</span>
+                    )}
                     <span onClick={() => navigate('/FitComment')}>핏 코멘트</span>
                     <span onClick={() => navigate('/Service')}>고객센터</span>
                     {isLoggedIn ? (
