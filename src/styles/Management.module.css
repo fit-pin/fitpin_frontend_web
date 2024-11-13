@@ -1,101 +1,101 @@
 body {
-    font-family: 'SpoqaHanSansNeo-Regular', sans-serif;
+	font-family: 'SpoqaHanSansNeo-Regular', sans-serif;
 }
 
 .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1vh 3vw;
-    background-color: #ffffff;
-    height: 8vh;
-    font-size: 2vh;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 1vh 3vw;
+	background-color: #ffffff;
+	height: 8vh;
+	font-size: 2vh;
 }
 
 .logo {
-    width: 6vw;
-    height: auto;
+	width: 6vw;
+	height: auto;
 }
 
 .right {
-    display: flex;
-    gap: 2vw;
-    font-family: 'SpoqaHanSansNeo-Regular', sans-serif;
+	display: flex;
+	gap: 2vw;
+	font-family: 'SpoqaHanSansNeo-Regular', sans-serif;
 }
 
 .right span {
-    cursor: pointer;
+	cursor: pointer;
 }
 
 .bold {
-    font-weight: bold;
-    text-decoration: none;
-    color: inherit;
+	font-weight: bold;
+	text-decoration: none;
+	color: inherit;
 }
 
 .content {
-    padding: 2vh 4vw;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+	padding: 2vh 4vw;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
 }
 
 .leftContent {
-    width: 100%;
-    margin-left: 3.7vw;
-    margin-top: 5.3vh;
-    text-align: left;
+	width: 100%;
+	margin-left: 3.7vw;
+	margin-top: 5.3vh;
+	text-align: left;
 }
 
 .title {
-    font-family: 'GmarketSansTTFMedium';
-    font-size: 3.2vh;
-    margin-bottom: 1vh;
+	font-family: 'GmarketSansTTFMedium';
+	font-size: 3.2vh;
+	margin-bottom: 1vh;
 }
 
 .formContainer {
-    display: flex;
-    justify-content: center;
-    width: 100%;
-    max-width: 80vw;
-    margin: 0 auto;
-    margin-top: 4vh;
+	display: flex;
+	justify-content: center;
+	width: 100%;
+	max-width: 80vw;
+	margin: 0 auto;
+	margin-top: 4vh;
 }
 
 .formGroup {
-    margin-bottom: 2.5vh;
-    width: 100%;
+	margin-bottom: 2.5vh;
+	width: 100%;
 }
 
 .form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-    margin: 0 0 0 -20vh;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	width: 100%;
+	margin: 0 0 0 -20vh;
 }
 
 .inputname {
-    width: 15%;
-    padding: 1.2vh;
-    border: 0.1vh solid #ccc;
-    border-radius: 0.5vh;
-    font-size: 1.7vh;
+	width: 15%;
+	padding: 1.2vh;
+	border: 0.1vh solid #ccc;
+	border-radius: 0.5vh;
+	font-size: 1.7vh;
 }
 
 .submitButton {
-    width: 10%;
-    height: 4.5vh;
-    margin-left: 1vh;
-    background-color: black;
-    color: white;
-    border-radius: 0.5vh;
+	width: 10%;
+	height: 4.5vh;
+	margin-left: 1vh;
+	background-color: black;
+	color: white;
+	border-radius: 0.5vh;
 }
 
 .closedMessage {
-    margin-top: 1vh;
-    font-size: 3.0vh;
-    color: #333;
-    text-align: left;
-    width: 100%;
+	margin-top: 1vh;
+	font-size: 3vh;
+	color: #333;
+	text-align: left;
+	width: 100%;
 }

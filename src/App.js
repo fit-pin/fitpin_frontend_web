@@ -13,7 +13,7 @@ import Main from './pages/Main';
 import Repair from './pages/Repair';
 import AuctionDetail from './pages/AuctionDetail';
 import UpdateAsk from './pages/UpdateAsk';
-import Management from './pages/Management'
+import Management from './pages/Management';
 import './App.css';
 import { CookiesProvider } from 'react-cookie';
 import WebSocketContext, { WebSocketConnect } from './utils/WebSocketConnect';

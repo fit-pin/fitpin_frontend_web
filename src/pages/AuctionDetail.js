@@ -283,11 +283,11 @@ function AuctionDetail() {
 		if (!price) {
 			return;
 		}
-		const prevPrice = auctionValue?.price || itemInfo?.pitPrice
+		const prevPrice = auctionValue?.price || itemInfo?.pitPrice;
 		if (price >= prevPrice) {
-			alert("현재 수선가격 보다 더 낮게 입찰해야 합니다");
+			alert('현재 수선가격 보다 더 낮게 입찰해야 합니다');
 		}
-		
+
 		/**@type {sendPrice} */
 		const body = {
 			auctionId,

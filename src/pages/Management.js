@@ -28,22 +28,22 @@ function Fitcomment() {
 		// 모든 구독 없에고 들감
 		allUnSubscribe();
 
-        if (!token || webSocketContext.state !== 'connect') {
-            return;
-        }
+		if (!token || webSocketContext.state !== 'connect') {
+			return;
+		}
 
-        const client = webSocketContext.client;
+		const client = webSocketContext.client;
 
 		// 경매 종료 알림
 		subscribe(client, RecvAuctionEnd, (message) => {
 			const body = JSON.parse(message.body);
-            console.log(body);
-            
-            if (body.stats === true) {
-                setisMessage(`${body.auctionId}번 경매를 종료했습니다`)
-            } else {
-                alert('해당 경매를 찾을 수 없습니다');
-            }
+			console.log(body);
+
+			if (body.stats === true) {
+				setisMessage(`${body.auctionId}번 경매를 종료했습니다`);
+			} else {
+				alert('해당 경매를 찾을 수 없습니다');
+			}
 		});
 
 		// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -60,10 +60,10 @@ function Fitcomment() {
 			alert('경매번호를 입력하세요.');
 			return;
 		}
-        if (webSocketContext.state !== 'connect') {
-            return;
-        }
-        const client = webSocketContext.client;
+		if (webSocketContext.state !== 'connect') {
+			return;
+		}
+		const client = webSocketContext.client;
 
 		const confirmClose = window.confirm('경매를 종료하시겠습니까?');
 		if (confirmClose) {
