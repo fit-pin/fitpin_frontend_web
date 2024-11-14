@@ -277,7 +277,7 @@ function Repair() {
 				setItems((prev) => {
 					const prevAuction = prev.myAuction?.filter((item) =>
 						resData.every((value) => {
-							return value.auction?.repairId !== item.auction?.repairId;
+							return value.auction?.auctionId !== item.auction?.auctionId;
 						}),
 					);
 
